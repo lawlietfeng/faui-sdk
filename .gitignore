@@ -16,3 +16,6 @@ coverage/
 .idea/
 .vscode/
 AGENTS.md
+
+# Local execution plans
+plans/

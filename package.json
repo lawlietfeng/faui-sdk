@@ -1,0 +1,59 @@
+{
+  "name": "@lawlietfeng/faui-sdk",
+  "version": "0.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "description": "FAUI JSON Schema renderer SDK based on React and Ant Design",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 examples",
+    "build": "npm run typecheck",
+    "lint": "echo \"ESLint will be configured in a later iteration.\"",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"Test framework will be configured in a later iteration.\""
+  },
+  "peerDependencies": {
+    "antd": ">=5.0.0",
+    "dayjs": ">=1.10.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^6.0.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.0.4"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "json-schema",
+    "renderer",
+    "antd",
+    "form",
+    "sdk"
+  ],
+  "author": "lawliet",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lawlietfeng/faui-sdk.git"
+  },
+  "homepage": "https://github.com/lawlietfeng/faui-sdk#readme",
+  "license": "AGPL-3.0-only"
+}

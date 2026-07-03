@@ -11,7 +11,7 @@ module.exports = [
   },
   js.configs.recommended,
   {
-    files: ["src/**/*.{ts,tsx}", "examples/**/*.{ts,tsx}"],
+    files: ["src/**/*.{ts,tsx}", "examples/**/*.{ts,tsx}", "tests/**/*.{ts,tsx}"],
     languageOptions: {
       parser: tsParser,
       parserOptions: {

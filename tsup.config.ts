@@ -9,6 +9,7 @@ export default defineConfig({
   treeshake: true,
   splitting: true,
   external: ["react", "react-dom", "antd", "dayjs"],
+  noExternal: ["fast-json-patch"],
   tsconfig: "tsconfig.build.json",
   clean: true
 });

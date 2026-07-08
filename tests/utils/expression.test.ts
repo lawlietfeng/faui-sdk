@@ -39,6 +39,19 @@ describe("evaluateExpression", () => {
     expect(evaluateExpression("${$parent.id}", context)).toBe(0);
   });
 
+  it("supports repeated item context with $current and $parent", () => {
+    const context = {
+      $root: { order: { currency: "CNY" } },
+      $current: { name: "Line A", price: 10, quantity: 2 },
+      $parent: { title: "Order" }
+    };
+
+    expect(evaluateExpression("${$current.name}", context)).toBe("Line A");
+    expect(evaluateExpression("${$current.price * $current.quantity}", context)).toBe(20);
+    expect(evaluateExpression("${$parent.title}", context)).toBe("Order");
+    expect(evaluateExpression("${$root.order.currency}", context)).toBe("CNY");
+  });
+
   it("provides the minimal helper functions", () => {
     expect(evaluateExpression("${upper(\"ab\")}", { $root: {} })).toBe("AB");
     expect(evaluateExpression("${lower(\"AB\")}", { $root: {} })).toBe("ab");
@@ -120,6 +133,37 @@ describe("evaluateObject", () => {
       list: [3, "static"],
       nested: {
         value: 20
+      }
+    });
+  });
+
+  it("preserves action parameter value types during recursive evaluation", () => {
+    const context = {
+      $root: {
+        count: 2,
+        enabled: true,
+        user: { name: "Ann" },
+        items: ["a", "b"]
+      }
+    };
+    const actionParams = {
+      payload: {
+        visible: "${enabled}",
+        amount: "${count + 1}",
+        items: "${items}",
+        meta: "${{ owner: user.name, total: count }}"
+      }
+    };
+
+    expect(evaluateObject(actionParams, context)).toEqual({
+      payload: {
+        visible: true,
+        amount: 3,
+        items: ["a", "b"],
+        meta: {
+          owner: "Ann",
+          total: 2
+        }
       }
     });
   });

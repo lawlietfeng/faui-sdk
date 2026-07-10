@@ -32,6 +32,8 @@ export type ExpressionValue = string;
 
 export type ComponentVisibility = boolean | ExpressionValue | ValueBinding;
 
+export type ComponentControlValue = boolean | ExpressionValue | ValueBinding;
+
 export type ComponentStyleValue = string | number;
 
 export type ComponentStyle = Record<string, ComponentStyleValue>;
@@ -97,9 +99,25 @@ export interface ComponentOption {
   children?: ComponentOption[];
 }
 
-export type ComponentOptions = Array<ComponentOption | string | number | boolean | Record<string, unknown>> | string;
+export type ComponentOptionItem = ComponentOption | string | number | boolean | Record<string, unknown>;
 
-export type ComponentType = "form" | "input" | "button" | "condition" | "repeater" | (string & {});
+export type ComponentOptions = ComponentOptionItem[] | string;
+
+export type ComponentType =
+  | "form"
+  | "input"
+  | "button"
+  | "condition"
+  | "repeater"
+  | "select"
+  | "radio"
+  | "checkbox"
+  | "textarea"
+  | "inputnumber"
+  | "switch"
+  | "datepicker"
+  | "timepicker"
+  | (string & {});
 
 export interface BaseComponentConfig {
   id: string;
@@ -113,6 +131,7 @@ export interface BaseComponentConfig {
   value?: ValueBinding;
   data?: ValueBinding;
   checked?: ValueBinding;
+  disabled?: ComponentControlValue;
   content?: string;
   style?: ComponentStyle;
   visible?: ComponentVisibility;
@@ -134,6 +153,94 @@ export interface FormComponentConfig extends BaseComponentConfig {
 
 export interface InputComponentConfig extends BaseComponentConfig {
   component: "input";
+}
+
+export interface SelectComponentConfig extends BaseComponentConfig {
+  component: "select";
+  field?: string;
+  placeholder?: string;
+  options?: ComponentOptions;
+  rules?: FormRule[];
+  mode?: "multiple" | "tags";
+  disabled?: ComponentControlValue;
+  allowClear?: ComponentControlValue;
+  showSearch?: ComponentControlValue;
+  maxTagCount?: number | ExpressionValue;
+}
+
+export interface RadioComponentConfig extends BaseComponentConfig {
+  component: "radio";
+  field?: string;
+  options?: ComponentOptions;
+  rules?: FormRule[];
+}
+
+export interface CheckboxComponentConfig extends BaseComponentConfig {
+  component: "checkbox";
+  field?: string;
+  options?: ComponentOptions;
+  rules?: FormRule[];
+  checked?: ValueBinding;
+}
+
+export interface TextareaComponentConfig extends BaseComponentConfig {
+  component: "textarea";
+  field?: string;
+  placeholder?: string;
+  rules?: FormRule[];
+  disabled?: ComponentControlValue;
+  rows?: number | ExpressionValue;
+  maxLength?: number | ExpressionValue;
+}
+
+export interface InputnumberComponentConfig extends BaseComponentConfig {
+  component: "inputnumber";
+  field?: string;
+  rules?: FormRule[];
+  min?: number;
+  max?: number;
+  step?: number;
+  precision?: number;
+  disabled?: ComponentControlValue;
+}
+
+export interface SwitchComponentConfig extends BaseComponentConfig {
+  component: "switch";
+  field?: string;
+  rules?: FormRule[];
+  checkedChildren?: string;
+  unCheckedChildren?: string;
+  checked?: ValueBinding;
+  disabled?: ComponentControlValue;
+  size?: "small" | "default" | (string & {});
+}
+
+export interface DisabledDateConfig {
+  before?: ValueBinding;
+  after?: ValueBinding;
+}
+
+export interface DatepickerComponentConfig extends BaseComponentConfig {
+  component: "datepicker";
+  field?: string;
+  placeholder?: string;
+  rules?: FormRule[];
+  picker?: "date" | "month" | "year";
+  format?: string;
+  showTime?: boolean;
+  disabledDate?: DisabledDateConfig;
+}
+
+export interface TimepickerComponentConfig extends BaseComponentConfig {
+  component: "timepicker";
+  field?: string;
+  rules?: FormRule[];
+  format?: string;
+  placeholder?: string;
+  disabled?: ComponentControlValue;
+  minuteStep?: number | ExpressionValue;
+  secondStep?: number | ExpressionValue;
+  hourStep?: number | ExpressionValue;
 }
 
 export interface ButtonComponentConfig extends BaseComponentConfig {
@@ -174,6 +281,14 @@ export interface GenericComponentConfig extends BaseComponentConfig {
 export type Component =
   | FormComponentConfig
   | InputComponentConfig
+  | SelectComponentConfig
+  | RadioComponentConfig
+  | CheckboxComponentConfig
+  | TextareaComponentConfig
+  | InputnumberComponentConfig
+  | SwitchComponentConfig
+  | DatepickerComponentConfig
+  | TimepickerComponentConfig
   | ButtonComponentConfig
   | ConditionComponentConfig
   | RepeaterComponentConfig

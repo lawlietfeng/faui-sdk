@@ -4,10 +4,19 @@ import type {
   Activity,
   ActivityDelta,
   ActivitySnapshot,
+  CheckboxComponentConfig,
   Component,
+  ComponentOptions,
   ConditionComponentConfig,
   Content,
+  DatepickerComponentConfig,
+  InputnumberComponentConfig,
+  RadioComponentConfig,
   RepeaterComponentConfig,
+  SelectComponentConfig,
+  SwitchComponentConfig,
+  TextareaComponentConfig,
+  TimepickerComponentConfig,
   ValueBinding
 } from "../../src";
 
@@ -121,6 +130,114 @@ describe("schema types", () => {
     expect(repeater.data).toEqual({ path: "/users" });
   });
 
+  it("supports first field component variants for form renderer work", () => {
+    const components: Component[] = [
+      {
+        id: "status",
+        component: "select",
+        field: "status",
+        value: { path: "/form/status" },
+        placeholder: "请选择状态",
+        options: [
+          { label: "启用", value: "active" },
+          { label: "停用", value: "disabled" }
+        ],
+        disabled: "${loading}",
+        allowClear: true,
+        showSearch: { path: "/form/searchable" },
+        maxTagCount: 2,
+        rules: [{ required: true, message: "请选择状态" }]
+      },
+      {
+        id: "level",
+        component: "radio",
+        field: "level",
+        options: "levels",
+        rules: [{ required: true }]
+      },
+      {
+        id: "tags",
+        component: "checkbox",
+        field: "tags",
+        checked: { path: "/form/tags" },
+        options: [{ label: "重要", value: "important" }],
+        rules: [{ type: "array", min: 1 }]
+      },
+      {
+        id: "description",
+        component: "textarea",
+        field: "description",
+        placeholder: "请输入说明",
+        rows: 4,
+        maxLength: "${maxDescriptionLength}",
+        disabled: false
+      },
+      {
+        id: "count",
+        component: "inputnumber",
+        field: "count",
+        min: 1,
+        max: 99,
+        step: 1,
+        precision: 0,
+        rules: [{ type: "number", min: 1, max: 99 }]
+      },
+      {
+        id: "enabled",
+        component: "switch",
+        field: "enabled",
+        checked: { path: "/form/enabled" },
+        checkedChildren: "开",
+        unCheckedChildren: "关",
+        disabled: { path: "/form/readonly" },
+        size: "small"
+      },
+      {
+        id: "date",
+        component: "datepicker",
+        field: "date",
+        placeholder: "请选择日期",
+        picker: "date",
+        format: "YYYY-MM-DD",
+        showTime: false,
+        disabledDate: {
+          before: { path: "/limits/minDate" },
+          after: { path: "/limits/maxDate" }
+        }
+      },
+      {
+        id: "time",
+        component: "timepicker",
+        field: "time",
+        placeholder: "请选择时间",
+        format: "HH:mm",
+        minuteStep: 15,
+        secondStep: "${secondStep}",
+        disabled: "${readonly}"
+      }
+    ];
+
+    expect(components.map(component => component.component)).toEqual([
+      "select",
+      "radio",
+      "checkbox",
+      "textarea",
+      "inputnumber",
+      "switch",
+      "datepicker",
+      "timepicker"
+    ]);
+    expect(components[0]?.options).toEqual([
+      { label: "启用", value: "active" },
+      { label: "停用", value: "disabled" }
+    ]);
+    expect(components[5]?.checked).toEqual({ path: "/form/enabled" });
+    expect(components[6]?.disabledDate).toEqual({
+      before: { path: "/limits/minDate" },
+      after: { path: "/limits/maxDate" }
+    });
+  });
+
   it("exports reusable content aliases for lifecycle and renderer integration", () => {
     const content: Content = {
       dataModel: {
@@ -168,5 +285,81 @@ describe("schema type assertions", () => {
 
     expectTypeOf(component.component).toEqualTypeOf<"button">();
     expectTypeOf(component.on_mount).toMatchTypeOf<ActionConfig | ActionConfig[] | undefined>();
+  });
+
+  it("keeps field component typings available on schema samples", () => {
+    const options: ComponentOptions = [
+      { label: "A", value: "a" },
+      { label: "B", value: "b" }
+    ];
+
+    const select = {
+      id: "assignee",
+      component: "select",
+      field: "assignee",
+      options,
+      mode: "multiple",
+      disabled: "${readonly}"
+    } satisfies SelectComponentConfig;
+
+    const radio = {
+      id: "priority",
+      component: "radio",
+      field: "priority",
+      options
+    } satisfies RadioComponentConfig;
+
+    const checkbox = {
+      id: "confirmed",
+      component: "checkbox",
+      checked: { path: "/form/confirmed" }
+    } satisfies CheckboxComponentConfig;
+
+    const textarea = {
+      id: "remark",
+      component: "textarea",
+      rows: 3,
+      maxLength: 200
+    } satisfies TextareaComponentConfig;
+
+    const inputnumber = {
+      id: "amount",
+      component: "inputnumber",
+      min: 0,
+      max: 100,
+      precision: 2
+    } satisfies InputnumberComponentConfig;
+
+    const switchComponent = {
+      id: "active",
+      component: "switch",
+      checked: { path: "/form/active" },
+      disabled: { path: "/form/readonly" }
+    } satisfies SwitchComponentConfig;
+
+    const datepicker = {
+      id: "start-date",
+      component: "datepicker",
+      picker: "month",
+      disabledDate: {
+        before: { path: "/limits/start" }
+      }
+    } satisfies DatepickerComponentConfig;
+
+    const timepicker = {
+      id: "start-time",
+      component: "timepicker",
+      hourStep: 1,
+      minuteStep: "${minuteStep}"
+    } satisfies TimepickerComponentConfig;
+
+    expectTypeOf(select).toMatchTypeOf<Component>();
+    expectTypeOf(radio.options).toMatchTypeOf<ComponentOptions | undefined>();
+    expectTypeOf(checkbox.checked).toMatchTypeOf<ValueBinding | undefined>();
+    expectTypeOf(textarea.maxLength).toMatchTypeOf<number | string | undefined>();
+    expectTypeOf(inputnumber.precision).toMatchTypeOf<number | undefined>();
+    expectTypeOf(switchComponent.disabled).toMatchTypeOf<boolean | string | ValueBinding | undefined>();
+    expectTypeOf(datepicker.disabledDate?.before).toMatchTypeOf<ValueBinding | undefined>();
+    expectTypeOf(timepicker.minuteStep).toMatchTypeOf<number | string | undefined>();
   });
 });

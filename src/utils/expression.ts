@@ -1,11 +1,5 @@
 import { isValidElement } from "react";
-
-export interface ExpressionContext {
-  $root: Record<string, unknown>;
-  $current?: unknown;
-  $parent?: unknown;
-  [key: string]: unknown;
-}
+import type { ExpressionContext } from "../types/schema";
 
 type ExpressionSegment = {
   type: "text" | "expr";

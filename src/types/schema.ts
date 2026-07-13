@@ -1,4 +1,5 @@
 import type { Operation } from "fast-json-patch";
+import type { ComponentType as ReactComponentType } from "react";
 
 export type Activity = ActivitySnapshot | ActivityDelta;
 
@@ -29,6 +30,15 @@ export interface ValueBinding {
 }
 
 export type ExpressionValue = string;
+
+export interface ExpressionContext {
+  $root: DataModel;
+  $current?: unknown;
+  $parent?: unknown;
+  $result?: unknown;
+  $error?: unknown;
+  [key: string]: unknown;
+}
 
 export type ComponentVisibility = boolean | ExpressionValue | ValueBinding;
 
@@ -77,6 +87,23 @@ export interface HttpRequestConfig {
   headers?: Record<string, string>;
   body?: unknown;
 }
+
+export type HttpRequestHandler = (config: HttpRequestConfig) => Promise<unknown>;
+
+export type ActionContext = ExpressionContext;
+
+export interface ActionExecutor {
+  updateData: (path: string, value: unknown) => void;
+  getData: (path: string) => unknown;
+  httpRequest?: HttpRequestHandler;
+  context: ActionContext;
+}
+
+export type ActionHandler = (config: ActionConfig, executor: ActionExecutor) => unknown | Promise<unknown>;
+
+export type ActionRegistry = Record<string, ActionHandler>;
+
+export type ExternalActionHandler = (action: ActionConfig, context: ActionContext) => void | Promise<void>;
 
 export type ValidateTrigger = "onChange" | "onBlur";
 
@@ -139,8 +166,8 @@ export interface BaseComponentConfig {
   rules?: FormRule[];
   validateTrigger?: ValidateTrigger | ValidateTrigger[];
   options?: ComponentOptions;
-  on_change?: ActionConfig;
-  on_tap?: ActionConfig[];
+  on_change?: ActionSequence;
+  on_tap?: ActionSequence;
   on_mount?: ActionSequence;
   [key: string]: unknown;
 }
@@ -293,3 +320,30 @@ export type Component =
   | ConditionComponentConfig
   | RepeaterComponentConfig
   | GenericComponentConfig;
+
+export type ComponentMap = Map<string, Component>;
+
+export interface ComponentRendererProps<TComponent extends Component = Component> {
+  config: TComponent;
+  componentMap: ComponentMap;
+}
+
+export type RendererComponent<TComponent extends Component = Component> = ReactComponentType<
+  ComponentRendererProps<TComponent>
+>;
+
+export type ComponentRegistry = Record<string, RendererComponent>;
+
+export interface SchemaRendererProps {
+  schema: Content;
+  componentRegistry: ComponentRegistry;
+  initialData?: DataModel;
+  liveData?: DataModel;
+  customComponents?: ComponentRegistry;
+  httpRequest?: HttpRequestHandler;
+  onAction?: ExternalActionHandler;
+}
+
+export interface RendererProps extends Omit<SchemaRendererProps, "schema"> {
+  schema: Activity[];
+}

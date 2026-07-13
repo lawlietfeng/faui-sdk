@@ -1,18 +1,31 @@
 import { describe, expect, expectTypeOf, it } from "vitest";
 import type {
+  ActionContext,
   ActionConfig,
+  ActionExecutor,
+  ActionRegistry,
+  ActionSequence,
   Activity,
   ActivityDelta,
   ActivitySnapshot,
   CheckboxComponentConfig,
   Component,
+  ComponentRegistry,
   ComponentOptions,
+  ComponentRendererProps,
   ConditionComponentConfig,
   Content,
   DatepickerComponentConfig,
+  ExpressionContext,
+  ExternalActionHandler,
+  HttpRequestConfig,
+  HttpRequestHandler,
   InputnumberComponentConfig,
   RadioComponentConfig,
+  RendererComponent,
+  RendererProps,
   RepeaterComponentConfig,
+  SchemaRendererProps,
   SelectComponentConfig,
   SwitchComponentConfig,
   TextareaComponentConfig,
@@ -98,7 +111,8 @@ describe("schema types", () => {
     };
 
     expect(component.visible).toBe("${enabled}");
-    expect(component.on_tap?.[0]).toEqual(submitAction);
+    const tapActions = Array.isArray(component.on_tap) ? component.on_tap : [component.on_tap];
+    expect(tapActions[0]).toEqual(submitAction);
   });
 
   it("reserves condition and repeater fields for later renderer work", () => {
@@ -284,7 +298,174 @@ describe("schema type assertions", () => {
     } satisfies Component;
 
     expectTypeOf(component.component).toEqualTypeOf<"button">();
-    expectTypeOf(component.on_mount).toMatchTypeOf<ActionConfig | ActionConfig[] | undefined>();
+    expectTypeOf(component.on_mount).toMatchTypeOf<ActionSequence | undefined>();
+  });
+
+  it("keeps action chains and executor typings available", () => {
+    const successAction: ActionConfig = {
+      action: "update_data",
+      path: "/form/result",
+      value: "${$result.id}"
+    };
+
+    const errorAction: ActionConfig = {
+      action: "notification",
+      payload: {
+        type: "error",
+        message: "${$error}"
+      }
+    };
+
+    const action: ActionConfig = {
+      action: "http_proxy",
+      payload: {
+        http_config: {
+          method: "POST",
+          path: "/api/users/${$current.id}",
+          headers: {
+            "content-type": "application/json"
+          }
+        },
+        http_body: {
+          name: "${name}",
+          source: { path: "/form/source" }
+        }
+      },
+      on_success: [successAction],
+      on_error: errorAction
+    };
+
+    const httpRequest: HttpRequestHandler = async (config: HttpRequestConfig) => {
+      expectTypeOf(config).toEqualTypeOf<HttpRequestConfig>();
+      return { id: 1 };
+    };
+
+    const executor: ActionExecutor = {
+      updateData: () => undefined,
+      getData: () => undefined,
+      httpRequest,
+      context: {
+        $root: { name: "Ann" },
+        $current: { id: 1 },
+        $parent: { group: "sales" },
+        $result: { id: 1 },
+        $error: "failed",
+        value: "Ann"
+      }
+    };
+
+    const registry: ActionRegistry = {
+      http_proxy: async (_config, currentExecutor) => currentExecutor.httpRequest?.({
+        method: "POST",
+        url: "/api/users",
+        body: currentExecutor.context.$current
+      })
+    };
+
+    expect(action.payload?.http_config?.method).toBe("POST");
+    expect(action.on_success).toEqual([successAction]);
+    expectTypeOf(action.on_error).toMatchTypeOf<ActionSequence | undefined>();
+    expectTypeOf(executor.context).toMatchTypeOf<ActionContext>();
+    expectTypeOf(registry.http_proxy).toMatchTypeOf<ActionRegistry[string]>();
+  });
+
+  it("keeps expression context typings available for component and action evaluation", () => {
+    const context: ExpressionContext = {
+      $root: {
+        form: {
+          name: "Ann"
+        }
+      },
+      $current: {
+        id: 1
+      },
+      $parent: {
+        group: "sales"
+      },
+      $result: {
+        ok: true
+      },
+      $error: "request failed",
+      value: "Ann",
+      fileList: []
+    };
+
+    expect(context.$root.form).toEqual({ name: "Ann" });
+    expectTypeOf(context).toMatchTypeOf<ActionContext>();
+  });
+
+  it("keeps renderer input typings available for later implementation", () => {
+    const componentRenderer: RendererComponent = () => null;
+    const registry: ComponentRegistry = {
+      form: componentRenderer,
+      button: componentRenderer
+    };
+
+    const content: Content = {
+      dataModel: {
+        name: "Ann"
+      },
+      components: [
+        {
+          id: "root",
+          component: "form",
+          children: ["submit"]
+        },
+        {
+          id: "submit",
+          component: "button",
+          label: "提交",
+          on_tap: {
+            action: "message",
+            payload: {
+              content: "${name}"
+            }
+          }
+        }
+      ]
+    };
+
+    const onAction: ExternalActionHandler = async (action, context) => {
+      expect(action.action).toBe("message");
+      expect(context.$root.name).toBe("Ann");
+    };
+
+    const schemaRendererProps: SchemaRendererProps = {
+      schema: content,
+      componentRegistry: registry,
+      initialData: { name: "Initial" },
+      liveData: { name: "Live" },
+      customComponents: {
+        custom: componentRenderer
+      },
+      httpRequest: async (config) => ({
+        method: config.method,
+        url: config.url
+      }),
+      onAction
+    };
+
+    const rendererProps: RendererProps = {
+      schema: [
+        {
+          type: "ACTIVITY_SNAPSHOT",
+          content
+        }
+      ],
+      componentRegistry: registry,
+      onAction
+    };
+
+    const componentProps: ComponentRendererProps = {
+      config: content.components[0] as Component,
+      componentMap: new Map(content.components.map(component => [component.id, component]))
+    };
+
+    expect(schemaRendererProps.schema.components).toHaveLength(2);
+    expect(rendererProps.schema[0]?.type).toBe("ACTIVITY_SNAPSHOT");
+    expect(componentProps.componentMap.get("root")?.component).toBe("form");
+    expectTypeOf(schemaRendererProps).toMatchTypeOf<SchemaRendererProps>();
+    expectTypeOf(rendererProps).toMatchTypeOf<RendererProps>();
   });
 
   it("keeps field component typings available on schema samples", () => {

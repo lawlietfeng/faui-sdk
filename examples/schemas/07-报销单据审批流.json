@@ -1,0 +1,202 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "components": [
+        {
+          "id": "root",
+          "component": "form",
+          "layout": "vertical",
+          "spacing": 16,
+          "padding": 16,
+          "submitButtonId": "submit-btn",
+          "children": [
+            "title",
+            "project-group",
+            "amount-group",
+            "desc-group",
+            "invoice-group",
+            "submit-btn"
+          ]
+        },
+        {
+          "id": "title",
+          "component": "text",
+          "content": "费用报销",
+          "style": {
+            "fontSize": "18px",
+            "fontWeight": "bold",
+            "marginBottom": "8px"
+          }
+        },
+        {
+          "id": "project-group",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "children": [
+            "project-label",
+            "project-select"
+          ]
+        },
+        {
+          "id": "project-label",
+          "component": "text",
+          "content": "项目",
+          "style": {
+            "fontWeight": "bold"
+          }
+        },
+        {
+          "id": "project-select",
+          "component": "select",
+          "placeholder": "请选择项目",
+          "value": {
+            "path": "/project"
+          },
+          "rules": [
+            { "required": true, "message": "请选择报销项目" }
+          ],
+          "options": [
+            { "label": "市场活动", "value": "市场活动" },
+            { "label": "客户拜访", "value": "客户拜访" },
+            { "label": "办公采购", "value": "办公采购" }
+          ]
+        },
+        {
+          "id": "amount-group",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "children": [
+            "amount-label",
+            "amount-input"
+          ]
+        },
+        {
+          "id": "amount-label",
+          "component": "text",
+          "content": "金额（元）",
+          "style": {
+            "fontWeight": "bold"
+          }
+        },
+        {
+          "id": "amount-input",
+          "component": "inputnumber",
+          "placeholder": "请输入金额",
+          "min": 0,
+          "precision": 2,
+          "value": {
+            "path": "/amount"
+          },
+          "rules": [
+            { "required": true, "message": "请输入报销金额" }
+          ]
+        },
+        {
+          "id": "desc-group",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "children": [
+            "desc-label",
+            "desc-input"
+          ]
+        },
+        {
+          "id": "desc-label",
+          "component": "text",
+          "content": "说明",
+          "style": {
+            "fontWeight": "bold"
+          }
+        },
+        {
+          "id": "desc-input",
+          "component": "textarea",
+          "placeholder": "请填写费用用途",
+          "value": {
+            "path": "/desc"
+          },
+          "rules": [
+            { "required": true, "message": "请填写费用说明" }
+          ]
+        },
+        {
+          "id": "invoice-group",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "children": [
+            "invoice-label",
+            "upload-invoice"
+          ]
+        },
+        {
+          "id": "invoice-label",
+          "component": "text",
+          "content": "发票凭证",
+          "style": {
+            "fontWeight": "bold"
+          }
+        },
+        {
+          "id": "upload-invoice",
+          "component": "upload",
+          "multiple": false,
+          "showUploadList": true,
+          "maxCount": 1,
+          "value": {
+            "path": "/invoice"
+          },
+          "rules": [
+            { "required": true, "message": "请上传发票凭证" }
+          ]
+        },
+        {
+          "id": "submit-btn",
+          "component": "button",
+          "label": "提交报销",
+          "type": "primary",
+          "style": {
+            "marginTop": "16px"
+          },
+          "on_tap": [
+            {
+              "action": "http_proxy",
+              "payload": {
+                "http_config": {
+                  "method": "POST",
+                  "path": "https://www.baidu.com/api/reimbursement",
+                  "headers": {
+                    "Content-Type": "application/json"
+                  }
+                },
+                "http_body": {
+                  "project": { "path": "/project" },
+                  "amount": { "path": "/amount" },
+                  "desc": { "path": "/desc" },
+                  "invoice": { "path": "/invoice" }
+                }
+              }
+            },
+            {
+              "action": "message",
+              "payload": {
+                "type": "success",
+                "content": "报销单据提交成功！"
+              }
+            }
+          ]
+        }
+      ],
+      "dataModel": {
+        "project": "市场活动",
+        "amount": null,
+        "desc": "",
+        "invoice": []
+      }
+    }
+  }
+]

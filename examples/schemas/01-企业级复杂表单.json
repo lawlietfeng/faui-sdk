@@ -1,0 +1,398 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "components": [
+        {
+          "id": "root",
+          "component": "box",
+          "layout": "vertical",
+          "padding": 24,
+          "spacing": 20,
+          "children": [
+            "header-title",
+            "header-desc",
+            "divider-1",
+            "complex-form"
+          ]
+        },
+        {
+          "id": "header-title",
+          "component": "text",
+          "content": "🚀 企业级高级表单示例",
+          "style": {
+            "fontSize": "24px",
+            "fontWeight": "bold",
+            "color": "#1890ff"
+          }
+        },
+        {
+          "id": "header-desc",
+          "component": "text",
+          "content": "此示例展示了在 FAUI 新架构下，如何不写一行 on_change 代码，通过内置 update_data 兜底和 JSON Pointer 路径，实现涵盖 10+ 种复杂组件的数据收集、深度联动校验以及阻断式提交拦截。",
+          "style": {
+            "fontSize": "14px",
+            "color": "#666"
+          }
+        },
+        {
+          "id": "divider-1",
+          "component": "divider"
+        },
+        {
+          "id": "complex-form",
+          "component": "form",
+          "submitButtonId": "btn-submit",
+          "children": [
+            "section-basic",
+            "section-advanced",
+            "section-attachment",
+            "section-agreement",
+            "action-box"
+          ]
+        },
+        {
+          "id": "section-basic",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 16,
+          "children": [
+            "title-basic",
+            "username-input",
+            "email-input",
+            "phone-input",
+            "age-input"
+          ]
+        },
+        {
+          "id": "title-basic",
+          "component": "text",
+          "content": "一、基础信息 (文本类)",
+          "style": { "fontSize": "18px", "fontWeight": "bold" }
+        },
+        {
+          "id": "username-input",
+          "component": "input",
+          "label": "系统登录名",
+          "placeholder": "请输入登录名，仅限字母和数字，至少5位",
+          "value": { "path": "/basicInfo/username" },
+          "validateTrigger": ["onChange", "onBlur"],
+          "rules": [
+            { "required": true, "message": "登录名不能为空" },
+            { "min": 5, "message": "登录名至少需要 5 个字符" },
+            { "pattern": "^[A-Za-z0-9]+$", "message": "仅允许输入英文字母和数字" }
+          ]
+        },
+        {
+          "id": "email-input",
+          "component": "input",
+          "label": "联系邮箱",
+          "placeholder": "用于接收系统通知邮件",
+          "value": { "path": "/basicInfo/email" },
+          "validateTrigger": "onBlur",
+          "rules": [
+            { "required": true, "message": "联系邮箱必填" },
+            { "type": "email", "message": "邮箱格式不合法，请检查拼写" }
+          ]
+        },
+        {
+          "id": "phone-input",
+          "component": "input",
+          "label": "手机号码",
+          "placeholder": "请输入11位手机号",
+          "value": { "path": "/basicInfo/phone" },
+          "rules": [
+            { "required": true, "message": "手机号码不能为空" },
+            { "pattern": "^1[3-9]\\d{9}$", "message": "请输入有效的11位中国大陆手机号码" }
+          ]
+        },
+        {
+          "id": "age-input",
+          "component": "inputnumber",
+          "label": "申请人年龄",
+          "placeholder": "必须年满 18 周岁",
+          "min": 1,
+          "max": 100,
+          "value": { "path": "/basicInfo/age" },
+          "rules": [
+            { "required": true, "message": "请填写年龄" },
+            { "min": 18, "message": "对不起，仅支持 18 岁以上的成年人申请" }
+          ]
+        },
+        {
+          "id": "section-advanced",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 16,
+          "style": { "marginTop": "24px" },
+          "children": [
+            "title-advanced",
+            "department-cascader",
+            "role-select",
+            "skills-checkbox",
+            "entry-date",
+            "expected-salary-slider",
+            "self-eval-rate"
+          ]
+        },
+        {
+          "id": "title-advanced",
+          "component": "text",
+          "content": "二、详细档案 (选择与数值类)",
+          "style": { "fontSize": "18px", "fontWeight": "bold" }
+        },
+        {
+          "id": "department-cascader",
+          "component": "cascader",
+          "label": "归属部门层级",
+          "placeholder": "请选择所属大区及部门",
+          "value": { "path": "/advancedInfo/department" },
+          "options": [
+            {
+              "value": "cn-north",
+              "label": "华北区",
+              "children": [
+                { "value": "beijing-rd", "label": "北京研发中心" },
+                { "value": "beijing-sales", "label": "北京销售部" }
+              ]
+            },
+            {
+              "value": "cn-east",
+              "label": "华东区",
+              "children": [
+                { "value": "shanghai-ai", "label": "上海 AI 实验室" },
+                { "value": "hangzhou-ops", "label": "杭州运营中心" }
+              ]
+            }
+          ],
+          "rules": [
+            { "required": true, "message": "归属部门为必选项" }
+          ]
+        },
+        {
+          "id": "role-select",
+          "component": "select",
+          "label": "期望职级 (多选)",
+          "placeholder": "请选择至少一个职级",
+          "value": { "path": "/advancedInfo/roles" },
+          "options": [
+            { "label": "初级工程师 (P4)", "value": "P4" },
+            { "label": "中级工程师 (P5)", "value": "P5" },
+            { "label": "高级工程师 (P6)", "value": "P6" },
+            { "label": "技术专家 (P7)", "value": "P7" }
+          ],
+          "rules": [
+            { "required": true, "message": "必须选择期望职级" }
+          ]
+        },
+        {
+          "id": "skills-checkbox",
+          "component": "checkbox",
+          "label": "核心技术栈",
+          "value": { "path": "/advancedInfo/skills" },
+          "options": [
+            { "label": "React/Vue", "value": "frontend" },
+            { "label": "Node.js", "value": "backend" },
+            { "label": "Python/AI", "value": "ai" },
+            { "label": "Rust/Go", "value": "system" }
+          ],
+          "rules": [
+            { "required": true, "message": "请至少勾选一项核心技术栈" }
+          ]
+        },
+        {
+          "id": "entry-date",
+          "component": "datepicker",
+          "label": "期望入职日期",
+          "value": { "path": "/advancedInfo/entryDate" },
+          "rules": [
+            { "required": true, "message": "期望入职日期必填" }
+          ]
+        },
+        {
+          "id": "expected-salary-slider",
+          "component": "slider",
+          "label": "期望月薪 (K)",
+          "min": 10,
+          "max": 100,
+          "value": { "path": "/advancedInfo/salary" }
+        },
+        {
+          "id": "self-eval-rate",
+          "component": "rate",
+          "label": "抗压能力自评 (满分 5 星)",
+          "value": { "path": "/advancedInfo/pressureTolerance" },
+          "rules": [
+            { "required": true, "message": "请对您的抗压能力进行评估" }
+          ]
+        },
+        {
+          "id": "section-attachment",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 16,
+          "style": { "marginTop": "24px" },
+          "children": [
+            "title-attachment",
+            "resume-upload",
+            "remark-textarea"
+          ]
+        },
+        {
+          "id": "title-attachment",
+          "component": "text",
+          "content": "三、附件与备注",
+          "style": { "fontSize": "18px", "fontWeight": "bold" }
+        },
+        {
+          "id": "resume-upload",
+          "component": "upload",
+          "label": "个人简历上传 (仅限 PDF)",
+          "accept": "application/pdf",
+          "maxCount": 1,
+          "value": { "path": "/attachment/resume" },
+          "rules": [
+            { "required": true, "message": "必须上传个人简历" }
+          ]
+        },
+        {
+          "id": "remark-textarea",
+          "component": "textarea",
+          "label": "补充说明",
+          "placeholder": "请输入任何想补充的信息（最多 200 字）",
+          "value": { "path": "/attachment/remark" },
+          "rules": [
+            { "max": 200, "message": "补充说明内容不能超过 200 个字符" }
+          ]
+        },
+        {
+          "id": "section-agreement",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 16,
+          "style": { "marginTop": "24px", "padding": "16px", "backgroundColor": "#f6ffed", "borderRadius": "8px" },
+          "children": [
+            "agree-switch"
+          ]
+        },
+        {
+          "id": "agree-switch",
+          "component": "switch",
+          "checkedChildren": "我已认真阅读并同意《隐私保护协议》",
+          "unCheckedChildren": "请阅读并同意《隐私保护协议》",
+          "checked": { "path": "/agreement/isAgreed" },
+          "rules": [
+            { "required": true, "message": "对不起，您必须同意协议才能提交" },
+            { "enum": [true], "message": "您必须将开关切为开启状态" }
+          ]
+        },
+        {
+          "id": "action-box",
+          "component": "box",
+          "layout": "horizontal",
+          "spacing": 16,
+          "style": { "marginTop": "32px" },
+          "children": ["btn-submit", "btn-reset"]
+        },
+        {
+          "id": "btn-submit",
+          "component": "button",
+          "label": "🚀 提交审核",
+          "type": "primary",
+          "size": "large",
+          "style": { "width": "200px" },
+          "on_tap": [
+            {
+              "action": "message",
+              "payload": {
+                "type": "loading",
+                "content": "正在执行深度校验并提交..."
+              }
+            },
+            {
+              "action": "http_proxy",
+              "payload": {
+                "http_config": {
+                  "method": "POST",
+                  "path": "/post",
+                  "headers": { "Content-Type": "application/json" }
+                },
+                "http_body": {
+                  "basic": { "path": "/basicInfo" },
+                  "advanced": { "path": "/advancedInfo" },
+                  "attachments": { "path": "/attachment" },
+                  "signature": { "path": "/agreement" }
+                }
+              }
+            },
+            {
+              "action": "message",
+              "payload": {
+                "type": "success",
+                "content": "校验通过！数据已成功发送至服务器。"
+              }
+            }
+          ]
+        },
+        {
+          "id": "btn-reset",
+          "component": "button",
+          "label": "清空表单",
+          "size": "large",
+          "on_tap": [
+            {
+              "action": "update_data",
+              "path": "/basicInfo",
+              "value": { "username": "", "email": "", "phone": "", "age": null }
+            },
+            {
+              "action": "update_data",
+              "path": "/advancedInfo",
+              "value": { "department": [], "roles": [], "skills": [], "entryDate": null, "salary": 20, "pressureTolerance": 0 }
+            },
+            {
+              "action": "update_data",
+              "path": "/attachment",
+              "value": { "resume": [], "remark": "" }
+            },
+            {
+              "action": "update_data",
+              "path": "/agreement",
+              "value": { "isAgreed": false }
+            },
+            {
+              "action": "message",
+              "payload": {
+                "type": "info",
+                "content": "表单已重置"
+              }
+            }
+          ]
+        }
+      ],
+      "dataModel": {
+        "basicInfo": {
+          "username": "",
+          "email": "",
+          "phone": "",
+          "age": null
+        },
+        "advancedInfo": {
+          "department": [],
+          "roles": [],
+          "skills": [],
+          "entryDate": null,
+          "salary": 20,
+          "pressureTolerance": 0
+        },
+        "attachment": {
+          "resume": [],
+          "remark": ""
+        },
+        "agreement": {
+          "isAgreed": false
+        }
+      }
+    }
+  }
+]

@@ -1,0 +1,545 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "components": [
+        {
+          "id": "root",
+          "component": "box",
+          "style": { "padding": "24px", "maxWidth": "1200px", "margin": "0 auto" },
+          "children": ["page-title", "page-desc", "grid-section", "controls-section", "divider-condition", "condition-section"]
+        },
+
+        {
+          "id": "page-title",
+          "component": "typography",
+          "typographyType": "title",
+          "level": 2,
+          "content": "FAUI Animation Showcase"
+        },
+        {
+          "id": "page-desc",
+          "component": "typography",
+          "typographyType": "paragraph",
+          "content": "framer-motion powered animations with graceful degradation. Toggle each card to see enter/exit effects.",
+          "style": { "marginBottom": "24px", "color": "#666" }
+        },
+
+        {
+          "id": "grid-section",
+          "component": "box",
+          "children": ["row-1", "row-2", "row-3"]
+        },
+
+        {
+          "id": "row-1",
+          "component": "row",
+          "gutter": [16, 16],
+          "children": ["col-fade", "col-slideUp", "col-slideDown"]
+        },
+        {
+          "id": "row-2",
+          "component": "row",
+          "gutter": [16, 16],
+          "children": ["col-slideLeft", "col-slideRight", "col-zoom"]
+        },
+        {
+          "id": "row-3",
+          "component": "row",
+          "gutter": [16, 16],
+          "children": ["col-spring", "col-custom", "col-list"]
+        },
+
+        {
+          "id": "col-fade",
+          "component": "col",
+          "xs": 24,
+          "sm": 12,
+          "lg": 8,
+          "children": ["card-fade"]
+        },
+        {
+          "id": "col-slideUp",
+          "component": "col",
+          "xs": 24,
+          "sm": 12,
+          "lg": 8,
+          "children": ["card-slideUp"]
+        },
+        {
+          "id": "col-slideDown",
+          "component": "col",
+          "xs": 24,
+          "sm": 12,
+          "lg": 8,
+          "children": ["card-slideDown"]
+        },
+        {
+          "id": "col-slideLeft",
+          "component": "col",
+          "xs": 24,
+          "sm": 12,
+          "lg": 8,
+          "children": ["card-slideLeft"]
+        },
+        {
+          "id": "col-slideRight",
+          "component": "col",
+          "xs": 24,
+          "sm": 12,
+          "lg": 8,
+          "children": ["card-slideRight"]
+        },
+        {
+          "id": "col-zoom",
+          "component": "col",
+          "xs": 24,
+          "sm": 12,
+          "lg": 8,
+          "children": ["card-zoom"]
+        },
+        {
+          "id": "col-spring",
+          "component": "col",
+          "xs": 24,
+          "sm": 12,
+          "lg": 8,
+          "children": ["card-spring"]
+        },
+        {
+          "id": "col-custom",
+          "component": "col",
+          "xs": 24,
+          "sm": 12,
+          "lg": 8,
+          "children": ["card-custom"]
+        },
+        {
+          "id": "col-list",
+          "component": "col",
+          "xs": 24,
+          "sm": 12,
+          "lg": 8,
+          "children": ["card-list"]
+        },
+
+        {
+          "id": "card-fade",
+          "component": "card",
+          "title": "Fade",
+          "style": { "minHeight": "180px" },
+          "children": ["btn-fade", "demo-fade"]
+        },
+        {
+          "id": "btn-fade",
+          "component": "button",
+          "content": "${$root.show.fade ? 'Hide' : 'Show'}",
+          "buttonType": "primary",
+          "size": "small",
+          "style": { "marginBottom": "12px" },
+          "on_tap": [{ "action": "update_data", "path": "/show/fade", "value": "${!$root.show.fade}" }]
+        },
+        {
+          "id": "demo-fade",
+          "component": "box",
+          "visible": "${$root.show.fade}",
+          "animation": "fade",
+          "style": { "padding": "16px", "background": "#e6f4ff", "borderRadius": "8px", "textAlign": "center" },
+          "children": ["demo-fade-text"]
+        },
+        {
+          "id": "demo-fade-text",
+          "component": "text",
+          "content": "Fade in / out"
+        },
+
+        {
+          "id": "card-slideUp",
+          "component": "card",
+          "title": "Slide Up",
+          "style": { "minHeight": "180px" },
+          "children": ["btn-slideUp", "demo-slideUp"]
+        },
+        {
+          "id": "btn-slideUp",
+          "component": "button",
+          "content": "${$root.show.slideUp ? 'Hide' : 'Show'}",
+          "buttonType": "primary",
+          "size": "small",
+          "style": { "marginBottom": "12px" },
+          "on_tap": [{ "action": "update_data", "path": "/show/slideUp", "value": "${!$root.show.slideUp}" }]
+        },
+        {
+          "id": "demo-slideUp",
+          "component": "box",
+          "visible": "${$root.show.slideUp}",
+          "animation": "slideUp",
+          "style": { "padding": "16px", "background": "#f6ffed", "borderRadius": "8px", "textAlign": "center" },
+          "children": ["demo-slideUp-text"]
+        },
+        {
+          "id": "demo-slideUp-text",
+          "component": "text",
+          "content": "Slide up enter / exit"
+        },
+
+        {
+          "id": "card-slideDown",
+          "component": "card",
+          "title": "Slide Down",
+          "style": { "minHeight": "180px" },
+          "children": ["btn-slideDown", "demo-slideDown"]
+        },
+        {
+          "id": "btn-slideDown",
+          "component": "button",
+          "content": "${$root.show.slideDown ? 'Hide' : 'Show'}",
+          "buttonType": "primary",
+          "size": "small",
+          "style": { "marginBottom": "12px" },
+          "on_tap": [{ "action": "update_data", "path": "/show/slideDown", "value": "${!$root.show.slideDown}" }]
+        },
+        {
+          "id": "demo-slideDown",
+          "component": "box",
+          "visible": "${$root.show.slideDown}",
+          "animation": "slideDown",
+          "style": { "padding": "16px", "background": "#fff7e6", "borderRadius": "8px", "textAlign": "center" },
+          "children": ["demo-slideDown-text"]
+        },
+        {
+          "id": "demo-slideDown-text",
+          "component": "text",
+          "content": "Slide down enter / exit"
+        },
+
+        {
+          "id": "card-slideLeft",
+          "component": "card",
+          "title": "Slide Left",
+          "style": { "minHeight": "180px" },
+          "children": ["btn-slideLeft", "demo-slideLeft"]
+        },
+        {
+          "id": "btn-slideLeft",
+          "component": "button",
+          "content": "${$root.show.slideLeft ? 'Hide' : 'Show'}",
+          "buttonType": "primary",
+          "size": "small",
+          "style": { "marginBottom": "12px" },
+          "on_tap": [{ "action": "update_data", "path": "/show/slideLeft", "value": "${!$root.show.slideLeft}" }]
+        },
+        {
+          "id": "demo-slideLeft",
+          "component": "box",
+          "visible": "${$root.show.slideLeft}",
+          "animation": "slideLeft",
+          "style": { "padding": "16px", "background": "#f9f0ff", "borderRadius": "8px", "textAlign": "center" },
+          "children": ["demo-slideLeft-text"]
+        },
+        {
+          "id": "demo-slideLeft-text",
+          "component": "text",
+          "content": "Slide left enter / exit"
+        },
+
+        {
+          "id": "card-slideRight",
+          "component": "card",
+          "title": "Slide Right",
+          "style": { "minHeight": "180px" },
+          "children": ["btn-slideRight", "demo-slideRight"]
+        },
+        {
+          "id": "btn-slideRight",
+          "component": "button",
+          "content": "${$root.show.slideRight ? 'Hide' : 'Show'}",
+          "buttonType": "primary",
+          "size": "small",
+          "style": { "marginBottom": "12px" },
+          "on_tap": [{ "action": "update_data", "path": "/show/slideRight", "value": "${!$root.show.slideRight}" }]
+        },
+        {
+          "id": "demo-slideRight",
+          "component": "box",
+          "visible": "${$root.show.slideRight}",
+          "animation": "slideRight",
+          "style": { "padding": "16px", "background": "#fff0f6", "borderRadius": "8px", "textAlign": "center" },
+          "children": ["demo-slideRight-text"]
+        },
+        {
+          "id": "demo-slideRight-text",
+          "component": "text",
+          "content": "Slide right enter / exit"
+        },
+
+        {
+          "id": "card-zoom",
+          "component": "card",
+          "title": "Zoom",
+          "style": { "minHeight": "180px" },
+          "children": ["btn-zoom", "demo-zoom"]
+        },
+        {
+          "id": "btn-zoom",
+          "component": "button",
+          "content": "${$root.show.zoom ? 'Hide' : 'Show'}",
+          "buttonType": "primary",
+          "size": "small",
+          "style": { "marginBottom": "12px" },
+          "on_tap": [{ "action": "update_data", "path": "/show/zoom", "value": "${!$root.show.zoom}" }]
+        },
+        {
+          "id": "demo-zoom",
+          "component": "box",
+          "visible": "${$root.show.zoom}",
+          "animation": "zoom",
+          "style": { "padding": "16px", "background": "#e6fffb", "borderRadius": "8px", "textAlign": "center" },
+          "children": ["demo-zoom-text"]
+        },
+        {
+          "id": "demo-zoom-text",
+          "component": "text",
+          "content": "Zoom in / out"
+        },
+
+        {
+          "id": "card-spring",
+          "component": "card",
+          "title": "Spring Physics",
+          "style": { "minHeight": "180px" },
+          "children": ["btn-spring", "demo-spring"]
+        },
+        {
+          "id": "btn-spring",
+          "component": "button",
+          "content": "${$root.show.spring ? 'Hide' : 'Show'}",
+          "buttonType": "primary",
+          "size": "small",
+          "style": { "marginBottom": "12px" },
+          "on_tap": [{ "action": "update_data", "path": "/show/spring", "value": "${!$root.show.spring}" }]
+        },
+        {
+          "id": "demo-spring",
+          "component": "box",
+          "visible": "${$root.show.spring}",
+          "animation": {
+            "preset": "slideUp",
+            "spring": { "stiffness": 300, "damping": 15 }
+          },
+          "style": { "padding": "16px", "background": "#fcffe6", "borderRadius": "8px", "textAlign": "center" },
+          "children": ["demo-spring-text"]
+        },
+        {
+          "id": "demo-spring-text",
+          "component": "text",
+          "content": "Bouncy spring motion"
+        },
+
+        {
+          "id": "card-custom",
+          "component": "card",
+          "title": "Custom Props",
+          "style": { "minHeight": "180px" },
+          "children": ["btn-custom", "demo-custom"]
+        },
+        {
+          "id": "btn-custom",
+          "component": "button",
+          "content": "${$root.show.custom ? 'Hide' : 'Show'}",
+          "buttonType": "primary",
+          "size": "small",
+          "style": { "marginBottom": "12px" },
+          "on_tap": [{ "action": "update_data", "path": "/show/custom", "value": "${!$root.show.custom}" }]
+        },
+        {
+          "id": "demo-custom",
+          "component": "box",
+          "visible": "${$root.show.custom}",
+          "animation": {
+            "initial": { "opacity": 0, "scale": 0.6, "rotate": -15 },
+            "animate": { "opacity": 1, "scale": 1, "rotate": 0 },
+            "exit": { "opacity": 0, "scale": 0.3, "rotate": 15 },
+            "spring": { "stiffness": 200, "damping": 20 }
+          },
+          "style": { "padding": "16px", "background": "#fff1f0", "borderRadius": "8px", "textAlign": "center" },
+          "children": ["demo-custom-text"]
+        },
+        {
+          "id": "demo-custom-text",
+          "component": "text",
+          "content": "Scale + Rotate + Spring"
+        },
+
+        {
+          "id": "card-list",
+          "component": "card",
+          "title": "List Animation",
+          "style": { "minHeight": "180px" },
+          "children": ["list-controls", "list-repeater"]
+        },
+        {
+          "id": "list-controls",
+          "component": "flex",
+          "gap": 8,
+          "style": { "marginBottom": "12px" },
+          "children": ["btn-list-add", "btn-list-remove"]
+        },
+        {
+          "id": "btn-list-add",
+          "component": "button",
+          "content": "+ Add",
+          "buttonType": "primary",
+          "size": "small",
+          "on_tap": [{
+            "action": "update_data",
+            "path": "/listItems",
+            "value": "${[...$root.listItems, { id: 'item-' + ($root.listItems.length + 1), name: 'Item ' + ($root.listItems.length + 1), color: ['blue','green','red','orange','purple'][$root.listItems.length % 5] }]}"
+          }]
+        },
+        {
+          "id": "btn-list-remove",
+          "component": "button",
+          "content": "- Remove",
+          "size": "small",
+          "on_tap": [{
+            "action": "update_data",
+            "path": "/listItems",
+            "value": "${$root.listItems.slice(0, -1)}"
+          }]
+        },
+        {
+          "id": "list-repeater",
+          "component": "repeater",
+          "data": { "path": "/listItems" },
+          "keyField": "id",
+          "direction": "vertical",
+          "gap": 6,
+          "animation": "fade",
+          "emptyContent": "Empty list - click Add",
+          "children": ["list-item-tag"]
+        },
+        {
+          "id": "list-item-tag",
+          "component": "tag",
+          "color": "${$current.color}",
+          "content": "${$current.name}"
+        },
+
+        {
+          "id": "controls-section",
+          "component": "flex",
+          "gap": 12,
+          "style": { "margin": "24px 0" },
+          "children": ["btn-show-all", "btn-hide-all"]
+        },
+        {
+          "id": "btn-show-all",
+          "component": "button",
+          "content": "Show All",
+          "buttonType": "primary",
+          "on_tap": [
+            { "action": "update_data", "path": "/show/fade", "value": true },
+            { "action": "update_data", "path": "/show/slideUp", "value": true },
+            { "action": "update_data", "path": "/show/slideDown", "value": true },
+            { "action": "update_data", "path": "/show/slideLeft", "value": true },
+            { "action": "update_data", "path": "/show/slideRight", "value": true },
+            { "action": "update_data", "path": "/show/zoom", "value": true },
+            { "action": "update_data", "path": "/show/spring", "value": true },
+            { "action": "update_data", "path": "/show/custom", "value": true }
+          ]
+        },
+        {
+          "id": "btn-hide-all",
+          "component": "button",
+          "content": "Hide All",
+          "on_tap": [
+            { "action": "update_data", "path": "/show/fade", "value": false },
+            { "action": "update_data", "path": "/show/slideUp", "value": false },
+            { "action": "update_data", "path": "/show/slideDown", "value": false },
+            { "action": "update_data", "path": "/show/slideLeft", "value": false },
+            { "action": "update_data", "path": "/show/slideRight", "value": false },
+            { "action": "update_data", "path": "/show/zoom", "value": false },
+            { "action": "update_data", "path": "/show/spring", "value": false },
+            { "action": "update_data", "path": "/show/custom", "value": false }
+          ]
+        },
+
+        {
+          "id": "divider-condition",
+          "component": "divider",
+          "content": "Condition Branch Animation"
+        },
+
+        {
+          "id": "condition-section",
+          "component": "box",
+          "children": ["condition-radio", "condition-switcher"]
+        },
+        {
+          "id": "condition-radio",
+          "component": "radio",
+          "value": { "path": "/conditionMode" },
+          "optionType": "button",
+          "options": [
+            { "label": "View A", "value": "A" },
+            { "label": "View B", "value": "B" },
+            { "label": "View C", "value": "C" }
+          ],
+          "style": { "marginBottom": "16px" },
+          "on_change": { "action": "update_data", "path": "/conditionMode" }
+        },
+        {
+          "id": "condition-switcher",
+          "component": "condition",
+          "match": "${$root.conditionMode}",
+          "animation": "fade",
+          "cases": {
+            "A": ["branch-a"],
+            "B": ["branch-b"],
+            "C": ["branch-c"]
+          }
+        },
+        {
+          "id": "branch-a",
+          "component": "alert",
+          "alertType": "info",
+          "title": "View A - Information",
+          "content": "This is the first branch. Switch to B or C to see the animated transition between condition branches."
+        },
+        {
+          "id": "branch-b",
+          "component": "alert",
+          "alertType": "success",
+          "title": "View B - Success",
+          "content": "You switched to branch B! The old branch fades out before this one fades in (mode: wait)."
+        },
+        {
+          "id": "branch-c",
+          "component": "alert",
+          "alertType": "warning",
+          "title": "View C - Warning",
+          "content": "Branch C is here. All transitions are smooth thanks to framer-motion's AnimatePresence."
+        }
+      ],
+      "dataModel": {
+        "show": {
+          "fade": true,
+          "slideUp": true,
+          "slideDown": true,
+          "slideLeft": true,
+          "slideRight": true,
+          "zoom": true,
+          "spring": true,
+          "custom": true
+        },
+        "conditionMode": "A",
+        "listItems": [
+          { "id": "item-1", "name": "React", "color": "blue" },
+          { "id": "item-2", "name": "Vue", "color": "green" },
+          { "id": "item-3", "name": "Angular", "color": "red" }
+        ]
+      }
+    }
+  }
+]

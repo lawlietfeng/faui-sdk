@@ -1,0 +1,245 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "components": [
+        {
+          "id": "root",
+          "component": "layout",
+          "style": {
+            "minHeight": "100vh"
+          },
+          "children": [
+            "sider-layout",
+            "main-layout"
+          ]
+        },
+        {
+          "id": "sider-layout",
+          "component": "sider",
+          "theme": "dark",
+          "collapsible": true,
+          "style": {
+            "overflow": "auto",
+            "height": "100vh",
+            "position": "fixed",
+            "left": 0,
+            "top": 0,
+            "bottom": 0
+          },
+          "children": [
+            "logo-box",
+            "main-menu"
+          ]
+        },
+        {
+          "id": "logo-box",
+          "component": "box",
+          "layout": "horizontal",
+          "align": "center",
+          "justify": "center",
+          "style": {
+            "height": "32px",
+            "margin": "16px",
+            "background": "rgba(255, 255, 255, 0.2)",
+            "borderRadius": "6px",
+            "color": "#fff",
+            "fontWeight": "bold",
+            "fontSize": "16px"
+          },
+          "children": [
+            "logo-text"
+          ]
+        },
+        {
+          "id": "logo-text",
+          "component": "text",
+          "content": "FAUI Admin"
+        },
+        {
+          "id": "main-menu",
+          "component": "menu",
+          "theme": "dark",
+          "mode": "inline",
+          "selectedKeys": {
+            "path": "/currentMenu"
+          },
+          "items": [
+            { "key": "dashboard", "label": "仪表盘", "icon": "DashboardOutlined" },
+            { "key": "users", "label": "用户管理", "icon": "UserOutlined" },
+            { "key": "settings", "label": "系统设置", "icon": "SettingOutlined" }
+          ]
+        },
+        {
+          "id": "main-layout",
+          "component": "layout",
+          "style": {
+            "marginLeft": "200px"
+          },
+          "children": [
+            "header-layout",
+            "content-layout",
+            "footer-layout"
+          ]
+        },
+        {
+          "id": "header-layout",
+          "component": "header",
+          "style": {
+            "padding": "0 24px",
+            "background": "#fff",
+            "display": "flex",
+            "alignItems": "center",
+            "justifyContent": "flex-end",
+            "boxShadow": "0 1px 4px rgba(0,21,41,0.08)",
+            "zIndex": 1
+          },
+          "children": [
+            "user-info"
+          ]
+        },
+        {
+          "id": "user-info",
+          "component": "box",
+          "layout": "horizontal",
+          "align": "center",
+          "spacing": 8,
+          "children": [
+            "user-avatar",
+            "user-name"
+          ]
+        },
+        {
+          "id": "user-avatar",
+          "component": "avatar",
+          "src": "https://api.dicebear.com/7.x/miniavs/svg?seed=8"
+        },
+        {
+          "id": "user-name",
+          "component": "text",
+          "content": "Admin"
+        },
+        {
+          "id": "content-layout",
+          "component": "content",
+          "style": {
+            "margin": "24px 16px 0",
+            "overflow": "initial"
+          },
+          "children": [
+            "dashboard-content"
+          ]
+        },
+        {
+          "id": "dashboard-content",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 16,
+          "children": [
+            "stat-cards",
+            "main-table-card"
+          ]
+        },
+        {
+          "id": "stat-cards",
+          "component": "box",
+          "layout": "horizontal",
+          "spacing": 16,
+          "children": [
+            "stat-card-1",
+            "stat-card-2",
+            "stat-card-3"
+          ]
+        },
+        {
+          "id": "stat-card-1",
+          "component": "card",
+          "style": { "flex": 1 },
+          "children": [
+            "stat-1"
+          ]
+        },
+        {
+          "id": "stat-1",
+          "component": "statistic",
+          "title": "今日访问量",
+          "value": 112893
+        },
+        {
+          "id": "stat-card-2",
+          "component": "card",
+          "style": { "flex": 1 },
+          "children": [
+            "stat-2"
+          ]
+        },
+        {
+          "id": "stat-2",
+          "component": "statistic",
+          "title": "新增用户",
+          "value": 2893
+        },
+        {
+          "id": "stat-card-3",
+          "component": "card",
+          "style": { "flex": 1 },
+          "children": [
+            "stat-3"
+          ]
+        },
+        {
+          "id": "stat-3",
+          "component": "statistic",
+          "title": "活跃比例",
+          "value": 9.3,
+          "suffix": "%"
+        },
+        {
+          "id": "main-table-card",
+          "component": "card",
+          "title": "近期活跃用户",
+          "children": [
+            "users-table"
+          ]
+        },
+        {
+          "id": "users-table",
+          "component": "table",
+          "rowKey": "name",
+          "data": {
+            "path": "/users"
+          },
+          "columns": [
+            { "title": "姓名", "dataIndex": "name", "key": "name" },
+            { "title": "角色", "dataIndex": "role", "key": "role" },
+            { "title": "状态", "dataIndex": "status", "key": "status" }
+          ]
+        },
+        {
+          "id": "footer-layout",
+          "component": "footer",
+          "style": {
+            "textAlign": "center",
+            "color": "#888"
+          },
+          "children": [
+            "footer-text"
+          ]
+        },
+        {
+          "id": "footer-text",
+          "component": "text",
+          "content": "FAUI Admin ©2026 Created by FAUI Engine"
+        }
+      ],
+      "dataModel": {
+        "currentMenu": ["dashboard"],
+        "users": [
+          { "key": "1", "name": "张三", "role": "管理员", "status": "正常" },
+          { "key": "2", "name": "李四", "role": "普通用户", "status": "正常" },
+          { "key": "3", "name": "王五", "role": "运营", "status": "禁用" }
+        ]
+      }
+    }
+  }
+]

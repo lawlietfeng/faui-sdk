@@ -1,0 +1,561 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "components": [
+        {
+          "id": "root",
+          "component": "form",
+          "layout": "vertical",
+          "padding": 24,
+          "spacing": 20,
+          "submitButtonId": "btn-submit-all",
+          "children": [
+            "form-header",
+            "section-basic",
+            "section-advanced",
+            "section-upload",
+            "form-footer"
+          ]
+        },
+        {
+          "id": "form-header",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "children": [
+            "main-title",
+            "sub-title"
+          ]
+        },
+        {
+          "id": "main-title",
+          "component": "text",
+          "content": "员工入职全息档案",
+          "style": {
+            "fontSize": "24px",
+            "fontWeight": "bold"
+          }
+        },
+        {
+          "id": "sub-title",
+          "component": "text",
+          "content": "请完整填写以下信息，该表单演示了FAUI全部17种输入组件及Zero on_change特性",
+          "style": {
+            "color": "#666"
+          }
+        },
+        {
+          "id": "section-basic",
+          "component": "card",
+          "title": "基础信息 (基础文本/选择)",
+          "children": [
+            "basic-grid"
+          ]
+        },
+        {
+          "id": "basic-grid",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 16,
+          "children": [
+            "row-1",
+            "row-2",
+            "row-3"
+          ]
+        },
+        {
+          "id": "row-1",
+          "component": "box",
+          "layout": "horizontal",
+          "spacing": 24,
+          "children": [
+            "field-name",
+            "field-gender"
+          ]
+        },
+        {
+          "id": "field-name",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "flex": 1 },
+          "children": [
+            "label-name",
+            "input-name"
+          ]
+        },
+        {
+          "id": "label-name",
+          "component": "text",
+          "content": "姓名 (Input)"
+        },
+        {
+          "id": "input-name",
+          "component": "input",
+          "placeholder": "请输入姓名",
+          "value": { "path": "/basic/name" },
+          "rules": [{ "required": true, "message": "姓名必填" }]
+        },
+        {
+          "id": "field-gender",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "flex": 1 },
+          "children": [
+            "label-gender",
+            "input-gender"
+          ]
+        },
+        {
+          "id": "label-gender",
+          "component": "text",
+          "content": "性别 (Radio)"
+        },
+        {
+          "id": "input-gender",
+          "component": "radio",
+          "value": { "path": "/basic/gender" },
+          "options": [
+            { "label": "男", "value": "male" },
+            { "label": "女", "value": "female" }
+          ]
+        },
+        {
+          "id": "row-2",
+          "component": "box",
+          "layout": "horizontal",
+          "spacing": 24,
+          "children": [
+            "field-age",
+            "field-birth"
+          ]
+        },
+        {
+          "id": "field-age",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "flex": 1 },
+          "children": [
+            "label-age",
+            "input-age"
+          ]
+        },
+        {
+          "id": "label-age",
+          "component": "text",
+          "content": "年龄 (InputNumber)"
+        },
+        {
+          "id": "input-age",
+          "component": "inputnumber",
+          "min": 18,
+          "max": 65,
+          "value": { "path": "/basic/age" }
+        },
+        {
+          "id": "field-birth",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "flex": 1 },
+          "children": [
+            "label-birth",
+            "input-birth"
+          ]
+        },
+        {
+          "id": "label-birth",
+          "component": "text",
+          "content": "出生日期 (DatePicker)"
+        },
+        {
+          "id": "input-birth",
+          "component": "datepicker",
+          "value": { "path": "/basic/birth" }
+        },
+        {
+          "id": "row-3",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "children": [
+            "label-bio",
+            "input-bio"
+          ]
+        },
+        {
+          "id": "label-bio",
+          "component": "text",
+          "content": "个人简介 (Textarea)"
+        },
+        {
+          "id": "input-bio",
+          "component": "textarea",
+          "value": { "path": "/basic/bio" }
+        },
+        {
+          "id": "section-advanced",
+          "component": "card",
+          "title": "高级与联动配置",
+          "children": [
+            "adv-grid"
+          ]
+        },
+        {
+          "id": "adv-grid",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 16,
+          "children": [
+            "adv-row-1",
+            "adv-row-2",
+            "adv-row-3",
+            "adv-row-4"
+          ]
+        },
+        {
+          "id": "adv-row-1",
+          "component": "box",
+          "layout": "horizontal",
+          "spacing": 24,
+          "children": [
+            "field-dept",
+            "field-skills"
+          ]
+        },
+        {
+          "id": "field-dept",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "flex": 1 },
+          "children": [
+            "label-dept",
+            "input-dept"
+          ]
+        },
+        {
+          "id": "label-dept",
+          "component": "text",
+          "content": "所属部门 (Cascader)"
+        },
+        {
+          "id": "input-dept",
+          "component": "cascader",
+          "value": { "path": "/adv/dept" },
+          "options": [
+            {
+              "value": "tech",
+              "label": "技术中心",
+              "children": [
+                { "value": "frontend", "label": "前端组" },
+                { "value": "backend", "label": "后端组" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "field-skills",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "flex": 1 },
+          "children": [
+            "label-skills",
+            "input-skills"
+          ]
+        },
+        {
+          "id": "label-skills",
+          "component": "text",
+          "content": "技术栈 (Select 多选)"
+        },
+        {
+          "id": "input-skills",
+          "component": "select",
+          "mode": "multiple",
+          "value": { "path": "/adv/skills" },
+          "options": [
+            { "label": "React", "value": "react" },
+            { "label": "Vue", "value": "vue" },
+            { "label": "Node", "value": "node" }
+          ]
+        },
+        {
+          "id": "adv-row-2",
+          "component": "box",
+          "layout": "horizontal",
+          "spacing": 24,
+          "children": [
+            "field-level",
+            "field-salary"
+          ]
+        },
+        {
+          "id": "field-level",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "flex": 1 },
+          "children": [
+            "label-level",
+            "input-level"
+          ]
+        },
+        {
+          "id": "label-level",
+          "component": "text",
+          "content": "定级 (Rate)"
+        },
+        {
+          "id": "input-level",
+          "component": "rate",
+          "value": { "path": "/adv/level" }
+        },
+        {
+          "id": "field-salary",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "flex": 1 },
+          "children": [
+            "label-salary",
+            "input-salary"
+          ]
+        },
+        {
+          "id": "label-salary",
+          "component": "text",
+          "content": "薪资期望 (Slider)"
+        },
+        {
+          "id": "input-salary",
+          "component": "slider",
+          "min": 10,
+          "max": 50,
+          "value": { "path": "/adv/salary" }
+        },
+        {
+          "id": "adv-row-3",
+          "component": "box",
+          "layout": "horizontal",
+          "spacing": 24,
+          "children": [
+            "field-color",
+            "field-switch"
+          ]
+        },
+        {
+          "id": "field-color",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "flex": 1 },
+          "children": [
+            "label-color",
+            "input-color"
+          ]
+        },
+        {
+          "id": "label-color",
+          "component": "text",
+          "content": "工牌颜色 (ColorPicker)"
+        },
+        {
+          "id": "input-color",
+          "component": "colorpicker",
+          "value": { "path": "/adv/color" }
+        },
+        {
+          "id": "field-switch",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "flex": 1 },
+          "children": [
+            "label-switch",
+            "input-switch"
+          ]
+        },
+        {
+          "id": "label-switch",
+          "component": "text",
+          "content": "是否需异地办公 (Switch)"
+        },
+        {
+          "id": "input-switch",
+          "component": "switch",
+          "checked": { "path": "/adv/needRemote" }
+        },
+        {
+          "id": "adv-row-4",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": {
+            "display": "${$root.adv.needRemote ? 'flex' : 'none'}"
+          },
+          "children": [
+            "label-remote-city",
+            "input-remote-city"
+          ]
+        },
+        {
+          "id": "label-remote-city",
+          "component": "text",
+          "content": "异地城市 (智能联动显示)"
+        },
+        {
+          "id": "input-remote-city",
+          "component": "input",
+          "placeholder": "请输入驻场城市",
+          "value": { "path": "/adv/remoteCity" }
+        },
+        {
+          "id": "section-upload",
+          "component": "card",
+          "title": "附件与其他",
+          "children": [
+            "up-grid"
+          ]
+        },
+        {
+          "id": "up-grid",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 16,
+          "children": [
+            "up-row-1",
+            "up-row-2"
+          ]
+        },
+        {
+          "id": "up-row-1",
+          "component": "box",
+          "layout": "horizontal",
+          "spacing": 24,
+          "children": [
+            "field-upload",
+            "field-mentions"
+          ]
+        },
+        {
+          "id": "field-upload",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "flex": 1 },
+          "children": [
+            "label-upload",
+            "input-upload"
+          ]
+        },
+        {
+          "id": "label-upload",
+          "component": "text",
+          "content": "简历附件 (Upload)"
+        },
+        {
+          "id": "input-upload",
+          "component": "upload",
+          "value": { "path": "/others/resume" }
+        },
+        {
+          "id": "field-mentions",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "flex": 1 },
+          "children": [
+            "label-mentions",
+            "input-mentions"
+          ]
+        },
+        {
+          "id": "label-mentions",
+          "component": "text",
+          "content": "内推人 (@Mentions)"
+        },
+        {
+          "id": "input-mentions",
+          "component": "mentions",
+          "options": [
+            { "label": "afc163", "value": "afc163" },
+            { "label": "zombieJ", "value": "zombieJ" }
+          ],
+          "value": { "path": "/others/referrer" }
+        },
+        {
+          "id": "up-row-2",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "children": [
+            "input-agreement"
+          ]
+        },
+        {
+          "id": "input-agreement",
+          "component": "checkbox",
+          "label": "我已阅读并同意《入职信息真实性承诺书》(Checkbox)",
+          "checked": { "path": "/others/agree" },
+          "rules": [{ "required": true, "message": "必须同意协议" }]
+        },
+        {
+          "id": "form-footer",
+          "component": "box",
+          "layout": "horizontal",
+          "justify": "center",
+          "style": { "marginTop": "24px" },
+          "children": [
+            "btn-submit-all"
+          ]
+        },
+        {
+          "id": "btn-submit-all",
+          "component": "button",
+          "label": "确认提交档案",
+          "type": "primary",
+          "style": {
+            "width": "200px"
+          },
+          "on_tap": [
+            {
+              "action": "message",
+              "payload": {
+                "type": "success",
+                "content": "表单校验通过，数据已准备提交！"
+              }
+            }
+          ]
+        }
+      ],
+      "dataModel": {
+        "basic": {
+          "name": "",
+          "gender": "male",
+          "age": 25,
+          "birth": "",
+          "bio": ""
+        },
+        "adv": {
+          "dept": [],
+          "skills": [],
+          "level": 3,
+          "salary": 20,
+          "color": "#1890ff",
+          "needRemote": false,
+          "remoteCity": ""
+        },
+        "others": {
+          "resume": [],
+          "referrer": "",
+          "agree": false
+        }
+      }
+    }
+  }
+]

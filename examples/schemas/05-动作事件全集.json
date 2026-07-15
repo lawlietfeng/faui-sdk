@@ -1,0 +1,269 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "dataModel": {
+        "counter": 0,
+        "status": "idle",
+        "user": {
+          "name": "FAUI 开发者",
+          "id": "U1001"
+        },
+        "requestPayload": {
+          "title": "Action 全量演示",
+          "operator": "demo-user"
+        },
+        "lastAction": "none"
+      },
+      "components": [
+        {
+          "id": "root",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 10,
+          "padding": 16,
+          "children": [
+            "page_title",
+            "page_desc",
+            "runtime_state",
+            "section_builtin_title",
+            "btn_update_data",
+            "btn_http_proxy",
+            "btn_message",
+            "btn_notification",
+            "section_extended_title",
+            "extended_desc",
+            "btn_copy",
+            "btn_mcp_tool_call",
+            "btn_send_prompt",
+            "btn_input_prompt",
+            "footer_note"
+          ]
+        },
+        {
+          "id": "page_title",
+          "component": "text",
+          "content": "Action 全量汇总演示",
+          "style": {
+            "fontSize": "20px",
+            "fontWeight": "700"
+          }
+        },
+        {
+          "id": "page_desc",
+          "component": "text",
+          "content": "本示例覆盖 ActionType 中全部动作：内置动作可直接执行；扩展动作需要宿主 onAction 或 ActionRegistry 注册执行器。"
+        },
+        {
+          "id": "runtime_state",
+          "component": "text",
+          "content": "运行态：counter=${$root.counter}，status=${$root.status}，lastAction=${$root.lastAction}"
+        },
+        {
+          "id": "section_builtin_title",
+          "component": "text",
+          "content": "一、内置动作（可直接执行）",
+          "style": {
+            "fontWeight": "600",
+            "marginTop": "8px"
+          }
+        },
+        {
+          "id": "btn_update_data",
+          "component": "button",
+          "type": "primary",
+          "content": "update_data：更新状态",
+          "on_tap": [
+            {
+              "action": "update_data",
+              "path": "/counter",
+              "value": "${$root.counter + 1}"
+            },
+            {
+              "action": "update_data",
+              "path": "/status",
+              "value": "updated"
+            },
+            {
+              "action": "update_data",
+              "path": "/lastAction",
+              "value": "update_data"
+            }
+          ]
+        },
+        {
+          "id": "btn_http_proxy",
+          "component": "button",
+          "content": "http_proxy：发起请求",
+          "on_tap": [
+            {
+              "action": "http_proxy",
+              "payload": {
+                "http_config": {
+                  "method": "POST",
+                  "path": "/api/action-demo/submit",
+                  "headers": {
+                    "Content-Type": "application/json"
+                  }
+                },
+                "http_body": {
+                  "userId": "${$root.user.id}",
+                  "counter": "${$root.counter}",
+                  "payload": {
+                    "path": "/requestPayload"
+                  }
+                }
+              }
+            },
+            {
+              "action": "update_data",
+              "path": "/lastAction",
+              "value": "http_proxy"
+            }
+          ]
+        },
+        {
+          "id": "btn_message",
+          "component": "button",
+          "content": "message：轻提示",
+          "on_tap": [
+            {
+              "action": "message",
+              "payload": {
+                "type": "success",
+                "content": "你好 ${$root.user.name}，当前计数 ${$root.counter}",
+                "duration": 2,
+                "key": "action-all-message"
+              }
+            },
+            {
+              "action": "update_data",
+              "path": "/lastAction",
+              "value": "message"
+            }
+          ]
+        },
+        {
+          "id": "btn_notification",
+          "component": "button",
+          "content": "notification：通知提示",
+          "on_tap": [
+            {
+              "action": "notification",
+              "payload": {
+                "type": "info",
+                "message": "Action Demo 通知",
+                "description": "用户 ${$root.user.name} 的当前状态为 ${$root.status}",
+                "placement": "topRight",
+                "duration": 3
+              }
+            },
+            {
+              "action": "update_data",
+              "path": "/lastAction",
+              "value": "notification"
+            }
+          ]
+        },
+        {
+          "id": "section_extended_title",
+          "component": "text",
+          "content": "二、扩展动作（需宿主接管执行）",
+          "style": {
+            "fontWeight": "600",
+            "marginTop": "8px"
+          }
+        },
+        {
+          "id": "extended_desc",
+          "component": "text",
+          "content": "以下 4 个 action 会按配置触发，但默认内核不内置执行器。建议在 Renderer.onAction 中处理。"
+        },
+        {
+          "id": "btn_copy",
+          "component": "button",
+          "content": "copy：复制文本",
+          "on_tap": [
+            {
+              "action": "copy",
+              "payload": {
+                "text": "COPY-${$root.user.id}-${$root.counter}"
+              }
+            },
+            {
+              "action": "update_data",
+              "path": "/lastAction",
+              "value": "copy"
+            }
+          ]
+        },
+        {
+          "id": "btn_mcp_tool_call",
+          "component": "button",
+          "content": "mcp_tool_call：调用 MCP 工具",
+          "on_tap": [
+            {
+              "action": "mcp_tool_call",
+              "payload": {
+                "tool": "search",
+                "arguments": {
+                  "query": "用户 ${$root.user.name} 的待办"
+                }
+              }
+            },
+            {
+              "action": "update_data",
+              "path": "/lastAction",
+              "value": "mcp_tool_call"
+            }
+          ]
+        },
+        {
+          "id": "btn_send_prompt",
+          "component": "button",
+          "content": "send_prompt：发送提示词",
+          "on_tap": [
+            {
+              "action": "send_prompt",
+              "payload": {
+                "prompt": "请总结当前状态：counter=${$root.counter}, status=${$root.status}",
+                "channel": "assistant"
+              }
+            },
+            {
+              "action": "update_data",
+              "path": "/lastAction",
+              "value": "send_prompt"
+            }
+          ]
+        },
+        {
+          "id": "btn_input_prompt",
+          "component": "button",
+          "content": "input_prompt：弹出输入",
+          "on_tap": [
+            {
+              "action": "input_prompt",
+              "payload": {
+                "title": "请输入备注",
+                "placeholder": "例如：已完成审批",
+                "defaultValue": "由 Action Demo 自动填充",
+                "resultPath": "/remark"
+              }
+            },
+            {
+              "action": "update_data",
+              "path": "/lastAction",
+              "value": "input_prompt"
+            }
+          ]
+        },
+        {
+          "id": "footer_note",
+          "component": "text",
+          "content": "提示：扩展动作默认会在控制台出现 Unknown action type 警告，属于预期行为。接入宿主执行器后即可生效。"
+        }
+      ]
+    }
+  }
+]

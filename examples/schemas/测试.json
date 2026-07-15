@@ -1,0 +1,992 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "components": [
+        {
+          "id": "root",
+          "component": "box",
+          "layout": "vertical",
+          "children": [
+            "hero-section",
+            "features-section",
+            "stats-section",
+            "cta-section"
+          ],
+          "style": {
+            "minHeight": "100vh",
+            "background": "linear-gradient(180deg, #f7fbf9 0%, #eef7f4 45%, #f9fcfb 100%)",
+            "padding": "0"
+          }
+        },
+        {
+          "id": "hero-section",
+          "component": "box",
+          "layout": "vertical",
+          "children": [
+            "hero-nav",
+            "hero-content"
+          ],
+          "style": {
+            "padding": "24px 20px 72px 20px",
+            "background": "radial-gradient(circle at top right, rgba(21,131,111,0.16) 0%, rgba(21,131,111,0.04) 28%, transparent 52%), linear-gradient(135deg, #f8fcfa 0%, #edf7f3 100%)"
+          }
+        },
+        {
+          "id": "hero-nav",
+          "component": "box",
+          "layout": "horizontal",
+          "children": [
+            "brand-text",
+            "nav-actions"
+          ],
+          "style": {
+            "display": "flex",
+            "justifyContent": "space-between",
+            "alignItems": "center",
+            "maxWidth": "1200px",
+            "width": "100%",
+            "margin": "0 auto 56px auto"
+          }
+        },
+        {
+          "id": "brand-text",
+          "component": "text",
+          "content": "AURELIA",
+          "style": {
+            "fontSize": "28px",
+            "fontWeight": "700",
+            "letterSpacing": "0.18em",
+            "color": "#123C35"
+          }
+        },
+        {
+          "id": "nav-actions",
+          "component": "box",
+          "layout": "horizontal",
+          "children": [
+            "nav-login-btn",
+            "nav-start-btn"
+          ],
+          "style": {
+            "display": "flex",
+            "gap": "12px",
+            "flexWrap": "wrap",
+            "justifyContent": "flex-end"
+          }
+        },
+        {
+          "id": "nav-login-btn",
+          "component": "button",
+          "label": "Sign In",
+          "style": {
+            "height": "44px",
+            "padding": "0 20px",
+            "borderRadius": "999px",
+            "border": "1px solid rgba(18,60,53,0.12)",
+            "background": "rgba(255,255,255,0.72)",
+            "color": "#123C35",
+            "fontWeight": "600",
+            "boxShadow": "0 8px 24px rgba(18,60,53,0.06)"
+          }
+        },
+        {
+          "id": "nav-start-btn",
+          "component": "button",
+          "label": "Get Started",
+          "style": {
+            "height": "44px",
+            "padding": "0 22px",
+            "borderRadius": "999px",
+            "background": "#15836F",
+            "color": "#ffffff",
+            "fontWeight": "600",
+            "border": "none",
+            "boxShadow": "0 14px 28px rgba(21,131,111,0.22)"
+          }
+        },
+        {
+          "id": "hero-content",
+          "component": "box",
+          "layout": "horizontal",
+          "children": [
+            "hero-left",
+            "hero-right"
+          ],
+          "style": {
+            "display": "flex",
+            "flexWrap": "wrap",
+            "gap": "32px",
+            "alignItems": "center",
+            "justifyContent": "space-between",
+            "maxWidth": "1200px",
+            "width": "100%",
+            "margin": "0 auto"
+          }
+        },
+        {
+          "id": "hero-left",
+          "component": "box",
+          "layout": "vertical",
+          "children": [
+            "hero-badge",
+            "hero-title",
+            "hero-desc",
+            "hero-actions",
+            "hero-note"
+          ],
+          "style": {
+            "flex": "1",
+            "minWidth": "280px",
+            "maxWidth": "620px",
+            "gap": "18px"
+          }
+        },
+        {
+          "id": "hero-badge",
+          "component": "text",
+          "content": "PREMIUM GREEN EXPERIENCE",
+          "style": {
+            "display": "inline-block",
+            "width": "fit-content",
+            "padding": "8px 14px",
+            "borderRadius": "999px",
+            "background": "rgba(21,131,111,0.10)",
+            "color": "#15836F",
+            "fontSize": "12px",
+            "fontWeight": "700",
+            "letterSpacing": "0.14em"
+          }
+        },
+        {
+          "id": "hero-title",
+          "component": "text",
+          "content": "Build a refined brand presence with calm confidence.",
+          "style": {
+            "fontSize": "56px",
+            "lineHeight": "1.08",
+            "fontWeight": "700",
+            "color": "#102A25",
+            "marginTop": "8px"
+          }
+        },
+        {
+          "id": "hero-desc",
+          "component": "text",
+          "content": "A luxury-inspired landing page system crafted around deep botanical elegance, clean spacing, and modern credibility. Designed to feel premium across desktop, tablet, and mobile.",
+          "style": {
+            "fontSize": "18px",
+            "lineHeight": "1.8",
+            "color": "#4D6862",
+            "maxWidth": "560px"
+          }
+        },
+        {
+          "id": "hero-actions",
+          "component": "box",
+          "layout": "horizontal",
+          "children": [
+            "hero-primary-btn",
+            "hero-secondary-btn"
+          ],
+          "style": {
+            "display": "flex",
+            "flexWrap": "wrap",
+            "gap": "14px",
+            "marginTop": "8px"
+          }
+        },
+        {
+          "id": "hero-primary-btn",
+          "component": "button",
+          "label": "Book a Demo",
+          "style": {
+            "height": "52px",
+            "padding": "0 28px",
+            "borderRadius": "999px",
+            "background": "#15836F",
+            "color": "#ffffff",
+            "fontWeight": "700",
+            "fontSize": "16px",
+            "border": "none",
+            "boxShadow": "0 16px 36px rgba(21,131,111,0.26)"
+          }
+        },
+        {
+          "id": "hero-secondary-btn",
+          "component": "button",
+          "label": "View Capability",
+          "style": {
+            "height": "52px",
+            "padding": "0 28px",
+            "borderRadius": "999px",
+            "background": "rgba(255,255,255,0.78)",
+            "color": "#123C35",
+            "fontWeight": "700",
+            "fontSize": "16px",
+            "border": "1px solid rgba(18,60,53,0.12)"
+          }
+        },
+        {
+          "id": "hero-note",
+          "component": "text",
+          "content": "Trusted by modern teams that want sophistication without visual noise.",
+          "style": {
+            "fontSize": "14px",
+            "color": "#6B827D"
+          }
+        },
+        {
+          "id": "hero-right",
+          "component": "box",
+          "layout": "vertical",
+          "children": [
+            "hero-card",
+            "floating-metric"
+          ],
+          "style": {
+            "flex": "1",
+            "minWidth": "280px",
+            "maxWidth": "500px",
+            "position": "relative"
+          }
+        },
+        {
+          "id": "hero-card",
+          "component": "box",
+          "layout": "vertical",
+          "children": [
+            "hero-card-top",
+            "hero-card-chart",
+            "hero-card-bottom"
+          ],
+          "style": {
+            "background": "linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(247,251,249,0.92) 100%)",
+            "border": "1px solid rgba(21,131,111,0.10)",
+            "borderRadius": "28px",
+            "padding": "28px",
+            "boxShadow": "0 30px 80px rgba(16,42,37,0.12), 0 8px 24px rgba(21,131,111,0.10)",
+            "backdropFilter": "blur(10px)"
+          }
+        },
+        {
+          "id": "hero-card-top",
+          "component": "box",
+          "layout": "horizontal",
+          "children": [
+            "card-title-wrap",
+            "card-tag"
+          ],
+          "style": {
+            "display": "flex",
+            "justifyContent": "space-between",
+            "alignItems": "flex-start",
+            "gap": "16px",
+            "marginBottom": "28px"
+          }
+        },
+        {
+          "id": "card-title-wrap",
+          "component": "box",
+          "layout": "vertical",
+          "children": [
+            "card-title",
+            "card-subtitle"
+          ],
+          "style": {
+            "gap": "8px"
+          }
+        },
+        {
+          "id": "card-title",
+          "component": "text",
+          "content": "Growth Overview",
+          "style": {
+            "fontSize": "22px",
+            "fontWeight": "700",
+            "color": "#17332E"
+          }
+        },
+        {
+          "id": "card-subtitle",
+          "component": "text",
+          "content": "Elegant reporting designed for decision-makers.",
+          "style": {
+            "fontSize": "14px",
+            "color": "#66807A",
+            "lineHeight": "1.6"
+          }
+        },
+        {
+          "id": "card-tag",
+          "component": "text",
+          "content": "+28.4%",
+          "style": {
+            "padding": "8px 12px",
+            "borderRadius": "999px",
+            "background": "rgba(21,131,111,0.12)",
+            "color": "#15836F",
+            "fontWeight": "700",
+            "fontSize": "14px"
+          }
+        },
+        {
+          "id": "hero-card-chart",
+          "component": "box",
+          "layout": "horizontal",
+          "children": [
+            "bar-1",
+            "bar-2",
+            "bar-3",
+            "bar-4",
+            "bar-5"
+          ],
+          "style": {
+            "display": "flex",
+            "alignItems": "flex-end",
+            "gap": "14px",
+            "height": "180px",
+            "padding": "12px 0 8px 0",
+            "marginBottom": "24px"
+          }
+        },
+        {
+          "id": "bar-1",
+          "component": "box",
+          "layout": "vertical",
+          "children": [],
+          "style": {
+            "flex": "1",
+            "height": "42%",
+            "borderRadius": "18px 18px 8px 8px",
+            "background": "linear-gradient(180deg, #BEE2DA 0%, #77B9AA 100%)"
+          }
+        },
+        {
+          "id": "bar-2",
+          "component": "box",
+          "layout": "vertical",
+          "children": [],
+          "style": {
+            "flex": "1",
+            "height": "58%",
+            "borderRadius": "18px 18px 8px 8px",
+            "background": "linear-gradient(180deg, #ABD8CE 0%, #5CA997 100%)"
+          }
+        },
+        {
+          "id": "bar-3",
+          "component": "box",
+          "layout": "vertical",
+          "children": [],
+          "style": {
+            "flex": "1",
+            "height": "76%",
+            "borderRadius": "18px 18px 8px 8px",
+            "background": "linear-gradient(180deg, #84C4B6 0%, #2D977F 100%)"
+          }
+        },
+        {
+          "id": "bar-4",
+          "component": "box",
+          "layout": "vertical",
+          "children": [],
+          "style": {
+            "flex": "1",
+            "height": "66%",
+            "borderRadius": "18px 18px 8px 8px",
+            "background": "linear-gradient(180deg, #99D0C4 0%, #4CA18F 100%)"
+          }
+        },
+        {
+          "id": "bar-5",
+          "component": "box",
+          "layout": "vertical",
+          "children": [],
+          "style": {
+            "flex": "1",
+            "height": "92%",
+            "borderRadius": "18px 18px 8px 8px",
+            "background": "linear-gradient(180deg, #15836F 0%, #0F5D4F 100%)"
+          }
+        },
+        {
+          "id": "hero-card-bottom",
+          "component": "box",
+          "layout": "horizontal",
+          "children": [
+            "metric-a",
+            "metric-b",
+            "metric-c"
+          ],
+          "style": {
+            "display": "flex",
+            "flexWrap": "wrap",
+            "gap": "12px"
+          }
+        },
+        {
+          "id": "metric-a",
+          "component": "text",
+          "content": "Retention 92%",
+          "style": {
+            "padding": "12px 14px",
+            "borderRadius": "16px",
+            "background": "#F3F9F7",
+            "color": "#214540",
+            "fontWeight": "600",
+            "fontSize": "14px"
+          }
+        },
+        {
+          "id": "metric-b",
+          "component": "text",
+          "content": "CAC -18%",
+          "style": {
+            "padding": "12px 14px",
+            "borderRadius": "16px",
+            "background": "#F3F9F7",
+            "color": "#214540",
+            "fontWeight": "600",
+            "fontSize": "14px"
+          }
+        },
+        {
+          "id": "metric-c",
+          "component": "text",
+          "content": "ROI 3.6x",
+          "style": {
+            "padding": "12px 14px",
+            "borderRadius": "16px",
+            "background": "#F3F9F7",
+            "color": "#214540",
+            "fontWeight": "600",
+            "fontSize": "14px"
+          }
+        },
+        {
+          "id": "floating-metric",
+          "component": "box",
+          "layout": "vertical",
+          "children": [
+            "floating-metric-title",
+            "floating-metric-value"
+          ],
+          "style": {
+            "position": "absolute",
+            "left": "-18px",
+            "bottom": "28px",
+            "background": "#123C35",
+            "borderRadius": "20px",
+            "padding": "18px 20px",
+            "boxShadow": "0 18px 40px rgba(18,60,53,0.24)"
+          }
+        },
+        {
+          "id": "floating-metric-title",
+          "component": "text",
+          "content": "Premium score",
+          "style": {
+            "fontSize": "12px",
+            "letterSpacing": "0.08em",
+            "textTransform": "uppercase",
+            "color": "rgba(255,255,255,0.72)"
+          }
+        },
+        {
+          "id": "floating-metric-value",
+          "component": "text",
+          "content": "9.4 / 10",
+          "style": {
+            "fontSize": "28px",
+            "fontWeight": "700",
+            "color": "#ffffff",
+            "marginTop": "6px"
+          }
+        },
+        {
+          "id": "features-section",
+          "component": "box",
+          "layout": "vertical",
+          "children": [
+            "features-header",
+            "features-grid"
+          ],
+          "style": {
+            "maxWidth": "1200px",
+            "width": "100%",
+            "margin": "0 auto",
+            "padding": "80px 20px"
+          }
+        },
+        {
+          "id": "features-header",
+          "component": "box",
+          "layout": "vertical",
+          "children": [
+            "features-kicker",
+            "features-title",
+            "features-desc"
+          ],
+          "style": {
+            "maxWidth": "760px",
+            "marginBottom": "32px",
+            "gap": "14px"
+          }
+        },
+        {
+          "id": "features-kicker",
+          "component": "text",
+          "content": "WHY IT FEELS EXPENSIVE",
+          "style": {
+            "fontSize": "12px",
+            "fontWeight": "700",
+            "letterSpacing": "0.14em",
+            "color": "#15836F"
+          }
+        },
+        {
+          "id": "features-title",
+          "component": "text",
+          "content": "A landing page system with restraint, clarity, and authority.",
+          "style": {
+            "fontSize": "40px",
+            "lineHeight": "1.2",
+            "fontWeight": "700",
+            "color": "#102A25"
+          }
+        },
+        {
+          "id": "features-desc",
+          "component": "text",
+          "content": "Balanced contrast, premium spacing, layered surfaces, and a disciplined use of green build a trustworthy high-end visual language.",
+          "style": {
+            "fontSize": "17px",
+            "lineHeight": "1.8",
+            "color": "#59736E"
+          }
+        },
+        {
+          "id": "features-grid",
+          "component": "box",
+          "layout": "horizontal",
+          "children": [
+            "feature-card-1",
+            "feature-card-2",
+            "feature-card-3"
+          ],
+          "style": {
+            "display": "flex",
+            "flexWrap": "wrap",
+            "gap": "20px"
+          }
+        },
+        {
+          "id": "feature-card-1",
+          "component": "box",
+          "layout": "vertical",
+          "children": [
+            "feature-card-1-index",
+            "feature-card-1-title",
+            "feature-card-1-desc"
+          ],
+          "style": {
+            "flex": "1",
+            "minWidth": "260px",
+            "padding": "28px",
+            "borderRadius": "24px",
+            "background": "#FFFFFF",
+            "border": "1px solid rgba(21,131,111,0.08)",
+            "boxShadow": "0 12px 30px rgba(16,42,37,0.06)"
+          }
+        },
+        {
+          "id": "feature-card-1-index",
+          "component": "text",
+          "content": "01",
+          "style": {
+            "fontSize": "14px",
+            "fontWeight": "700",
+            "color": "#15836F",
+            "marginBottom": "16px"
+          }
+        },
+        {
+          "id": "feature-card-1-title",
+          "component": "text",
+          "content": "Responsive by default",
+          "style": {
+            "fontSize": "24px",
+            "fontWeight": "700",
+            "color": "#14332D",
+            "marginBottom": "12px"
+          }
+        },
+        {
+          "id": "feature-card-1-desc",
+          "component": "text",
+          "content": "Flexible wrapping, scalable spacing, and modular blocks keep the composition polished on every screen size.",
+          "style": {
+            "fontSize": "15px",
+            "lineHeight": "1.8",
+            "color": "#617A75"
+          }
+        },
+        {
+          "id": "feature-card-2",
+          "component": "box",
+          "layout": "vertical",
+          "children": [
+            "feature-card-2-index",
+            "feature-card-2-title",
+            "feature-card-2-desc"
+          ],
+          "style": {
+            "flex": "1",
+            "minWidth": "260px",
+            "padding": "28px",
+            "borderRadius": "24px",
+            "background": "linear-gradient(180deg, #15836F 0%, #106A59 100%)",
+            "boxShadow": "0 18px 40px rgba(21,131,111,0.20)"
+          }
+        },
+        {
+          "id": "feature-card-2-index",
+          "component": "text",
+          "content": "02",
+          "style": {
+            "fontSize": "14px",
+            "fontWeight": "700",
+            "color": "rgba(255,255,255,0.78)",
+            "marginBottom": "16px"
+          }
+        },
+        {
+          "id": "feature-card-2-title",
+          "component": "text",
+          "content": "Luxury color balance",
+          "style": {
+            "fontSize": "24px",
+            "fontWeight": "700",
+            "color": "#FFFFFF",
+            "marginBottom": "12px"
+          }
+        },
+        {
+          "id": "feature-card-2-desc",
+          "component": "text",
+          "content": "The #15836F theme is elevated with ivory surfaces, deep forest text, soft sage highlights, and restrained gold-toned neutrals.",
+          "style": {
+            "fontSize": "15px",
+            "lineHeight": "1.8",
+            "color": "rgba(255,255,255,0.82)"
+          }
+        },
+        {
+          "id": "feature-card-3",
+          "component": "box",
+          "layout": "vertical",
+          "children": [
+            "feature-card-3-index",
+            "feature-card-3-title",
+            "feature-card-3-desc"
+          ],
+          "style": {
+            "flex": "1",
+            "minWidth": "260px",
+            "padding": "28px",
+            "borderRadius": "24px",
+            "background": "#F8FCFA",
+            "border": "1px solid rgba(18,60,53,0.08)",
+            "boxShadow": "0 12px 30px rgba(16,42,37,0.05)"
+          }
+        },
+        {
+          "id": "feature-card-3-index",
+          "component": "text",
+          "content": "03",
+          "style": {
+            "fontSize": "14px",
+            "fontWeight": "700",
+            "color": "#15836F",
+            "marginBottom": "16px"
+          }
+        },
+        {
+          "id": "feature-card-3-title",
+          "component": "text",
+          "content": "Trust-building details",
+          "style": {
+            "fontSize": "24px",
+            "fontWeight": "700",
+            "color": "#14332D",
+            "marginBottom": "12px"
+          }
+        },
+        {
+          "id": "feature-card-3-desc",
+          "component": "text",
+          "content": "Rounded edges, low-noise shadows, transparent layering, and concise copy create a credible premium experience.",
+          "style": {
+            "fontSize": "15px",
+            "lineHeight": "1.8",
+            "color": "#617A75"
+          }
+        },
+        {
+          "id": "stats-section",
+          "component": "box",
+          "layout": "horizontal",
+          "children": [
+            "stat-1",
+            "stat-2",
+            "stat-3",
+            "stat-4"
+          ],
+          "style": {
+            "display": "flex",
+            "flexWrap": "wrap",
+            "gap": "16px",
+            "maxWidth": "1200px",
+            "width": "100%",
+            "margin": "0 auto",
+            "padding": "0 20px 80px 20px"
+          }
+        },
+        {
+          "id": "stat-1",
+          "component": "box",
+          "layout": "vertical",
+          "children": [
+            "stat-1-value",
+            "stat-1-label"
+          ],
+          "style": {
+            "flex": "1",
+            "minWidth": "200px",
+            "padding": "26px",
+            "borderRadius": "22px",
+            "background": "#ffffff",
+            "border": "1px solid rgba(21,131,111,0.08)"
+          }
+        },
+        {
+          "id": "stat-1-value",
+          "component": "text",
+          "content": "12K+",
+          "style": {
+            "fontSize": "34px",
+            "fontWeight": "700",
+            "color": "#102A25"
+          }
+        },
+        {
+          "id": "stat-1-label",
+          "component": "text",
+          "content": "Qualified visitors",
+          "style": {
+            "fontSize": "14px",
+            "color": "#6A827D",
+            "marginTop": "8px"
+          }
+        },
+        {
+          "id": "stat-2",
+          "component": "box",
+          "layout": "vertical",
+          "children": [
+            "stat-2-value",
+            "stat-2-label"
+          ],
+          "style": {
+            "flex": "1",
+            "minWidth": "200px",
+            "padding": "26px",
+            "borderRadius": "22px",
+            "background": "#ffffff",
+            "border": "1px solid rgba(21,131,111,0.08)"
+          }
+        },
+        {
+          "id": "stat-2-value",
+          "component": "text",
+          "content": "4.8/5",
+          "style": {
+            "fontSize": "34px",
+            "fontWeight": "700",
+            "color": "#102A25"
+          }
+        },
+        {
+          "id": "stat-2-label",
+          "component": "text",
+          "content": "Client satisfaction",
+          "style": {
+            "fontSize": "14px",
+            "color": "#6A827D",
+            "marginTop": "8px"
+          }
+        },
+        {
+          "id": "stat-3",
+          "component": "box",
+          "layout": "vertical",
+          "children": [
+            "stat-3-value",
+            "stat-3-label"
+          ],
+          "style": {
+            "flex": "1",
+            "minWidth": "200px",
+            "padding": "26px",
+            "borderRadius": "22px",
+            "background": "#ffffff",
+            "border": "1px solid rgba(21,131,111,0.08)"
+          }
+        },
+        {
+          "id": "stat-3-value",
+          "component": "text",
+          "content": "38%",
+          "style": {
+            "fontSize": "34px",
+            "fontWeight": "700",
+            "color": "#102A25"
+          }
+        },
+        {
+          "id": "stat-3-label",
+          "component": "text",
+          "content": "Conversion uplift",
+          "style": {
+            "fontSize": "14px",
+            "color": "#6A827D",
+            "marginTop": "8px"
+          }
+        },
+        {
+          "id": "stat-4",
+          "component": "box",
+          "layout": "vertical",
+          "children": [
+            "stat-4-value",
+            "stat-4-label"
+          ],
+          "style": {
+            "flex": "1",
+            "minWidth": "200px",
+            "padding": "26px",
+            "borderRadius": "22px",
+            "background": "#ffffff",
+            "border": "1px solid rgba(21,131,111,0.08)"
+          }
+        },
+        {
+          "id": "stat-4-value",
+          "component": "text",
+          "content": "24/7",
+          "style": {
+            "fontSize": "34px",
+            "fontWeight": "700",
+            "color": "#102A25"
+          }
+        },
+        {
+          "id": "stat-4-label",
+          "component": "text",
+          "content": "Brand consistency",
+          "style": {
+            "fontSize": "14px",
+            "color": "#6A827D",
+            "marginTop": "8px"
+          }
+        },
+        {
+          "id": "cta-section",
+          "component": "box",
+          "layout": "vertical",
+          "children": [
+            "cta-panel"
+          ],
+          "style": {
+            "padding": "0 20px 96px 20px"
+          }
+        },
+        {
+          "id": "cta-panel",
+          "component": "box",
+          "layout": "vertical",
+          "children": [
+            "cta-kicker",
+            "cta-title",
+            "cta-desc",
+            "cta-button"
+          ],
+          "style": {
+            "maxWidth": "1200px",
+            "width": "100%",
+            "margin": "0 auto",
+            "padding": "56px 32px",
+            "borderRadius": "32px",
+            "background": "linear-gradient(135deg, #123C35 0%, #15836F 100%)",
+            "boxShadow": "0 28px 60px rgba(18,60,53,0.24)",
+            "textAlign": "center"
+          }
+        },
+        {
+          "id": "cta-kicker",
+          "component": "text",
+          "content": "READY TO ELEVATE",
+          "style": {
+            "fontSize": "12px",
+            "fontWeight": "700",
+            "letterSpacing": "0.16em",
+            "color": "rgba(255,255,255,0.74)",
+            "marginBottom": "14px"
+          }
+        },
+        {
+          "id": "cta-title",
+          "component": "text",
+          "content": "Give your product a premium first impression.",
+          "style": {
+            "fontSize": "42px",
+            "fontWeight": "700",
+            "lineHeight": "1.2",
+            "color": "#ffffff",
+            "marginBottom": "14px"
+          }
+        },
+        {
+          "id": "cta-desc",
+          "component": "text",
+          "content": "Use this structure as a high-end responsive landing page foundation and adapt the copy, imagery, and actions to your brand.",
+          "style": {
+            "fontSize": "17px",
+            "lineHeight": "1.8",
+            "color": "rgba(255,255,255,0.82)",
+            "maxWidth": "760px",
+            "margin": "0 auto 24px auto"
+          }
+        },
+        {
+          "id": "cta-button",
+          "component": "button",
+          "label": "Start Your Project",
+          "style": {
+            "height": "54px",
+            "padding": "0 30px",
+            "borderRadius": "999px",
+            "background": "#ffffff",
+            "color": "#123C35",
+            "fontWeight": "700",
+            "fontSize": "16px",
+            "border": "none",
+            "boxShadow": "0 12px 30px rgba(255,255,255,0.16)"
+          }
+        }
+      ],
+      "dataModel": {}
+    }
+  }
+]

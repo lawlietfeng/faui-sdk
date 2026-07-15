@@ -1,0 +1,234 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "components": [
+        {
+          "id": "root",
+          "component": "form",
+          "layout": "vertical",
+          "padding": 16,
+          "spacing": 12,
+          "submitButtonId": "submit-button",
+          "children": [
+            "header-row",
+            "summary-text",
+            "items-list",
+            "submit-row"
+          ]
+        },
+        {
+          "id": "header-row",
+          "component": "box",
+          "layout": "horizontal",
+          "justify": "space-between",
+          "align": "center",
+          "children": [
+            "page-title",
+            "add-item-button"
+          ]
+        },
+        {
+          "id": "page-title",
+          "component": "text",
+          "content": "报销明细填写",
+          "style": {
+            "fontSize": "18px",
+            "fontWeight": "bold"
+          }
+        },
+        {
+          "id": "add-item-button",
+          "component": "button",
+          "label": "＋ 添加报销条目",
+          "on_tap": [
+            {
+              "action": "update_data",
+              "path": "/items",
+              "value": "${[...($root.items || []), Object.fromEntries([['category', '交通'], ['date', ''], ['amount', null], ['invoiceNo', ''], ['remark', '']])]}"
+            }
+          ]
+        },
+        {
+          "id": "summary-text",
+          "component": "text",
+          "content": "当前报销条目：${($root.items || []).length} 条",
+          "style": {
+            "fontSize": "13px"
+          }
+        },
+        {
+          "id": "items-list",
+          "component": "list",
+          "data": {
+            "path": "/items"
+          },
+          "children": [
+            "item-card"
+          ]
+        },
+        {
+          "id": "submit-row",
+          "component": "box",
+          "layout": "horizontal",
+          "justify": "end",
+          "style": {
+            "marginTop": "16px"
+          },
+          "children": [
+            "submit-button"
+          ]
+        },
+        {
+          "id": "submit-button",
+          "component": "button",
+          "label": "提交报销申请",
+          "type": "primary",
+          "on_tap": [
+            {
+              "action": "http_proxy",
+              "payload": {
+                "http_config": {
+                  "method": "POST",
+                  "path": "https://www.example.com/api/expense/submit",
+                  "headers": {
+                    "Content-Type": "application/json"
+                  }
+                },
+                "http_body": {
+                  "items": { "path": "/items" },
+                  "itemCount": "${($root.items || []).length}",
+                  "totalAmount": "${sum(($root.items || []).map(i => Number(i.amount || 0)))}"
+                }
+              }
+            },
+            {
+              "action": "message",
+              "payload": {
+                "type": "success",
+                "content": "明细提交成功！"
+              }
+            }
+          ]
+        },
+        {
+          "id": "item-card",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 10,
+          "padding": 12,
+          "style": {
+            "borderRadius": "10px",
+            "border": "1px solid #f0f0f0",
+            "backgroundColor": "#fafafa"
+          },
+          "children": [
+            "item-head-row",
+            "item-category-input",
+            "item-date-input",
+            "item-amount-input",
+            "item-invoice-input",
+            "item-remark-input"
+          ]
+        },
+        {
+          "id": "item-head-row",
+          "component": "box",
+          "layout": "horizontal",
+          "justify": "space-between",
+          "align": "center",
+          "children": [
+            "item-title",
+            "remove-item-button"
+          ]
+        },
+        {
+          "id": "item-title",
+          "component": "text",
+          "content": "报销条目 ${($root.items || []).findIndex(i => i === $current) + 1}",
+          "style": {
+            "fontSize": "15px",
+            "fontWeight": "bold"
+          }
+        },
+        {
+          "id": "remove-item-button",
+          "component": "button",
+          "label": "删除",
+          "danger": true,
+          "on_tap": [
+            {
+              "action": "update_data",
+              "path": "/items",
+              "value": "${($root.items || []).filter((_, i) => i !== ($root.items || []).findIndex(x => x === $current))}"
+            }
+          ]
+        },
+        {
+          "id": "item-category-input",
+          "component": "input",
+          "placeholder": "费用类型（如交通/餐饮/住宿）",
+          "value": {
+            "path": "./category"
+          },
+          "rules": [
+            { "required": true, "message": "请填写费用类型" }
+          ]
+        },
+        {
+          "id": "item-date-input",
+          "component": "datepicker",
+          "placeholder": "请选择发生日期",
+          "picker": "date",
+          "format": "YYYY-MM-DD",
+          "value": {
+            "path": "./date"
+          },
+          "rules": [
+            { "required": true, "message": "请选择日期" }
+          ]
+        },
+        {
+          "id": "item-amount-input",
+          "component": "inputnumber",
+          "placeholder": "请输入金额",
+          "min": 0,
+          "step": 0.01,
+          "value": {
+            "path": "./amount"
+          },
+          "rules": [
+            { "required": true, "message": "请输入金额" }
+          ]
+        },
+        {
+          "id": "item-invoice-input",
+          "component": "input",
+          "placeholder": "发票号（可选）",
+          "value": {
+            "path": "./invoiceNo"
+          }
+        },
+        {
+          "id": "item-remark-input",
+          "component": "textarea",
+          "placeholder": "备注说明",
+          "value": {
+            "path": "./remark"
+          }
+        }
+      ],
+      "dataModel": {
+        "items": [
+          {
+            "category": "交通",
+            "date": "",
+            "amount": null,
+            "invoiceNo": "",
+            "remark": ""
+          }
+        ]
+      }
+    }
+  }
+]

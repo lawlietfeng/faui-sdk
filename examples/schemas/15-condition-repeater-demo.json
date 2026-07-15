@@ -1,0 +1,191 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "components": [
+        {
+          "id": "root",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 16,
+          "padding": 24,
+          "on_mount": [
+            { "action": "update_data", "path": "/loading", "value": true },
+            {
+              "action": "http_proxy",
+              "payload": { "http_config": { "method": "GET", "path": "/api/mock/users" } },
+              "on_success": [
+                { "action": "update_data", "path": "/users", "value": "${$result.data}" },
+                { "action": "update_data", "path": "/loading", "value": false },
+                { "action": "message", "payload": { "type": "success", "content": "数据加载完成" } }
+              ],
+              "on_error": [
+                { "action": "update_data", "path": "/loading", "value": false },
+                { "action": "notification", "payload": { "type": "error", "message": "加载失败", "description": "${$error}" } }
+              ]
+            }
+          ],
+          "children": ["title", "desc", "divider-condition", "mode-switch", "condition-demo", "divider-repeater", "repeater-demo"]
+        },
+
+        {
+          "id": "title",
+          "component": "typography",
+          "level": 3,
+          "content": "Condition + Repeater 演示"
+        },
+        {
+          "id": "desc",
+          "component": "text",
+          "content": "结合 on_mount 加载数据，用 condition 做条件分支，用 repeater 遍历渲染卡片。",
+          "style": { "color": "#666" }
+        },
+
+        { "id": "divider-condition", "component": "divider", "content": "Condition 条件渲染" },
+
+        {
+          "id": "mode-switch",
+          "component": "flex",
+          "gap": 8,
+          "align": "center",
+          "children": ["mode-label", "mode-btn-card", "mode-btn-table", "mode-btn-empty"]
+        },
+        { "id": "mode-label", "component": "text", "content": "切换视图模式：", "style": { "fontWeight": "bold" } },
+        {
+          "id": "mode-btn-card",
+          "component": "button",
+          "label": "卡片模式",
+          "buttonType": "primary",
+          "on_tap": [{ "action": "update_data", "path": "/viewMode", "value": "card" }]
+        },
+        {
+          "id": "mode-btn-table",
+          "component": "button",
+          "label": "表格模式",
+          "on_tap": [{ "action": "update_data", "path": "/viewMode", "value": "table" }]
+        },
+        {
+          "id": "mode-btn-empty",
+          "component": "button",
+          "label": "空状态",
+          "on_tap": [{ "action": "update_data", "path": "/viewMode", "value": "empty" }]
+        },
+
+        {
+          "id": "condition-demo",
+          "component": "condition",
+          "match": "${$root.viewMode}",
+          "cases": {
+            "card": ["card-view-label"],
+            "table": ["table-view"],
+            "empty": ["empty-view"]
+          },
+          "default": ["card-view-label"]
+        },
+
+        {
+          "id": "card-view-label",
+          "component": "alert",
+          "alertType": "info",
+          "content": "当前为卡片模式 — 由 Repeater 渲染下方卡片列表"
+        },
+
+        {
+          "id": "table-view",
+          "component": "table",
+          "data": { "path": "/users" },
+          "rowKey": "id",
+          "bordered": true,
+          "tableSize": "middle",
+          "columns": [
+            { "title": "ID", "dataIndex": "id", "width": 80 },
+            { "title": "姓名", "dataIndex": "name" },
+            { "title": "部门", "dataIndex": "department" },
+            { "title": "角色", "dataIndex": "role" },
+            {
+              "title": "状态",
+              "dataIndex": "status",
+              "renderAs": "tag",
+              "statusColors": { "在职": "green", "试用": "gold", "离职": "red" }
+            }
+          ]
+        },
+
+        {
+          "id": "empty-view",
+          "component": "empty",
+          "description": "暂无数据 — 这是 condition 的空状态分支"
+        },
+
+        { "id": "divider-repeater", "component": "divider", "content": "Repeater 数据遍历" },
+
+        {
+          "id": "loading-gate",
+          "component": "condition",
+          "when": "${$root.loading}",
+          "then": ["loading-spin"],
+          "else": ["repeater-demo"]
+        },
+
+        {
+          "id": "loading-spin",
+          "component": "spin",
+          "spinning": true,
+          "tip": "加载中..."
+        },
+
+        {
+          "id": "repeater-demo",
+          "component": "repeater",
+          "data": { "path": "/users" },
+          "direction": "horizontal",
+          "gap": 16,
+          "children": ["user-card"],
+          "style": { "flexWrap": "wrap" }
+        },
+
+        {
+          "id": "user-card",
+          "component": "card",
+          "title": "${$current.name}",
+          "style": { "width": 280 },
+          "children": ["card-body"]
+        },
+        {
+          "id": "card-body",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "children": ["card-dept", "card-role", "card-status"]
+        },
+        {
+          "id": "card-dept",
+          "component": "flex",
+          "gap": 8,
+          "children": ["dept-label", "dept-value"]
+        },
+        { "id": "dept-label", "component": "text", "content": "部门：", "style": { "color": "#999" } },
+        { "id": "dept-value", "component": "text", "content": "${$current.department}" },
+        {
+          "id": "card-role",
+          "component": "flex",
+          "gap": 8,
+          "children": ["role-label", "role-value"]
+        },
+        { "id": "role-label", "component": "text", "content": "角色：", "style": { "color": "#999" } },
+        { "id": "role-value", "component": "text", "content": "${$current.role}" },
+        {
+          "id": "card-status",
+          "component": "tag",
+          "content": "${$current.status}",
+          "color": "${$current.status === '在职' ? 'green' : $current.status === '试用' ? 'gold' : 'red'}"
+        }
+      ],
+      "dataModel": {
+        "loading": false,
+        "viewMode": "card",
+        "users": []
+      }
+    }
+  }
+]

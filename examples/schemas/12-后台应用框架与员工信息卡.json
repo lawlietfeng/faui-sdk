@@ -1,0 +1,1280 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "components": [
+        {
+          "id": "root",
+          "component": "layout",
+          "style": {
+            "minHeight": "100vh"
+          },
+          "children": [
+            "sider-layout",
+            "main-layout"
+          ]
+        },
+        {
+          "id": "sider-layout",
+          "component": "sider",
+          "theme": "dark",
+          "collapsible": true,
+          "style": {
+            "overflow": "auto",
+            "height": "100vh",
+            "position": "fixed",
+            "left": 0,
+            "top": 0,
+            "bottom": 0,
+            "zIndex": 100
+          },
+          "children": [
+            "logo-box",
+            "main-menu"
+          ]
+        },
+        {
+          "id": "logo-box",
+          "component": "box",
+          "layout": "horizontal",
+          "align": "center",
+          "justify": "center",
+          "style": {
+            "height": "32px",
+            "margin": "16px",
+            "background": "rgba(255, 255, 255, 0.15)",
+            "borderRadius": "6px"
+          },
+          "children": [
+            "logo-text"
+          ]
+        },
+        {
+          "id": "logo-text",
+          "component": "text",
+          "content": "FAUI Admin",
+          "style": {
+            "color": "#fff",
+            "fontWeight": "bold",
+            "fontSize": "16px"
+          }
+        },
+        {
+          "id": "main-menu",
+          "component": "menu",
+          "theme": "dark",
+          "mode": "inline",
+          "selectedKeys": {
+            "path": "/currentTab"
+          },
+          "defaultSelectedKeys": ["employee"],
+          "items": [
+            {
+              "key": "dashboard",
+              "label": "仪表盘",
+              "icon": "DashboardOutlined"
+            },
+            {
+              "key": "employee",
+              "label": "员工信息卡",
+              "icon": "UserOutlined"
+            },
+            {
+              "key": "department",
+              "label": "部门管理",
+              "icon": "TeamOutlined"
+            },
+            {
+              "key": "settings",
+              "label": "系统设置",
+              "icon": "SettingOutlined"
+            }
+          ],
+          "on_click": {
+            "action": "update_data",
+            "path": "/currentTab",
+            "value": "${value.key}"
+          }
+        },
+        {
+          "id": "main-layout",
+          "component": "layout",
+          "style": {
+            "marginLeft": "200px",
+            "transition": "margin-left 0.2s"
+          },
+          "children": [
+            "header-layout",
+            "content-tabs",
+            "footer-layout"
+          ]
+        },
+        {
+          "id": "header-layout",
+          "component": "header",
+          "style": {
+            "padding": "0 24px",
+            "background": "#fff",
+            "display": "flex",
+            "alignItems": "center",
+            "justifyContent": "flex-end",
+            "boxShadow": "0 1px 4px rgba(0,21,41,0.08)",
+            "zIndex": 99,
+            "position": "sticky",
+            "top": 0
+          },
+          "children": [
+            "user-dropdown"
+          ]
+        },
+        {
+          "id": "user-dropdown",
+          "component": "dropdown",
+          "trigger": ["click"],
+          "placement": "bottomRight",
+          "items": [
+            { "key": "profile", "label": "个人中心" },
+            { "key": "settings", "label": "账户设置" },
+            { "type": "divider" },
+            { "key": "logout", "label": "退出登录", "danger": true }
+          ],
+          "on_menu_click": [
+            {
+              "action": "message",
+              "payload": {
+                "type": "info",
+                "content": "你点击了: ${key}"
+              }
+            }
+          ],
+          "children": [
+            "user-info-box"
+          ]
+        },
+        {
+          "id": "user-info-box",
+          "component": "box",
+          "layout": "horizontal",
+          "align": "center",
+          "spacing": 8,
+          "style": {
+            "cursor": "pointer",
+            "padding": "4px 8px",
+            "borderRadius": "4px",
+            "transition": "background 0.3s"
+          },
+          "children": [
+            "user-avatar",
+            "user-name",
+            "down-icon"
+          ]
+        },
+        {
+          "id": "user-avatar",
+          "component": "avatar",
+          "src": "https://api.dicebear.com/7.x/miniavs/svg?seed=admin",
+          "size": 32
+        },
+        {
+          "id": "user-name",
+          "component": "text",
+          "content": "管理员",
+          "style": {
+            "color": "#333",
+            "fontSize": "14px"
+          }
+        },
+        {
+          "id": "down-icon",
+          "component": "icon",
+          "icon": "DownOutlined",
+          "style": {
+            "color": "#666",
+            "fontSize": "12px"
+          }
+        },
+        {
+          "id": "content-tabs",
+          "component": "tabs",
+          "activeKey": {
+            "path": "/currentTab"
+          },
+          "type": "line",
+          "style": {
+            "margin": "24px"
+          },
+          "items": [
+            {
+              "key": "dashboard",
+              "label": "仪表盘",
+              "children": ["dashboard-content"]
+            },
+            {
+              "key": "employee",
+              "label": "员工信息卡",
+              "children": ["employee-page"]
+            },
+            {
+              "key": "department",
+              "label": "部门管理",
+              "children": ["department-content"]
+            },
+            {
+              "key": "settings",
+              "label": "系统设置",
+              "children": ["settings-content"]
+            }
+          ]
+        },
+        {
+          "id": "dashboard-content",
+          "component": "box",
+          "layout": "vertical",
+          "align": "center",
+          "justify": "center",
+          "spacing": 16,
+          "style": {
+            "height": "400px",
+            "background": "#fff",
+            "borderRadius": "8px"
+          },
+          "children": [
+            "dashboard-icon",
+            "dashboard-text"
+          ]
+        },
+        {
+          "id": "dashboard-icon",
+          "component": "icon",
+          "icon": "DashboardOutlined",
+          "style": {
+            "fontSize": "48px",
+            "color": "#ccc"
+          }
+        },
+        {
+          "id": "dashboard-text",
+          "component": "text",
+          "content": "仪表盘内容区域",
+          "style": {
+            "color": "#999",
+            "fontSize": "14px"
+          }
+        },
+        {
+          "id": "employee-page",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 16,
+          "children": [
+            "page-title",
+            "search-bar",
+            "employee-table-card"
+          ]
+        },
+        {
+          "id": "page-title",
+          "component": "box",
+          "layout": "horizontal",
+          "align": "center",
+          "justify": "space-between",
+          "style": {
+            "marginBottom": "8px"
+          },
+          "children": [
+            "title-text",
+            "add-button"
+          ]
+        },
+        {
+          "id": "title-text",
+          "component": "text",
+          "content": "员工信息卡",
+          "style": {
+            "fontSize": "20px",
+            "fontWeight": "bold",
+            "color": "#262626"
+          }
+        },
+        {
+          "id": "add-button",
+          "component": "button",
+          "type": "primary",
+          "label": "新增员工",
+          "on_tap": [
+            {
+              "action": "update_data",
+              "path": "/currentEmployee",
+              "value": {}
+            },
+            {
+              "action": "update_data",
+              "path": "/addForm",
+              "value": {
+                "name": "",
+                "gender": "男",
+                "phone": "",
+                "email": "",
+                "department": "",
+                "position": "",
+                "joinDate": ""
+              }
+            },
+            {
+              "action": "update_data",
+              "path": "/isAddModalVisible",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "search-bar",
+          "component": "card",
+          "variant": "borderless",
+          "style": {
+            "background": "#fafafa"
+          },
+          "children": [
+            "search-box"
+          ]
+        },
+        {
+          "id": "search-box",
+          "component": "box",
+          "layout": "horizontal",
+          "align": "center",
+          "spacing": 12,
+          "children": [
+            "search-input-wrapper",
+            "filter-select",
+            "search-button",
+            "reset-button"
+          ]
+        },
+        {
+          "id": "search-input-wrapper",
+          "component": "input",
+          "placeholder": "搜索员工姓名、手机号或邮箱...",
+          "value": {
+            "path": "/searchKeyword"
+          },
+          "style": {
+            "width": "280px"
+          }
+        },
+        {
+          "id": "filter-select",
+          "component": "treeselect",
+          "placeholder": "选择部门",
+          "value": {
+            "path": "/filterDepartment"
+          },
+          "style": {
+            "width": "160px"
+          },
+          "treeData": [
+            {
+              "label": "技术部",
+              "value": "tech",
+              "children": [
+                { "label": "前端组", "value": "frontend" },
+                { "label": "后端组", "value": "backend" }
+              ]
+            },
+            {
+              "label": "运营部",
+              "value": "operation"
+            },
+            {
+              "label": "市场部",
+              "value": "marketing"
+            }
+          ]
+        },
+        {
+          "id": "search-button",
+          "component": "button",
+          "type": "primary",
+          "label": "搜索",
+          "on_tap": [
+            {
+              "action": "message",
+              "payload": {
+                "type": "info",
+                "content": "搜索关键词: ${$root.searchKeyword}"
+              }
+            }
+          ]
+        },
+        {
+          "id": "reset-button",
+          "component": "button",
+          "label": "重置",
+          "on_tap": [
+            {
+              "action": "update_data",
+              "path": "/searchKeyword",
+              "value": ""
+            },
+            {
+              "action": "update_data",
+              "path": "/filterDepartment",
+              "value": null
+            }
+          ]
+        },
+        {
+          "id": "employee-table-card",
+          "component": "card",
+          "title": "员工列表",
+          "children": [
+            "employee-table",
+            "employee-pagination"
+          ]
+        },
+        {
+          "id": "employee-table",
+          "component": "table",
+          "data": {
+            "path": "/employeeList"
+          },
+          "rowKey": "id",
+          "columns": [
+            {
+              "title": "员工信息",
+              "dataIndex": "name",
+              "width": 200,
+              "template": "${$current.name} ${$current.gender}"
+            },
+            {
+              "title": "头像",
+              "dataIndex": "avatar",
+              "width": 80,
+              "align": "center",
+              "component": "emp-avatar-col"
+            },
+            {
+              "title": "部门",
+              "dataIndex": "department",
+              "width": 120
+            },
+            {
+              "title": "职位",
+              "dataIndex": "position",
+              "width": 120
+            },
+            {
+              "title": "手机号",
+              "dataIndex": "phone",
+              "width": 130
+            },
+            {
+              "title": "邮箱",
+              "dataIndex": "email",
+              "width": 180
+            },
+            {
+              "title": "入职日期",
+              "dataIndex": "joinDate",
+              "width": 110
+            },
+            {
+              "title": "状态",
+              "dataIndex": "status",
+              "width": 90,
+              "align": "center",
+              "renderAs": "tag",
+              "statusColors": {
+                "在职": "success",
+                "离职": "default",
+                "休假": "warning"
+              }
+            },
+            {
+              "title": "操作",
+              "dataIndex": "action",
+              "width": 160,
+              "align": "center",
+              "component": "action-cell"
+            }
+          ]
+        },
+        {
+          "id": "emp-avatar-col",
+          "component": "avatar",
+          "src": "${$current.avatar}",
+          "size": 40
+        },
+        {
+          "id": "action-cell",
+          "component": "space",
+          "direction": "horizontal",
+          "size": "small",
+          "children": [
+            "view-btn",
+            "edit-btn",
+            "delete-btn"
+          ]
+        },
+        {
+          "id": "view-btn",
+          "component": "button",
+          "type": "link",
+          "label": "查看",
+          "size": "small",
+          "on_tap": [
+            {
+              "action": "update_data",
+              "path": "/currentEmployee",
+              "value": "${$current}"
+            },
+            {
+              "action": "update_data",
+              "path": "/isViewModalVisible",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "edit-btn",
+          "component": "button",
+          "type": "link",
+          "label": "编辑",
+          "size": "small",
+          "on_tap": [
+            {
+              "action": "update_data",
+              "path": "/currentEmployee",
+              "value": "${$current}"
+            },
+            {
+              "action": "update_data",
+              "path": "/editForm",
+              "value": {
+                "name": "${$current.name}",
+                "phone": "${$current.phone}",
+                "email": "${$current.email}",
+                "department": "${$current.department}",
+                "position": "${$current.position}"
+              }
+            },
+            {
+              "action": "update_data",
+              "path": "/isEditModalVisible",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "delete-btn",
+          "component": "button",
+          "type": "link",
+          "danger": true,
+          "label": "删除",
+          "size": "small",
+          "on_tap": [
+            {
+              "action": "update_data",
+              "path": "/employeeList",
+              "value": "${$root.employeeList.filter(item => item.id !== $current.id)}"
+            },
+            {
+              "action": "message",
+              "payload": {
+                "type": "success",
+                "content": "已删除员工: ${$current.name}"
+              }
+            }
+          ]
+        },
+        {
+          "id": "employee-pagination",
+          "component": "pagination",
+          "current": {
+            "path": "/page/current"
+          },
+          "pageSize": {
+            "path": "/page/pageSize"
+          },
+          "total": "${$root.employeeList.length}",
+          "align": "end",
+          "showSizeChanger": true,
+          "showQuickJumper": true,
+          "showTotal": "共 ${total} 条记录"
+        },
+        {
+          "id": "department-content",
+          "component": "box",
+          "layout": "vertical",
+          "align": "center",
+          "justify": "center",
+          "spacing": 16,
+          "style": {
+            "height": "400px",
+            "background": "#fff",
+            "borderRadius": "8px"
+          },
+          "children": [
+            "dept-icon",
+            "dept-text"
+          ]
+        },
+        {
+          "id": "dept-icon",
+          "component": "icon",
+          "icon": "TeamOutlined",
+          "style": {
+            "fontSize": "48px",
+            "color": "#ccc"
+          }
+        },
+        {
+          "id": "dept-text",
+          "component": "text",
+          "content": "部门管理内容区域",
+          "style": {
+            "color": "#999",
+            "fontSize": "14px"
+          }
+        },
+        {
+          "id": "settings-content",
+          "component": "box",
+          "layout": "vertical",
+          "align": "center",
+          "justify": "center",
+          "spacing": 16,
+          "style": {
+            "height": "400px",
+            "background": "#fff",
+            "borderRadius": "8px"
+          },
+          "children": [
+            "settings-icon",
+            "settings-text"
+          ]
+        },
+        {
+          "id": "settings-icon",
+          "component": "icon",
+          "icon": "SettingOutlined",
+          "style": {
+            "fontSize": "48px",
+            "color": "#ccc"
+          }
+        },
+        {
+          "id": "settings-text",
+          "component": "text",
+          "content": "系统设置内容区域",
+          "style": {
+            "color": "#999",
+            "fontSize": "14px"
+          }
+        },
+        {
+          "id": "footer-layout",
+          "component": "footer",
+          "style": {
+            "textAlign": "center",
+            "color": "#888",
+            "padding": "16px"
+          },
+          "children": [
+            "footer-text"
+          ]
+        },
+        {
+          "id": "footer-text",
+          "component": "text",
+          "content": "FAUI Admin ©2026 — 企业级后台管理系统"
+        },
+        {
+          "id": "view-modal",
+          "component": "modal",
+          "title": "员工信息详情",
+          "width": 680,
+          "open": {
+            "path": "/isViewModalVisible"
+          },
+          "children": [
+            "view-modal-content"
+          ],
+          "on_ok": [
+            {
+              "action": "update_data",
+              "path": "/isViewModalVisible",
+              "value": false
+            }
+          ],
+          "on_cancel": [
+            {
+              "action": "update_data",
+              "path": "/isViewModalVisible",
+              "value": false
+            }
+          ]
+        },
+        {
+          "id": "view-modal-content",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 24,
+          "children": [
+            "view-header",
+            "view-descriptions",
+            "view-close-btn"
+          ]
+        },
+        {
+          "id": "view-close-btn",
+          "component": "box",
+          "layout": "horizontal",
+          "justify": "flex-end",
+          "style": {
+            "marginTop": "16px"
+          },
+          "children": [
+            "view-close-inner"
+          ]
+        },
+        {
+          "id": "view-close-inner",
+          "component": "button",
+          "label": "关闭",
+          "on_tap": [
+            {
+              "action": "update_data",
+              "path": "/isViewModalVisible",
+              "value": false
+            }
+          ]
+        },
+        {
+          "id": "view-header",
+          "component": "box",
+          "layout": "horizontal",
+          "align": "center",
+          "spacing": 16,
+          "style": {
+            "padding": "16px 0",
+            "borderBottom": "1px solid #f0f0f0"
+          },
+          "children": [
+            "view-avatar",
+            "view-basic-info"
+          ]
+        },
+        {
+          "id": "view-avatar",
+          "component": "avatar",
+          "src": "${$root.currentEmployee.avatar}",
+          "size": 72,
+          "style": {
+            "backgroundColor": "#1890ff"
+          }
+        },
+        {
+          "id": "view-basic-info",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 4,
+          "children": [
+            "view-name",
+            "view-position",
+            "view-status"
+          ]
+        },
+        {
+          "id": "view-name",
+          "component": "text",
+          "content": "${$root.currentEmployee.name}",
+          "style": {
+            "fontSize": "20px",
+            "fontWeight": "bold",
+            "color": "#262626"
+          }
+        },
+        {
+          "id": "view-position",
+          "component": "text",
+          "content": "${$root.currentEmployee.position} · ${$root.currentEmployee.department}",
+          "style": {
+            "fontSize": "14px",
+            "color": "#666"
+          }
+        },
+        {
+          "id": "view-status",
+          "component": "tag",
+          "content": "${$root.currentEmployee.status}",
+          "color": "${$root.currentEmployee.status === '在职' ? 'success' : $root.currentEmployee.status === '休假' ? 'warning' : 'default'}"
+        },
+        {
+          "id": "view-descriptions",
+          "component": "descriptions",
+          "column": 2,
+          "bordered": true,
+          "options": [
+            { "label": "员工编号", "value": "${$root.currentEmployee.id}" },
+            { "label": "性别", "value": "${$root.currentEmployee.gender}" },
+            { "label": "手机号", "value": "${$root.currentEmployee.phone}" },
+            { "label": "邮箱", "value": "${$root.currentEmployee.email}" },
+            { "label": "部门", "value": "${$root.currentEmployee.department}" },
+            { "label": "职位", "value": "${$root.currentEmployee.position}" },
+            { "label": "入职日期", "value": "${$root.currentEmployee.joinDate}" },
+            { "label": "转正日期", "value": "${$root.currentEmployee.confirmDate}" },
+            { "label": "学历", "value": "${$root.currentEmployee.education}" },
+            { "label": "毕业院校", "value": "${$root.currentEmployee.school}" }
+          ]
+        },
+        {
+          "id": "edit-modal",
+          "component": "modal",
+          "title": "编辑员工信息",
+          "width": 600,
+          "open": {
+            "path": "/isEditModalVisible"
+          },
+          "footer": null,
+          "children": [
+            "edit-form"
+          ]
+        },
+        {
+          "id": "edit-form",
+          "component": "form",
+          "children": [
+            "edit-name-input",
+            "edit-phone-input",
+            "edit-email-input",
+            "edit-department-select",
+            "edit-position-input",
+            "edit-buttons"
+          ]
+        },
+        {
+          "id": "edit-name-input",
+          "component": "input",
+          "label": "姓名",
+          "placeholder": "请输入员工姓名",
+          "value": {
+            "path": "/editForm.name"
+          },
+          "rules": [
+            { "required": true, "message": "请输入员工姓名" }
+          ]
+        },
+        {
+          "id": "edit-phone-input",
+          "component": "input",
+          "label": "手机号",
+          "placeholder": "请输入手机号",
+          "value": {
+            "path": "/editForm.phone"
+          },
+          "rules": [
+            { "required": true, "message": "请输入手机号" },
+            { "pattern": "^1[3-9]\\d{9}$", "message": "手机号格式不正确" }
+          ]
+        },
+        {
+          "id": "edit-email-input",
+          "component": "input",
+          "label": "邮箱",
+          "placeholder": "请输入邮箱",
+          "value": {
+            "path": "/editForm.email"
+          },
+          "rules": [
+            { "required": true, "message": "请输入邮箱" },
+            { "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$", "message": "邮箱格式不正确" }
+          ]
+        },
+        {
+          "id": "edit-department-select",
+          "component": "treeselect",
+          "label": "部门",
+          "placeholder": "请选择部门",
+          "value": {
+            "path": "/editForm.department"
+          },
+          "treeData": [
+            { "label": "技术部", "value": "tech" },
+            { "label": "运营部", "value": "operation" },
+            { "label": "市场部", "value": "marketing" }
+          ]
+        },
+        {
+          "id": "edit-position-input",
+          "component": "input",
+          "label": "职位",
+          "placeholder": "请输入职位",
+          "value": {
+            "path": "/editForm.position"
+          }
+        },
+        {
+          "id": "edit-buttons",
+          "component": "space",
+          "direction": "horizontal",
+          "size": "small",
+          "style": {
+            "marginTop": "24px"
+          },
+          "children": [
+            "save-edit-btn",
+            "cancel-edit-btn"
+          ]
+        },
+        {
+          "id": "save-edit-btn",
+          "component": "button",
+          "type": "primary",
+          "label": "保存",
+          "on_tap": [
+            {
+              "action": "update_data",
+              "path": "/employeeList",
+              "value": "${$root.employeeList.map(item => item.id === $root.currentEmployee.id ? { ...item, name: $root.editForm.name, phone: $root.editForm.phone, email: $root.editForm.email, department: $root.editForm.department, position: $root.editForm.position } : item)}"
+            },
+            {
+              "action": "message",
+              "payload": {
+                "type": "success",
+                "content": "员工信息已保存"
+              }
+            },
+            {
+              "action": "update_data",
+              "path": "/isEditModalVisible",
+              "value": false
+            }
+          ]
+        },
+        {
+          "id": "cancel-edit-btn",
+          "component": "button",
+          "label": "取消",
+          "on_tap": [
+            {
+              "action": "update_data",
+              "path": "/isEditModalVisible",
+              "value": false
+            }
+          ]
+        },
+        {
+          "id": "add-modal",
+          "component": "modal",
+          "title": "新增员工",
+          "width": 600,
+          "open": {
+            "path": "/isAddModalVisible"
+          },
+          "footer": null,
+          "children": [
+            "add-form"
+          ]
+        },
+        {
+          "id": "add-form",
+          "component": "form",
+          "children": [
+            "add-name-input",
+            "add-gender-select",
+            "add-phone-input",
+            "add-email-input",
+            "add-department-select",
+            "add-position-input",
+            "add-join-date-picker",
+            "add-buttons"
+          ]
+        },
+        {
+          "id": "add-name-input",
+          "component": "input",
+          "label": "姓名",
+          "placeholder": "请输入员工姓名",
+          "value": {
+            "path": "/addForm.name"
+          },
+          "rules": [
+            { "required": true, "message": "请输入员工姓名" }
+          ]
+        },
+        {
+          "id": "add-gender-select",
+          "component": "radio",
+          "label": "性别",
+          "value": {
+            "path": "/addForm.gender"
+          },
+          "options": [
+            { "label": "男", "value": "男" },
+            { "label": "女", "value": "女" }
+          ]
+        },
+        {
+          "id": "add-phone-input",
+          "component": "input",
+          "label": "手机号",
+          "placeholder": "请输入手机号",
+          "value": {
+            "path": "/addForm.phone"
+          },
+          "rules": [
+            { "required": true, "message": "请输入手机号" },
+            { "pattern": "^1[3-9]\\d{9}$", "message": "手机号格式不正确" }
+          ]
+        },
+        {
+          "id": "add-email-input",
+          "component": "input",
+          "label": "邮箱",
+          "placeholder": "请输入邮箱",
+          "value": {
+            "path": "/addForm.email"
+          },
+          "rules": [
+            { "required": true, "message": "请输入邮箱" },
+            { "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$", "message": "邮箱格式不正确" }
+          ]
+        },
+        {
+          "id": "add-department-select",
+          "component": "treeselect",
+          "label": "部门",
+          "placeholder": "请选择部门",
+          "value": {
+            "path": "/addForm.department"
+          },
+          "treeData": [
+            { "label": "技术部", "value": "tech" },
+            { "label": "运营部", "value": "operation" },
+            { "label": "市场部", "value": "marketing" }
+          ]
+        },
+        {
+          "id": "add-position-input",
+          "component": "input",
+          "label": "职位",
+          "placeholder": "请输入职位",
+          "value": {
+            "path": "/addForm.position"
+          }
+        },
+        {
+          "id": "add-join-date-picker",
+          "component": "datepicker",
+          "label": "入职日期",
+          "placeholder": "请选择入职日期",
+          "value": {
+            "path": "/addForm.joinDate"
+          }
+        },
+        {
+          "id": "add-buttons",
+          "component": "space",
+          "direction": "horizontal",
+          "size": "small",
+          "style": {
+            "marginTop": "24px"
+          },
+          "children": [
+            "confirm-add-btn",
+            "cancel-add-btn"
+          ]
+        },
+        {
+          "id": "confirm-add-btn",
+          "component": "button",
+          "type": "primary",
+          "label": "确认添加",
+          "on_tap": [
+            {
+              "action": "update_data",
+              "path": "/employeeList",
+              "value": "${[...$root.employeeList, { id: 'EMP' + String($root.employeeList.length + 1).padStart(3, '0'), name: $root.addForm.name, gender: $root.addForm.gender, avatar: 'https://api.dicebear.com/7.x/miniavs/svg?seed=' + $root.addForm.name, department: $root.addForm.department, position: $root.addForm.position, phone: $root.addForm.phone, email: $root.addForm.email, joinDate: $root.addForm.joinDate, status: '在职' }]}"
+            },
+            {
+              "action": "message",
+              "payload": {
+                "type": "success",
+                "content": "新员工 ${$root.addForm.name} 添加成功"
+              }
+            },
+            {
+              "action": "update_data",
+              "path": "/isAddModalVisible",
+              "value": false
+            }
+          ]
+        },
+        {
+          "id": "cancel-add-btn",
+          "component": "button",
+          "label": "取消",
+          "on_tap": [
+            {
+              "action": "update_data",
+              "path": "/isAddModalVisible",
+              "value": false
+            }
+          ]
+        }
+      ],
+      "dataModel": {
+        "currentTab": "employee",
+        "searchKeyword": "",
+        "filterDepartment": null,
+        "page": {
+          "current": 1,
+          "pageSize": 10
+        },
+        "isViewModalVisible": false,
+        "isEditModalVisible": false,
+        "isAddModalVisible": false,
+        "currentEmployee": {},
+        "editForm": {
+          "name": "",
+          "phone": "",
+          "email": "",
+          "department": "",
+          "position": ""
+        },
+        "addForm": {
+          "name": "",
+          "gender": "男",
+          "phone": "",
+          "email": "",
+          "department": "",
+          "position": "",
+          "joinDate": ""
+        },
+        "employeeList": [
+          {
+            "id": "EMP001",
+            "name": "张伟",
+            "gender": "先生",
+            "avatar": "https://api.dicebear.com/7.x/miniavs/svg?seed=zhangwei",
+            "department": "技术部",
+            "position": "前端开发工程师",
+            "phone": "13800138001",
+            "email": "zhangwei@company.com",
+            "joinDate": "2022-03-15",
+            "confirmDate": "2022-06-15",
+            "education": "本科",
+            "school": "清华大学",
+            "status": "在职"
+          },
+          {
+            "id": "EMP002",
+            "name": "李娜",
+            "gender": "女士",
+            "avatar": "https://api.dicebear.com/7.x/miniavs/svg?seed=lina",
+            "department": "运营部",
+            "position": "运营经理",
+            "phone": "13800138002",
+            "email": "lina@company.com",
+            "joinDate": "2021-08-01",
+            "confirmDate": "2021-11-01",
+            "education": "硕士",
+            "school": "北京大学",
+            "status": "在职"
+          },
+          {
+            "id": "EMP003",
+            "name": "王强",
+            "gender": "先生",
+            "avatar": "https://api.dicebear.com/7.x/miniavs/svg?seed=wangqiang",
+            "department": "技术部",
+            "position": "后端开发工程师",
+            "phone": "13800138003",
+            "email": "wangqiang@company.com",
+            "joinDate": "2023-01-10",
+            "confirmDate": "2023-04-10",
+            "education": "本科",
+            "school": "浙江大学",
+            "status": "在职"
+          },
+          {
+            "id": "EMP004",
+            "name": "刘芳",
+            "gender": "女士",
+            "avatar": "https://api.dicebear.com/7.x/miniavs/svg?seed=liufang",
+            "department": "市场部",
+            "position": "市场专员",
+            "phone": "13800138004",
+            "email": "liufang@company.com",
+            "joinDate": "2022-09-20",
+            "confirmDate": "2022-12-20",
+            "education": "本科",
+            "school": "复旦大学",
+            "status": "休假"
+          },
+          {
+            "id": "EMP005",
+            "name": "陈明",
+            "gender": "先生",
+            "avatar": "https://api.dicebear.com/7.x/miniavs/svg?seed=chenming",
+            "department": "技术部",
+            "position": "技术总监",
+            "phone": "13800138005",
+            "email": "chenming@company.com",
+            "joinDate": "2019-05-08",
+            "confirmDate": "2019-08-08",
+            "education": "博士",
+            "school": "中国科学院",
+            "status": "在职"
+          },
+          {
+            "id": "EMP006",
+            "name": "周莉",
+            "gender": "女士",
+            "avatar": "https://api.dicebear.com/7.x/miniavs/svg?seed=zhouli",
+            "department": "运营部",
+            "position": "用户运营",
+            "phone": "13800138006",
+            "email": "zhouli@company.com",
+            "joinDate": "2023-06-01",
+            "confirmDate": "2023-09-01",
+            "education": "本科",
+            "school": "上海交通大学",
+            "status": "在职"
+          },
+          {
+            "id": "EMP007",
+            "name": "吴涛",
+            "gender": "先生",
+            "avatar": "https://api.dicebear.com/7.x/miniavs/svg?seed=wutao",
+            "department": "市场部",
+            "position": "市场总监",
+            "phone": "13800138007",
+            "email": "wutao@company.com",
+            "joinDate": "2020-03-15",
+            "confirmDate": "2020-06-15",
+            "education": "硕士",
+            "school": "中国人民大学",
+            "status": "在职"
+          },
+          {
+            "id": "EMP008",
+            "name": "赵雪",
+            "gender": "女士",
+            "avatar": "https://api.dicebear.com/7.x/miniavs/svg?seed=zhaoxue",
+            "department": "技术部",
+            "position": "UI设计师",
+            "phone": "13800138008",
+            "email": "zhaoxue@company.com",
+            "joinDate": "2022-11-01",
+            "confirmDate": "2023-02-01",
+            "education": "本科",
+            "school": "中央美术学院",
+            "status": "离职"
+          }
+        ]
+      }
+    }
+  }
+]

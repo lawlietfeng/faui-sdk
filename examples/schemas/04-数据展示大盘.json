@@ -1,0 +1,183 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "dataModel": {
+        "balance": 112893.23,
+        "deadline": 1776145692407,
+        "dynamicUrl": "https://github.com/ant-design/ant-design"
+      },
+      "components": [
+        {
+          "id": "root",
+          "component": "layout",
+          "style": {
+            "padding": "24px",
+            "background": "#f5f5f5",
+            "minHeight": "100vh"
+          },
+          "children": [
+            "demo_content"
+          ]
+        },
+        {
+          "id": "demo_content",
+          "component": "flex",
+          "vertical": true,
+          "gap": 24,
+          "children": [
+            "card_statistic",
+            "card_timeline",
+            "card_qrcode"
+          ]
+        },
+        {
+          "id": "card_statistic",
+          "component": "card",
+          "title": "Statistic 统计组件",
+          "children": [
+            "statistic_row"
+          ]
+        },
+        {
+          "id": "statistic_row",
+          "component": "row",
+          "gutter": 16,
+          "children": [
+            "col_stat_1",
+            "col_stat_2",
+            "col_stat_3"
+          ]
+        },
+        {
+          "id": "col_stat_1",
+          "component": "col",
+          "span": 8,
+          "children": [
+            "stat_1"
+          ]
+        },
+        {
+          "id": "stat_1",
+          "component": "statistic",
+          "title": "Active Users",
+          "content": 112893,
+          "valueStyle": {
+            "color": "#3f8600"
+          },
+          "prefix": "User",
+          "suffix": "k"
+        },
+        {
+          "id": "col_stat_2",
+          "component": "col",
+          "span": 8,
+          "children": [
+            "stat_2"
+          ]
+        },
+        {
+          "id": "stat_2",
+          "component": "statistic",
+          "title": "Account Balance (CNY)",
+          "value": {
+            "path": "/balance"
+          },
+          "precision": 2,
+          "valueStyle": {
+            "color": "#cf1322"
+          }
+        },
+        {
+          "id": "col_stat_3",
+          "component": "col",
+          "span": 8,
+          "children": [
+            "stat_3_countdown"
+          ]
+        },
+        {
+          "id": "stat_3_countdown",
+          "component": "statistic",
+          "title": "Countdown",
+          "isCountdown": true,
+          "value": {
+            "path": "/deadline"
+          }
+        },
+        {
+          "id": "card_timeline",
+          "component": "card",
+          "title": "Timeline 时间轴组件",
+          "children": [
+            "timeline_1"
+          ]
+        },
+        {
+          "id": "timeline_1",
+          "component": "timeline",
+          "mode": "alternate",
+          "children": [
+            "tl_item_1",
+            "tl_item_2",
+            "tl_item_3"
+          ]
+        },
+        {
+          "id": "tl_item_1",
+          "component": "text",
+          "title": "2015-09-01",
+          "color": "green",
+          "content": "Create a services site"
+        },
+        {
+          "id": "tl_item_2",
+          "component": "text",
+          "title": "2015-09-02",
+          "color": "red",
+          "content": "Solve initial network problems 1"
+        },
+        {
+          "id": "tl_item_3",
+          "component": "button",
+          "title": "2015-09-03",
+          "label": "Action Required",
+          "color": "blue"
+        },
+        {
+          "id": "card_qrcode",
+          "component": "card",
+          "title": "QRCode 二维码组件",
+          "children": [
+            "qrcode_row"
+          ]
+        },
+        {
+          "id": "qrcode_row",
+          "component": "flex",
+          "gap": 24,
+          "children": [
+            "qrcode_1",
+            "qrcode_2"
+          ]
+        },
+        {
+          "id": "qrcode_1",
+          "component": "qrcode",
+          "content": "https://ant.design/",
+          "color": "#1677ff",
+          "icon": "https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg"
+        },
+        {
+          "id": "qrcode_2",
+          "component": "qrcode",
+          "value": {
+            "path": "/dynamicUrl"
+          },
+          "errorLevel": "H",
+          "bordered": false
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,687 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "dataModel": {
+        "teamMembers": [
+          { "id": "u1", "name": "王欣", "role": "前端工程师", "avatar": "https://api.dicebear.com/7.x/miniavs/svg?seed=1", "projects": 12, "commits": 328, "reviews": 56 },
+          { "id": "u2", "name": "李楠", "role": "产品经理", "avatar": "https://api.dicebear.com/7.x/miniavs/svg?seed=2", "projects": 8, "commits": 0, "reviews": 142 },
+          { "id": "u3", "name": "张磊", "role": "UI 设计师", "avatar": "https://api.dicebear.com/7.x/miniavs/svg?seed=3", "projects": 15, "commits": 0, "reviews": 87 },
+          { "id": "u4", "name": "赵敏", "role": "后端工程师", "avatar": "https://api.dicebear.com/7.x/miniavs/svg?seed=4", "projects": 10, "commits": 456, "reviews": 73 },
+          { "id": "u5", "name": "刘洋", "role": "测试工程师", "avatar": "https://api.dicebear.com/7.x/miniavs/svg?seed=5", "projects": 9, "commits": 45, "reviews": 210 },
+          { "id": "u6", "name": "陈思", "role": "DevOps", "avatar": "https://api.dicebear.com/7.x/miniavs/svg?seed=6", "projects": 6, "commits": 189, "reviews": 34 }
+        ],
+        "stats": {
+          "totalProjects": 60,
+          "activeProjects": 18,
+          "totalMembers": 6,
+          "satisfaction": 96.5
+        },
+        "announcements": [
+          { "id": "a1", "title": "Q2 OKR 评审会议", "date": "2024-06-15", "type": "会议", "color": "blue" },
+          { "id": "a2", "title": "新版设计系统上线", "date": "2024-06-12", "type": "发布", "color": "green" },
+          { "id": "a3", "title": "服务器维护通知", "date": "2024-06-10", "type": "通知", "color": "orange" },
+          { "id": "a4", "title": "团建活动报名", "date": "2024-06-08", "type": "活动", "color": "purple" }
+        ]
+      },
+      "components": [
+        {
+          "id": "root",
+          "component": "box",
+          "style": { "padding": "24px", "background": "#f0f2f5", "minHeight": "100vh" },
+          "children": ["page-header", "stats-row", "main-content-row", "footer-row"]
+        },
+
+        {
+          "id": "page-header",
+          "component": "flex",
+          "justify": "space-between",
+          "align": "center",
+          "style": { "marginBottom": "24px" },
+          "children": ["header-title", "header-actions"]
+        },
+        {
+          "id": "header-title",
+          "component": "box",
+          "children": ["title-text", "subtitle-text"]
+        },
+        {
+          "id": "title-text",
+          "component": "typography",
+          "typographyType": "title",
+          "level": 3,
+          "content": "团队工作台",
+          "style": { "margin": 0 }
+        },
+        {
+          "id": "subtitle-text",
+          "component": "typography",
+          "typographyType": "text",
+          "content": "响应式布局演示 — 缩小浏览器窗口查看自适应效果",
+          "type": "secondary"
+        },
+        {
+          "id": "header-actions",
+          "component": "space",
+          "children": ["btn-refresh", "btn-settings"]
+        },
+        {
+          "id": "btn-refresh",
+          "component": "button",
+          "content": "刷新数据",
+          "buttonType": "default",
+          "icon": "ReloadOutlined"
+        },
+        {
+          "id": "btn-settings",
+          "component": "button",
+          "content": "设置",
+          "buttonType": "primary",
+          "icon": "SettingOutlined"
+        },
+
+        {
+          "id": "stats-row",
+          "component": "row",
+          "gutter": [16, 16],
+          "style": { "marginBottom": "24px" },
+          "children": ["stat-col-1", "stat-col-2", "stat-col-3", "stat-col-4"]
+        },
+        {
+          "id": "stat-col-1",
+          "component": "col",
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 6,
+          "children": ["stat-card-1"]
+        },
+        {
+          "id": "stat-col-2",
+          "component": "col",
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 6,
+          "children": ["stat-card-2"]
+        },
+        {
+          "id": "stat-col-3",
+          "component": "col",
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 6,
+          "children": ["stat-card-3"]
+        },
+        {
+          "id": "stat-col-4",
+          "component": "col",
+          "xs": 12,
+          "sm": 12,
+          "md": 6,
+          "lg": 6,
+          "children": ["stat-card-4"]
+        },
+
+        {
+          "id": "stat-card-1",
+          "component": "card",
+          "style": { "borderRadius": "8px" },
+          "children": ["statistic-projects"]
+        },
+        {
+          "id": "statistic-projects",
+          "component": "statistic",
+          "title": "总项目数",
+          "value": { "path": "/stats/totalProjects" },
+          "prefix": "ProjectOutlined",
+          "valueStyle": { "color": "#1677ff" }
+        },
+        {
+          "id": "stat-card-2",
+          "component": "card",
+          "style": { "borderRadius": "8px" },
+          "children": ["statistic-active"]
+        },
+        {
+          "id": "statistic-active",
+          "component": "statistic",
+          "title": "进行中",
+          "value": { "path": "/stats/activeProjects" },
+          "prefix": "ThunderboltOutlined",
+          "valueStyle": { "color": "#52c41a" }
+        },
+        {
+          "id": "stat-card-3",
+          "component": "card",
+          "style": { "borderRadius": "8px" },
+          "children": ["statistic-members"]
+        },
+        {
+          "id": "statistic-members",
+          "component": "statistic",
+          "title": "团队成员",
+          "value": { "path": "/stats/totalMembers" },
+          "prefix": "TeamOutlined",
+          "valueStyle": { "color": "#722ed1" },
+          "suffix": "人"
+        },
+        {
+          "id": "stat-card-4",
+          "component": "card",
+          "style": { "borderRadius": "8px" },
+          "children": ["statistic-satisfaction"]
+        },
+        {
+          "id": "statistic-satisfaction",
+          "component": "statistic",
+          "title": "满意度",
+          "value": { "path": "/stats/satisfaction" },
+          "precision": 1,
+          "suffix": "%",
+          "valueStyle": { "color": "#fa8c16" }
+        },
+
+        {
+          "id": "main-content-row",
+          "component": "row",
+          "gutter": [24, 24],
+          "style": { "marginBottom": "24px" },
+          "children": ["main-left-col", "main-right-col"]
+        },
+        {
+          "id": "main-left-col",
+          "component": "col",
+          "xs": 24,
+          "lg": 16,
+          "children": ["team-card"]
+        },
+        {
+          "id": "main-right-col",
+          "component": "col",
+          "xs": 24,
+          "lg": 8,
+          "children": ["announcement-card"]
+        },
+
+        {
+          "id": "team-card",
+          "component": "card",
+          "title": "团队成员",
+          "style": { "borderRadius": "8px", "height": "100%" },
+          "children": ["team-grid"]
+        },
+        {
+          "id": "team-grid",
+          "component": "row",
+          "gutter": [16, 16],
+          "children": ["member-col-1", "member-col-2", "member-col-3", "member-col-4", "member-col-5", "member-col-6"]
+        },
+        {
+          "id": "member-col-1",
+          "component": "col",
+          "xs": 24,
+          "sm": 12,
+          "md": 12,
+          "xl": 8,
+          "children": ["member-card-1"]
+        },
+        {
+          "id": "member-col-2",
+          "component": "col",
+          "xs": 24,
+          "sm": 12,
+          "md": 12,
+          "xl": 8,
+          "children": ["member-card-2"]
+        },
+        {
+          "id": "member-col-3",
+          "component": "col",
+          "xs": 24,
+          "sm": 12,
+          "md": 12,
+          "xl": 8,
+          "children": ["member-card-3"]
+        },
+        {
+          "id": "member-col-4",
+          "component": "col",
+          "xs": 24,
+          "sm": 12,
+          "md": 12,
+          "xl": 8,
+          "children": ["member-card-4"]
+        },
+        {
+          "id": "member-col-5",
+          "component": "col",
+          "xs": 24,
+          "sm": 12,
+          "md": 12,
+          "xl": 8,
+          "children": ["member-card-5"]
+        },
+        {
+          "id": "member-col-6",
+          "component": "col",
+          "xs": 24,
+          "sm": 12,
+          "md": 12,
+          "xl": 8,
+          "children": ["member-card-6"]
+        },
+
+        {
+          "id": "member-card-1",
+          "component": "card",
+          "hoverable": true,
+          "style": { "borderRadius": "8px", "textAlign": "center" },
+          "children": ["member-avatar-1", "member-name-1", "member-role-1", "member-stats-1"]
+        },
+        {
+          "id": "member-avatar-1",
+          "component": "avatar",
+          "src": "${$root.teamMembers[0].avatar}",
+          "size": 64,
+          "style": { "marginBottom": "12px" }
+        },
+        {
+          "id": "member-name-1",
+          "component": "typography",
+          "typographyType": "title",
+          "level": 5,
+          "content": "${$root.teamMembers[0].name}",
+          "style": { "margin": "0 0 4px 0" }
+        },
+        {
+          "id": "member-role-1",
+          "component": "tag",
+          "content": "${$root.teamMembers[0].role}",
+          "color": "blue"
+        },
+        {
+          "id": "member-stats-1",
+          "component": "flex",
+          "justify": "space-around",
+          "style": { "marginTop": "12px", "borderTop": "1px solid #f0f0f0", "paddingTop": "12px" },
+          "children": ["m1-projects", "m1-reviews"]
+        },
+        {
+          "id": "m1-projects",
+          "component": "statistic",
+          "title": "项目",
+          "value": "${$root.teamMembers[0].projects}",
+          "valueStyle": { "fontSize": "16px" }
+        },
+        {
+          "id": "m1-reviews",
+          "component": "statistic",
+          "title": "评审",
+          "value": "${$root.teamMembers[0].reviews}",
+          "valueStyle": { "fontSize": "16px" }
+        },
+
+        {
+          "id": "member-card-2",
+          "component": "card",
+          "hoverable": true,
+          "style": { "borderRadius": "8px", "textAlign": "center" },
+          "children": ["member-avatar-2", "member-name-2", "member-role-2", "member-stats-2"]
+        },
+        {
+          "id": "member-avatar-2",
+          "component": "avatar",
+          "src": "${$root.teamMembers[1].avatar}",
+          "size": 64,
+          "style": { "marginBottom": "12px" }
+        },
+        {
+          "id": "member-name-2",
+          "component": "typography",
+          "typographyType": "title",
+          "level": 5,
+          "content": "${$root.teamMembers[1].name}",
+          "style": { "margin": "0 0 4px 0" }
+        },
+        {
+          "id": "member-role-2",
+          "component": "tag",
+          "content": "${$root.teamMembers[1].role}",
+          "color": "purple"
+        },
+        {
+          "id": "member-stats-2",
+          "component": "flex",
+          "justify": "space-around",
+          "style": { "marginTop": "12px", "borderTop": "1px solid #f0f0f0", "paddingTop": "12px" },
+          "children": ["m2-projects", "m2-reviews"]
+        },
+        {
+          "id": "m2-projects",
+          "component": "statistic",
+          "title": "项目",
+          "value": "${$root.teamMembers[1].projects}",
+          "valueStyle": { "fontSize": "16px" }
+        },
+        {
+          "id": "m2-reviews",
+          "component": "statistic",
+          "title": "评审",
+          "value": "${$root.teamMembers[1].reviews}",
+          "valueStyle": { "fontSize": "16px" }
+        },
+
+        {
+          "id": "member-card-3",
+          "component": "card",
+          "hoverable": true,
+          "style": { "borderRadius": "8px", "textAlign": "center" },
+          "children": ["member-avatar-3", "member-name-3", "member-role-3", "member-stats-3"]
+        },
+        {
+          "id": "member-avatar-3",
+          "component": "avatar",
+          "src": "${$root.teamMembers[2].avatar}",
+          "size": 64,
+          "style": { "marginBottom": "12px" }
+        },
+        {
+          "id": "member-name-3",
+          "component": "typography",
+          "typographyType": "title",
+          "level": 5,
+          "content": "${$root.teamMembers[2].name}",
+          "style": { "margin": "0 0 4px 0" }
+        },
+        {
+          "id": "member-role-3",
+          "component": "tag",
+          "content": "${$root.teamMembers[2].role}",
+          "color": "cyan"
+        },
+        {
+          "id": "member-stats-3",
+          "component": "flex",
+          "justify": "space-around",
+          "style": { "marginTop": "12px", "borderTop": "1px solid #f0f0f0", "paddingTop": "12px" },
+          "children": ["m3-projects", "m3-reviews"]
+        },
+        {
+          "id": "m3-projects",
+          "component": "statistic",
+          "title": "项目",
+          "value": "${$root.teamMembers[2].projects}",
+          "valueStyle": { "fontSize": "16px" }
+        },
+        {
+          "id": "m3-reviews",
+          "component": "statistic",
+          "title": "评审",
+          "value": "${$root.teamMembers[2].reviews}",
+          "valueStyle": { "fontSize": "16px" }
+        },
+
+        {
+          "id": "member-card-4",
+          "component": "card",
+          "hoverable": true,
+          "style": { "borderRadius": "8px", "textAlign": "center" },
+          "children": ["member-avatar-4", "member-name-4", "member-role-4", "member-stats-4"]
+        },
+        {
+          "id": "member-avatar-4",
+          "component": "avatar",
+          "src": "${$root.teamMembers[3].avatar}",
+          "size": 64,
+          "style": { "marginBottom": "12px" }
+        },
+        {
+          "id": "member-name-4",
+          "component": "typography",
+          "typographyType": "title",
+          "level": 5,
+          "content": "${$root.teamMembers[3].name}",
+          "style": { "margin": "0 0 4px 0" }
+        },
+        {
+          "id": "member-role-4",
+          "component": "tag",
+          "content": "${$root.teamMembers[3].role}",
+          "color": "green"
+        },
+        {
+          "id": "member-stats-4",
+          "component": "flex",
+          "justify": "space-around",
+          "style": { "marginTop": "12px", "borderTop": "1px solid #f0f0f0", "paddingTop": "12px" },
+          "children": ["m4-projects", "m4-reviews"]
+        },
+        {
+          "id": "m4-projects",
+          "component": "statistic",
+          "title": "项目",
+          "value": "${$root.teamMembers[3].projects}",
+          "valueStyle": { "fontSize": "16px" }
+        },
+        {
+          "id": "m4-reviews",
+          "component": "statistic",
+          "title": "评审",
+          "value": "${$root.teamMembers[3].reviews}",
+          "valueStyle": { "fontSize": "16px" }
+        },
+
+        {
+          "id": "member-card-5",
+          "component": "card",
+          "hoverable": true,
+          "style": { "borderRadius": "8px", "textAlign": "center" },
+          "children": ["member-avatar-5", "member-name-5", "member-role-5", "member-stats-5"]
+        },
+        {
+          "id": "member-avatar-5",
+          "component": "avatar",
+          "src": "${$root.teamMembers[4].avatar}",
+          "size": 64,
+          "style": { "marginBottom": "12px" }
+        },
+        {
+          "id": "member-name-5",
+          "component": "typography",
+          "typographyType": "title",
+          "level": 5,
+          "content": "${$root.teamMembers[4].name}",
+          "style": { "margin": "0 0 4px 0" }
+        },
+        {
+          "id": "member-role-5",
+          "component": "tag",
+          "content": "${$root.teamMembers[4].role}",
+          "color": "orange"
+        },
+        {
+          "id": "member-stats-5",
+          "component": "flex",
+          "justify": "space-around",
+          "style": { "marginTop": "12px", "borderTop": "1px solid #f0f0f0", "paddingTop": "12px" },
+          "children": ["m5-projects", "m5-reviews"]
+        },
+        {
+          "id": "m5-projects",
+          "component": "statistic",
+          "title": "项目",
+          "value": "${$root.teamMembers[4].projects}",
+          "valueStyle": { "fontSize": "16px" }
+        },
+        {
+          "id": "m5-reviews",
+          "component": "statistic",
+          "title": "评审",
+          "value": "${$root.teamMembers[4].reviews}",
+          "valueStyle": { "fontSize": "16px" }
+        },
+
+        {
+          "id": "member-card-6",
+          "component": "card",
+          "hoverable": true,
+          "style": { "borderRadius": "8px", "textAlign": "center" },
+          "children": ["member-avatar-6", "member-name-6", "member-role-6", "member-stats-6"]
+        },
+        {
+          "id": "member-avatar-6",
+          "component": "avatar",
+          "src": "${$root.teamMembers[5].avatar}",
+          "size": 64,
+          "style": { "marginBottom": "12px" }
+        },
+        {
+          "id": "member-name-6",
+          "component": "typography",
+          "typographyType": "title",
+          "level": 5,
+          "content": "${$root.teamMembers[5].name}",
+          "style": { "margin": "0 0 4px 0" }
+        },
+        {
+          "id": "member-role-6",
+          "component": "tag",
+          "content": "${$root.teamMembers[5].role}",
+          "color": "red"
+        },
+        {
+          "id": "member-stats-6",
+          "component": "flex",
+          "justify": "space-around",
+          "style": { "marginTop": "12px", "borderTop": "1px solid #f0f0f0", "paddingTop": "12px" },
+          "children": ["m6-projects", "m6-reviews"]
+        },
+        {
+          "id": "m6-projects",
+          "component": "statistic",
+          "title": "项目",
+          "value": "${$root.teamMembers[5].projects}",
+          "valueStyle": { "fontSize": "16px" }
+        },
+        {
+          "id": "m6-reviews",
+          "component": "statistic",
+          "title": "评审",
+          "value": "${$root.teamMembers[5].reviews}",
+          "valueStyle": { "fontSize": "16px" }
+        },
+
+        {
+          "id": "announcement-card",
+          "component": "card",
+          "title": "公告与动态",
+          "style": { "borderRadius": "8px", "height": "100%" },
+          "children": ["announcement-timeline"]
+        },
+        {
+          "id": "announcement-timeline",
+          "component": "timeline",
+          "items": [
+            { "color": "blue", "content": "Q2 OKR 评审会议 — 2024-06-15" },
+            { "color": "green", "content": "新版设计系统上线 — 2024-06-12" },
+            { "color": "orange", "content": "服务器维护通知 — 2024-06-10" },
+            { "color": "purple", "content": "团建活动报名 — 2024-06-08" },
+            { "color": "gray", "content": "v2.0 代码冻结 — 2024-06-05" }
+          ]
+        },
+
+        {
+          "id": "footer-row",
+          "component": "row",
+          "gutter": { "xs": 8, "sm": 16, "md": 24 },
+          "children": ["footer-col-1", "footer-col-2", "footer-col-3"]
+        },
+        {
+          "id": "footer-col-1",
+          "component": "col",
+          "xs": 24,
+          "md": 8,
+          "children": ["footer-card-1"]
+        },
+        {
+          "id": "footer-col-2",
+          "component": "col",
+          "xs": 24,
+          "md": 8,
+          "children": ["footer-card-2"]
+        },
+        {
+          "id": "footer-col-3",
+          "component": "col",
+          "xs": 24,
+          "md": 8,
+          "children": ["footer-card-3"]
+        },
+
+        {
+          "id": "footer-card-1",
+          "component": "card",
+          "title": "快捷入口",
+          "style": { "borderRadius": "8px" },
+          "children": ["quick-links"]
+        },
+        {
+          "id": "quick-links",
+          "component": "flex",
+          "wrap": "wrap",
+          "gap": 8,
+          "children": ["ql-1", "ql-2", "ql-3", "ql-4"]
+        },
+        { "id": "ql-1", "component": "button", "content": "代码仓库", "buttonType": "default", "icon": "GithubOutlined" },
+        { "id": "ql-2", "component": "button", "content": "文档中心", "buttonType": "default", "icon": "FileTextOutlined" },
+        { "id": "ql-3", "component": "button", "content": "监控面板", "buttonType": "default", "icon": "DashboardOutlined" },
+        { "id": "ql-4", "component": "button", "content": "工单系统", "buttonType": "default", "icon": "BugOutlined" },
+
+        {
+          "id": "footer-card-2",
+          "component": "card",
+          "title": "技术栈",
+          "style": { "borderRadius": "8px" },
+          "children": ["tech-tags"]
+        },
+        {
+          "id": "tech-tags",
+          "component": "flex",
+          "wrap": "wrap",
+          "gap": 8,
+          "children": ["tag-react", "tag-ts", "tag-antd", "tag-vite", "tag-faui", "tag-echarts"]
+        },
+        { "id": "tag-react", "component": "tag", "content": "React 19", "color": "#61dafb" },
+        { "id": "tag-ts", "component": "tag", "content": "TypeScript", "color": "#3178c6" },
+        { "id": "tag-antd", "component": "tag", "content": "Ant Design 6", "color": "#1677ff" },
+        { "id": "tag-vite", "component": "tag", "content": "Vite", "color": "#646cff" },
+        { "id": "tag-faui", "component": "tag", "content": "FAUI", "color": "#000000" },
+        { "id": "tag-echarts", "component": "tag", "content": "ECharts", "color": "#aa344d" },
+
+        {
+          "id": "footer-card-3",
+          "component": "card",
+          "title": "响应式断点参考",
+          "style": { "borderRadius": "8px" },
+          "children": ["bp-desc"]
+        },
+        {
+          "id": "bp-desc",
+          "component": "descriptions",
+          "bordered": true,
+          "column": 1,
+          "options": [
+            { "label": "xs", "value": "<576px 手机" },
+            { "label": "sm", "value": "≥576px 手机横屏" },
+            { "label": "md", "value": "≥768px 平板" },
+            { "label": "lg", "value": "≥992px 小桌面" },
+            { "label": "xl", "value": "≥1200px 桌面" },
+            { "label": "xxl", "value": "≥1600px 大屏" }
+          ]
+        }
+      ]
+    }
+  }
+]

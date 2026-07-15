@@ -14,9 +14,19 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
+    },
+    "./full": {
+      "types": "./dist/full.d.ts",
+      "import": "./dist/full.mjs",
+      "require": "./dist/full.js"
     }
   },
-  "sideEffects": false,
+  "sideEffects": [
+    "./dist/chunk-*.js",
+    "./dist/chunk-*.mjs",
+    "./dist/index.*",
+    "./dist/full.*"
+  ],
   "scripts": {
     "dev": "vite --host 0.0.0.0 examples",
     "build": "tsup",
@@ -25,13 +35,25 @@
     "test": "vitest run"
   },
   "peerDependencies": {
+    "@ant-design/icons": ">=5.0.0",
     "antd": ">=5.0.0",
     "dayjs": ">=1.10.0",
+    "echarts": ">=5.0.0",
+    "framer-motion": ">=10.0.0",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0"
   },
+  "peerDependenciesMeta": {
+    "echarts": {
+      "optional": true
+    },
+    "framer-motion": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@eslint/js": "^9.24.0",
+    "@ant-design/icons": "^5.6.0",
     "@tailwindcss/vite": "^4.2.2",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
@@ -43,9 +65,13 @@
     "@typescript-eslint/parser": "^8.32.0",
     "@vitejs/plugin-react": "^6.0.1",
     "autoprefixer": "^10.4.21",
+    "antd": "^6.3.5",
+    "dayjs": "^1.11.0",
+    "echarts": "^6.0.0",
     "eslint": "^9.24.0",
     "globals": "^16.0.0",
     "happy-dom": "^20.10.6",
+    "framer-motion": "^12.38.0",
     "postcss": "^8.5.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",

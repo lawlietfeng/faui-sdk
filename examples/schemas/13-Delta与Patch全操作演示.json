@@ -1,0 +1,158 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "dataModel": {
+        "title": "员工信息卡 (原始状态)",
+        "department": "技术部",
+        "employees": [
+          { "id": 1, "name": "Alice", "role": "前端开发" },
+          { "id": 2, "name": "Bob", "role": "后端开发" }
+        ],
+        "officeLocation": "北京",
+        "secretCode": "12345"
+      },
+      "components": [
+        {
+          "id": "root",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 16,
+          "padding": 24,
+          "className": "bg-gray-50 rounded-lg max-w-2xl mx-auto",
+          "children": ["header", "info-card", "employee-list"]
+        },
+        {
+          "id": "header",
+          "component": "text",
+          "content": "${title}",
+          "style": { "fontSize": "24px", "fontWeight": "bold", "color": "#1e293b" }
+        },
+        {
+          "id": "info-card",
+          "component": "card",
+          "title": "基础信息",
+          "children": ["info-descriptions"]
+        },
+        {
+          "id": "info-descriptions",
+          "component": "descriptions",
+          "column": 2,
+          "options": [
+            { "label": "部门", "value": "${department}" },
+            { "label": "办公地点", "value": "${typeof officeLocation !== 'undefined' ? officeLocation : (typeof headquarters !== 'undefined' ? headquarters : '未知')}" },
+            { "label": "隐秘代号", "value": "${typeof secretCode !== 'undefined' ? secretCode : '***'}" }
+          ]
+        },
+        {
+          "id": "employee-list",
+          "component": "card",
+          "title": "员工列表",
+          "children": ["emp-table"]
+        },
+        {
+          "id": "emp-table",
+          "component": "table",
+          "data": { "path": "/employees" },
+          "rowKey": "id",
+          "columns": [
+            { "title": "ID", "dataIndex": "id" },
+            { "title": "姓名", "dataIndex": "name" },
+            { "title": "职位", "dataIndex": "role" }
+          ],
+          "pagination": false
+        }
+      ]
+    }
+  },
+  {
+    "type": "ACTIVITY_DELTA",
+    "description": "replace 操作：更新页面大标题",
+    "patch": [
+      {
+        "op": "replace",
+        "path": "/dataModel/title",
+        "value": "员工信息卡 (Delta 已应用 - 全操作展示)"
+      }
+    ]
+  },
+  {
+    "type": "ACTIVITY_DELTA",
+    "description": "add 操作 (/- 语法)：向表格数组末尾追加新员工",
+    "patch": [
+      {
+        "op": "add",
+        "path": "/dataModel/employees/-",
+        "value": { "id": 3, "name": "Charlie", "role": "产品经理" }
+      }
+    ]
+  },
+  {
+    "type": "ACTIVITY_DELTA",
+    "description": "remove 操作：删除隐秘代号字段",
+    "patch": [
+      {
+        "op": "remove",
+        "path": "/dataModel/secretCode"
+      }
+    ]
+  },
+  {
+    "type": "ACTIVITY_DELTA",
+    "description": "move 操作：将办公地点字段平移重命名为总部(headquarters)",
+    "patch": [
+      {
+        "op": "move",
+        "from": "/dataModel/officeLocation",
+        "path": "/dataModel/headquarters"
+      }
+    ]
+  },
+  {
+    "type": "ACTIVITY_DELTA",
+    "description": "copy 操作：克隆第一个员工名字到全局的明星员工变量",
+    "patch": [
+      {
+        "op": "copy",
+        "from": "/dataModel/employees/0/name",
+        "path": "/dataModel/starEmployeeName"
+      }
+    ]
+  },
+  {
+    "type": "ACTIVITY_DELTA",
+    "description": "test 与 add 组合操作：原子校验技术部并动态添加一个顶部通知栏",
+    "patch": [
+      {
+        "op": "test",
+        "path": "/dataModel/department",
+        "value": "技术部"
+      },
+      {
+        "op": "replace",
+        "path": "/dataModel/department",
+        "value": "研发中心"
+      }
+    ]
+  },
+  {
+    "type": "ACTIVITY_DELTA",
+    "patch": [
+      {
+        "op": "add",
+        "path": "/components/0/children/0",
+        "value": "notice-alert"
+      },
+      {
+        "op": "add",
+        "path": "/components/-",
+        "value": {
+          "id": "notice-alert",
+          "component": "text",
+          "content": "明星员工是：${typeof starEmployeeName !== 'undefined' ? starEmployeeName : ''}。原办公地点被移至总部: ${typeof headquarters !== 'undefined' ? headquarters : ''}",
+          "style": { "color": "green", "fontWeight": "bold", "marginBottom": "16px" }
+        }
+      }
+    ]
+  }
+]

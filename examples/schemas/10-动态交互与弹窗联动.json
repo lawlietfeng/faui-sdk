@@ -1,0 +1,262 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "components": [
+        {
+          "id": "root",
+          "component": "box",
+          "layout": "vertical",
+          "padding": 24,
+          "spacing": 16,
+          "children": [
+            "page-header",
+            "data-table",
+            "edit-modal",
+            "info-drawer"
+          ]
+        },
+        {
+          "id": "page-header",
+          "component": "box",
+          "layout": "horizontal",
+          "justify": "space-between",
+          "align": "center",
+          "children": [
+            "title",
+            "btn-group"
+          ]
+        },
+        {
+          "id": "title",
+          "component": "text",
+          "content": "员工管理台",
+          "style": {
+            "fontSize": "20px",
+            "fontWeight": "bold"
+          }
+        },
+        {
+          "id": "btn-group",
+          "component": "space",
+          "children": [
+            "btn-open-drawer"
+          ]
+        },
+        {
+          "id": "btn-open-drawer",
+          "component": "button",
+          "label": "查看统计信息",
+          "type": "primary",
+          "on_tap": [
+            {
+              "action": "update_data",
+              "path": "/drawerVisible",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "data-table",
+          "component": "table",
+          "rowKey": "empId",
+          "data": {
+            "path": "/employees"
+          },
+          "columns": [
+            { "title": "工号", "dataIndex": "empId", "key": "empId" },
+            { "title": "姓名", "dataIndex": "name", "key": "name" },
+            { "title": "部门", "dataIndex": "dept", "key": "dept" },
+            {
+              "title": "操作",
+              "key": "action",
+              "component": "action-cell"
+            }
+          ]
+        },
+        {
+          "id": "action-cell",
+          "component": "space",
+          "children": [
+            "btn-edit",
+            "btn-delete"
+          ]
+        },
+        {
+          "id": "btn-edit",
+          "component": "button",
+          "label": "编辑",
+          "type": "link",
+          "on_tap": [
+            {
+              "action": "update_data",
+              "path": "/editingEmp",
+              "value": "${{...$current}}"
+            },
+            {
+              "action": "update_data",
+              "path": "/modalVisible",
+              "value": true
+            }
+          ]
+        },
+        {
+          "id": "btn-delete",
+          "component": "button",
+          "label": "删除",
+          "type": "link",
+          "danger": true,
+          "on_tap": [
+            {
+              "action": "update_data",
+              "path": "/employees",
+              "value": "${($root.employees || []).filter(emp => emp.empId !== $current.empId)}"
+            },
+            {
+              "action": "message",
+              "payload": {
+                "type": "success",
+                "content": "删除成功！"
+              }
+            }
+          ]
+        },
+        {
+          "id": "edit-modal",
+          "component": "modal",
+          "title": "编辑员工信息",
+          "open": {
+            "path": "/modalVisible"
+          },
+          "on_cancel": [
+            {
+              "action": "update_data",
+              "path": "/modalVisible",
+              "value": false
+            }
+          ],
+          "on_ok": [
+            {
+              "action": "update_data",
+              "path": "/employees",
+              "value": "${($root.employees || []).map(emp => emp.empId === $root.editingEmp.empId ? $root.editingEmp : emp)}"
+            },
+            {
+              "action": "message",
+              "payload": {
+                "type": "success",
+                "content": "保存成功！"
+              }
+            },
+            {
+              "action": "update_data",
+              "path": "/modalVisible",
+              "value": false
+            }
+          ],
+          "children": [
+            "modal-form"
+          ]
+        },
+        {
+          "id": "modal-form",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 16,
+          "children": [
+            "edit-name-group",
+            "edit-dept-group"
+          ]
+        },
+        {
+          "id": "edit-name-group",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "children": [
+            "edit-name-label",
+            "edit-name-input"
+          ]
+        },
+        {
+          "id": "edit-name-label",
+          "component": "text",
+          "content": "姓名"
+        },
+        {
+          "id": "edit-name-input",
+          "component": "input",
+          "value": {
+            "path": "/editingEmp/name"
+          }
+        },
+        {
+          "id": "edit-dept-group",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "children": [
+            "edit-dept-label",
+            "edit-dept-input"
+          ]
+        },
+        {
+          "id": "edit-dept-label",
+          "component": "text",
+          "content": "部门"
+        },
+        {
+          "id": "edit-dept-input",
+          "component": "select",
+          "value": {
+            "path": "/editingEmp/dept"
+          },
+          "options": [
+            { "label": "研发部", "value": "研发部" },
+            { "label": "设计部", "value": "设计部" },
+            { "label": "市场部", "value": "市场部" }
+          ]
+        },
+        {
+          "id": "info-drawer",
+          "component": "drawer",
+          "title": "统计面板",
+          "placement": "right",
+          "open": {
+            "path": "/drawerVisible"
+          },
+          "on_close": [
+            {
+              "action": "update_data",
+              "path": "/drawerVisible",
+              "value": false
+            }
+          ],
+          "children": [
+            "drawer-content"
+          ]
+        },
+        {
+          "id": "drawer-content",
+          "component": "descriptions",
+          "column": 1,
+          "bordered": true,
+          "options": [
+            { "label": "总人数", "value": "${($root.employees || []).length} 人" },
+            { "label": "当前编辑中", "value": "${$root.editingEmp ? $root.editingEmp.name : '无'}" }
+          ]
+        }
+      ],
+      "dataModel": {
+        "modalVisible": false,
+        "drawerVisible": false,
+        "editingEmp": { "name": "", "dept": "" },
+        "employees": [
+          { "key": "1", "empId": "E001", "name": "刘一", "dept": "研发部" },
+          { "key": "2", "empId": "E002", "name": "陈二", "dept": "设计部" },
+          { "key": "3", "empId": "E003", "name": "张三", "dept": "市场部" }
+        ]
+      }
+    }
+  }
+]

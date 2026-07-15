@@ -1,0 +1,186 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "components": [
+        {
+          "id": "root",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 16,
+          "padding": 24,
+          "on_mount": [
+            {
+              "action": "update_data",
+              "path": "/loading",
+              "value": true
+            },
+            {
+              "action": "http_proxy",
+              "payload": {
+                "http_config": { "method": "GET", "path": "/api/mock/users" }
+              },
+              "on_success": [
+                { "action": "update_data", "path": "/users", "value": "${$result.data}" },
+                { "action": "update_data", "path": "/total", "value": "${$result.total}" },
+                { "action": "update_data", "path": "/loading", "value": false },
+                { "action": "update_data", "path": "/statusText", "value": "加载成功" },
+                { "action": "message", "payload": { "type": "success", "content": "数据加载完成，共 ${$result.total} 条记录" } }
+              ],
+              "on_error": [
+                { "action": "update_data", "path": "/loading", "value": false },
+                { "action": "update_data", "path": "/statusText", "value": "加载失败" },
+                { "action": "notification", "payload": { "type": "error", "message": "数据加载失败", "description": "${$error}" } }
+              ]
+            }
+          ],
+          "children": ["title", "desc", "status-bar", "btn-group", "divider", "content-area"]
+        },
+        {
+          "id": "title",
+          "component": "typography",
+          "level": 3,
+          "content": "on_mount + on_success/on_error 演示"
+        },
+        {
+          "id": "desc",
+          "component": "text",
+          "content": "页面加载时自动请求数据（on_mount），请求成功后写入数据模型并弹出提示（on_success），失败时弹出错误通知（on_error）。",
+          "style": { "color": "#666", "marginBottom": 8 }
+        },
+        {
+          "id": "status-bar",
+          "component": "flex",
+          "gap": 16,
+          "align": "center",
+          "children": ["status-label", "status-value", "total-tag"]
+        },
+        {
+          "id": "status-label",
+          "component": "text",
+          "content": "当前状态：",
+          "style": { "fontWeight": "bold" }
+        },
+        {
+          "id": "status-value",
+          "component": "tag",
+          "content": "${statusText}",
+          "color": "${statusText === '加载成功' ? 'green' : statusText === '加载失败' ? 'red' : 'blue'}"
+        },
+        {
+          "id": "total-tag",
+          "component": "tag",
+          "content": "共 ${total} 条",
+          "color": "blue",
+          "visible": "${total > 0}"
+        },
+        {
+          "id": "btn-group",
+          "component": "flex",
+          "gap": 8,
+          "children": ["reload-btn", "fail-btn"]
+        },
+        {
+          "id": "reload-btn",
+          "component": "button",
+          "label": "重新加载",
+          "buttonType": "primary",
+          "on_tap": [
+            { "action": "update_data", "path": "/loading", "value": true },
+            { "action": "update_data", "path": "/users", "value": [] },
+            { "action": "update_data", "path": "/statusText", "value": "加载中..." },
+            {
+              "action": "http_proxy",
+              "payload": {
+                "http_config": { "method": "GET", "path": "/api/mock/users" }
+              },
+              "on_success": [
+                { "action": "update_data", "path": "/users", "value": "${$result.data}" },
+                { "action": "update_data", "path": "/total", "value": "${$result.total}" },
+                { "action": "update_data", "path": "/loading", "value": false },
+                { "action": "update_data", "path": "/statusText", "value": "加载成功" },
+                { "action": "message", "payload": { "type": "success", "content": "数据已刷新" } }
+              ],
+              "on_error": [
+                { "action": "update_data", "path": "/loading", "value": false },
+                { "action": "update_data", "path": "/statusText", "value": "加载失败" },
+                { "action": "notification", "payload": { "type": "error", "message": "刷新失败", "description": "${$error}" } }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "fail-btn",
+          "component": "button",
+          "label": "测试失败场景",
+          "buttonType": "default",
+          "style": { "borderColor": "#ff4d4f", "color": "#ff4d4f" },
+          "on_tap": [
+            { "action": "update_data", "path": "/loading", "value": true },
+            { "action": "update_data", "path": "/statusText", "value": "请求中..." },
+            {
+              "action": "http_proxy",
+              "payload": {
+                "http_config": { "method": "POST", "path": "/api/mock/fail" }
+              },
+              "on_success": [
+                { "action": "update_data", "path": "/loading", "value": false },
+                { "action": "message", "payload": { "type": "success", "content": "不应该看到这条消息" } }
+              ],
+              "on_error": [
+                { "action": "update_data", "path": "/loading", "value": false },
+                { "action": "update_data", "path": "/statusText", "value": "加载失败" },
+                { "action": "notification", "payload": { "type": "error", "message": "请求失败", "description": "${$error}" } }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "divider",
+          "component": "divider",
+          "content": "用户列表"
+        },
+        {
+          "id": "content-area",
+          "component": "box",
+          "layout": "vertical",
+          "children": ["loading-spin"]
+        },
+        {
+          "id": "loading-spin",
+          "component": "spin",
+          "spinning": "${loading}",
+          "tip": "数据加载中...",
+          "children": ["user-table"]
+        },
+        {
+          "id": "user-table",
+          "component": "table",
+          "data": { "path": "/users" },
+          "rowKey": "id",
+          "bordered": true,
+          "tableSize": "middle",
+          "emptyText": "暂无数据",
+          "columns": [
+            { "title": "ID", "dataIndex": "id", "width": 80 },
+            { "title": "姓名", "dataIndex": "name" },
+            { "title": "部门", "dataIndex": "department" },
+            { "title": "角色", "dataIndex": "role" },
+            {
+              "title": "状态",
+              "dataIndex": "status",
+              "renderAs": "tag",
+              "statusColors": { "在职": "green", "试用": "gold", "离职": "red" }
+            }
+          ]
+        }
+      ],
+      "dataModel": {
+        "loading": false,
+        "users": [],
+        "total": 0,
+        "statusText": "等待加载"
+      }
+    }
+  }
+]

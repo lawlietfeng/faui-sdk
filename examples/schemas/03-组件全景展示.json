@@ -1,0 +1,808 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "components": [
+        {
+          "id": "root",
+          "component": "box",
+          "layout": "vertical",
+          "padding": 24,
+          "spacing": 24,
+          "style": {
+            "minHeight": "100vh"
+          },
+          "children": [
+            "alert-1",
+            "spin-2"
+          ]
+        },
+        {
+          "id": "alert-1",
+          "component": "alert",
+          "title": "综合管理控制台",
+          "description": "欢迎使用 FAUI 综合组件演示，该页面展示了所有的 34 个组件！",
+          "type": "info",
+          "showIcon": true,
+          "closable": true
+        },
+        {
+          "id": "spin-2",
+          "component": "spin",
+          "spinning": false,
+          "tip": "加载中...",
+          "children": [
+            "content-box-3"
+          ]
+        },
+        {
+          "id": "content-box-3",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 24,
+          "children": [
+            "card-profile-4",
+            "card-form-5",
+            "card-list-6"
+          ]
+        },
+        {
+          "id": "card-profile-4",
+          "component": "card",
+          "title": "个人主页",
+          "bordered": true,
+          "children": [
+            "box-avatar-7",
+            "descriptions-10",
+            "divider-11",
+            "progress-12",
+            "stepindicator-13"
+          ]
+        },
+        {
+          "id": "box-avatar-7",
+          "component": "box",
+          "layout": "horizontal",
+          "spacing": 8,
+          "align": "center",
+          "style": {
+            "marginBottom": "16px"
+          },
+          "children": [
+            "image-8",
+            "tag-9"
+          ]
+        },
+        {
+          "id": "image-8",
+          "component": "image",
+          "src": "https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg",
+          "alt": "Avatar",
+          "style": {
+            "width": "32px",
+            "height": "32px",
+            "borderRadius": "50%"
+          }
+        },
+        {
+          "id": "tag-9",
+          "component": "tag",
+          "color": "success",
+          "content": "在线"
+        },
+        {
+          "id": "descriptions-10",
+          "component": "descriptions",
+          "title": "基本信息",
+          "column": 3,
+          "bordered": true,
+          "options": [
+            {
+              "label": "姓名",
+              "value": "张三"
+            },
+            {
+              "label": "职位",
+              "value": "高级前端工程师"
+            },
+            {
+              "label": "部门",
+              "value": "研发中心"
+            },
+            {
+              "label": "入职时间",
+              "value": "2022-01-01"
+            },
+            {
+              "label": "状态",
+              "value": "在职"
+            },
+            {
+              "label": "办公地",
+              "value": "北京"
+            }
+          ]
+        },
+        {
+          "id": "divider-11",
+          "component": "divider",
+          "content": "培训进度",
+          "direction": "horizontal",
+          "align": "start"
+        },
+        {
+          "id": "progress-12",
+          "component": "progress",
+          "percent": 85,
+          "status": "active",
+          "style": {
+            "marginBottom": "16px"
+          }
+        },
+        {
+          "id": "stepindicator-13",
+          "component": "stepindicator",
+          "current": 2,
+          "items": [
+            {
+              "title": "入职培训",
+              "description": "已完成"
+            },
+            {
+              "title": "安全合规",
+              "description": "已完成"
+            },
+            {
+              "title": "专业技能",
+              "description": "进行中"
+            },
+            {
+              "title": "领导力提升",
+              "description": "未开始"
+            }
+          ]
+        },
+        {
+          "id": "card-form-5",
+          "component": "card",
+          "title": "系统配置中心",
+          "bordered": true,
+          "children": [
+            "form-14"
+          ]
+        },
+        {
+          "id": "form-14",
+          "component": "form",
+          "submitButtonId": "button-33",
+          "style": {
+            "display": "flex",
+            "flexDirection": "column",
+            "gap": "8px"
+          },
+          "children": [
+            "input-15",
+            "textarea-16",
+            "inputnumber-17",
+            "select-18",
+            "treeselect-19",
+            "cascader-20",
+            "radio-21",
+            "checkbox-22",
+            "datepicker-23",
+            "timepicker-24",
+            "colorpicker-25",
+            "switch-26",
+            "slider-27",
+            "rate-28",
+            "transfer-29",
+            "autocomplete-30",
+            "mentions-31",
+            "upload-32",
+            "button-33"
+          ]
+        },
+        {
+          "id": "input-15",
+          "component": "input",
+          "label": "项目名称",
+          "placeholder": "请输入项目名称",
+          "value": {
+            "path": "/formData/projectName"
+          },
+          "rules": [
+            {
+              "required": true,
+              "message": "项目名称必填"
+            },
+            {
+              "min": 3,
+              "message": "项目名称至少3个字符"
+            }
+          ]
+        },
+        {
+          "id": "textarea-16",
+          "component": "textarea",
+          "label": "项目描述",
+          "placeholder": "请输入项目背景和描述",
+          "rows": 4,
+          "value": {
+            "path": "/formData/projectDesc"
+          },
+          "rules": [
+            {
+              "required": true,
+              "message": "项目描述必填"
+            }
+          ]
+        },
+        {
+          "id": "inputnumber-17",
+          "component": "inputnumber",
+          "label": "项目预算 (万元)",
+          "min": 0,
+          "max": 10000,
+          "step": 10,
+          "value": {
+            "path": "/formData/budget"
+          },
+          "rules": [
+            {
+              "required": true,
+              "message": "项目预算必填"
+            }
+          ]
+        },
+        {
+          "id": "select-18",
+          "component": "select",
+          "label": "项目等级",
+          "value": {
+            "path": "/formData/level"
+          },
+          "rules": [
+            {
+              "required": true,
+              "message": "请选择项目等级"
+            }
+          ],
+          "options": [
+            {
+              "label": "S级 - 战略核心",
+              "value": "S"
+            },
+            {
+              "label": "A级 - 重点推进",
+              "value": "A"
+            },
+            {
+              "label": "B级 - 日常迭代",
+              "value": "B"
+            }
+          ]
+        },
+        {
+          "id": "treeselect-19",
+          "component": "treeselect",
+          "label": "所属部门",
+          "value": {
+            "path": "/formData/department"
+          },
+          "rules": [
+            {
+              "required": true,
+              "message": "请选择所属部门"
+            }
+          ],
+          "treeData": [
+            {
+              "title": "技术部",
+              "value": "tech",
+              "children": [
+                {
+                  "title": "前端研发组",
+                  "value": "fe"
+                },
+                {
+                  "title": "后端研发组",
+                  "value": "be"
+                }
+              ]
+            },
+            {
+              "title": "产品部",
+              "value": "pm",
+              "children": [
+                {
+                  "title": "C端产品组",
+                  "value": "cpm"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "cascader-20",
+          "component": "cascader",
+          "label": "实施地点",
+          "value": {
+            "path": "/formData/location"
+          },
+          "rules": [
+            {
+              "required": true,
+              "message": "请选择实施地点"
+            }
+          ],
+          "options": [
+            {
+              "label": "北京",
+              "value": "bj",
+              "children": [
+                {
+                  "label": "朝阳区",
+                  "value": "cy"
+                },
+                {
+                  "label": "海淀区",
+                  "value": "hd"
+                }
+              ]
+            },
+            {
+              "label": "浙江",
+              "value": "zj",
+              "children": [
+                {
+                  "label": "杭州市",
+                  "value": "hz",
+                  "children": [
+                    {
+                      "label": "西湖区",
+                      "value": "xh"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "radio-21",
+          "component": "radio",
+          "label": "是否公开",
+          "value": {
+            "path": "/formData/isPublic"
+          },
+          "rules": [
+            {
+              "required": true,
+              "message": "请选择是否公开"
+            }
+          ],
+          "options": [
+            {
+              "label": "公开可见",
+              "value": "yes"
+            },
+            {
+              "label": "仅参与者可见",
+              "value": "no"
+            }
+          ]
+        },
+        {
+          "id": "checkbox-22",
+          "component": "checkbox",
+          "label": "项目标签",
+          "value": {
+            "path": "/formData/tags"
+          },
+          "rules": [
+            {
+              "required": true,
+              "message": "请至少选择一个标签"
+            }
+          ],
+          "options": [
+            {
+              "label": "技术创新",
+              "value": "innovate"
+            },
+            {
+              "label": "紧急交付",
+              "value": "urgent"
+            },
+            {
+              "label": "重点保障",
+              "value": "key"
+            }
+          ]
+        },
+        {
+          "id": "datepicker-23",
+          "component": "datepicker",
+          "label": "启动日期",
+          "value": {
+            "path": "/formData/startDate"
+          },
+          "rules": [
+            {
+              "required": true,
+              "message": "启动日期必填"
+            }
+          ]
+        },
+        {
+          "id": "timepicker-24",
+          "component": "timepicker",
+          "label": "每日例会时间",
+          "value": {
+            "path": "/formData/meetingTime"
+          },
+          "rules": [
+            {
+              "required": true,
+              "message": "每日例会时间必填"
+            }
+          ]
+        },
+        {
+          "id": "colorpicker-25",
+          "component": "colorpicker",
+          "label": "项目主题色",
+          "format": "hex",
+          "value": {
+            "path": "/formData/themeColor"
+          },
+          "rules": [
+            {
+              "required": true,
+              "message": "请选择主题色"
+            }
+          ]
+        },
+        {
+          "id": "switch-26",
+          "component": "switch",
+          "label": "启用监控告警",
+          "value": {
+            "path": "/formData/enableMonitor"
+          }
+        },
+        {
+          "id": "slider-27",
+          "component": "slider",
+          "label": "资源配额 (%)",
+          "min": 0,
+          "max": 100,
+          "step": 5,
+          "value": {
+            "path": "/formData/resourceQuota"
+          }
+        },
+        {
+          "id": "rate-28",
+          "component": "rate",
+          "label": "项目重要度",
+          "allowHalf": true,
+          "value": {
+            "path": "/formData/importance"
+          }
+        },
+        {
+          "id": "transfer-29",
+          "component": "transfer",
+          "label": "分配核心成员",
+          "options": [
+            {
+              "label": "李四 (前端)",
+              "value": "1"
+            },
+            {
+              "label": "王五 (后端)",
+              "value": "2"
+            },
+            {
+              "label": "赵六 (测试)",
+              "value": "3"
+            },
+            {
+              "label": "钱七 (设计)",
+              "value": "4"
+            },
+            {
+              "label": "孙八 (产品)",
+              "value": "5"
+            }
+          ],
+          "value": {
+            "path": "/formData/members"
+          },
+          "rules": [
+            {
+              "required": true,
+              "message": "请分配至少一名成员"
+            }
+          ]
+        },
+        {
+          "id": "autocomplete-30",
+          "component": "autocomplete",
+          "label": "相关技术栈",
+          "value": {
+            "path": "/formData/techStack"
+          },
+          "options": [
+            {
+              "value": "React"
+            },
+            {
+              "value": "Vue"
+            },
+            {
+              "value": "Angular"
+            },
+            {
+              "value": "Node.js"
+            },
+            {
+              "value": "TypeScript"
+            }
+          ],
+          "rules": [
+            {
+              "required": true,
+              "message": "请输入相关技术栈"
+            }
+          ]
+        },
+        {
+          "id": "mentions-31",
+          "component": "mentions",
+          "label": "@相关负责人",
+          "value": {
+            "path": "/formData/mentions"
+          },
+          "options": [
+            {
+              "label": "张三 (架构师)",
+              "value": "zhangsan"
+            },
+            {
+              "label": "李四 (前端TL)",
+              "value": "lisi"
+            }
+          ],
+          "rules": [
+            {
+              "required": true,
+              "message": "请@相关负责人"
+            }
+          ]
+        },
+        {
+          "id": "upload-32",
+          "component": "upload",
+          "label": "项目附件",
+          "action": "/api/upload",
+          "listType": "text",
+          "value": {
+            "path": "/formData/attachments"
+          }
+        },
+        {
+          "id": "button-33",
+          "component": "button",
+          "label": "提交配置",
+          "type": "primary",
+          "actionType": "submit"
+        },
+        {
+          "id": "card-list-6",
+          "component": "card",
+          "title": "数据与日志中心",
+          "bordered": true,
+          "children": [
+            "text-34",
+            "table-35",
+            "text-list-header-36",
+            "list-37",
+            "collapse-39"
+          ]
+        },
+        {
+          "id": "text-34",
+          "component": "text",
+          "content": "以下展示了系统最近的活动记录、待办事项以及常见问题解答。数据已完全 Mock，以便进行交互测试。",
+          "type": "secondary",
+          "style": {
+            "marginBottom": "16px",
+            "display": "block"
+          }
+        },
+        {
+          "id": "table-35",
+          "component": "table",
+          "rowKey": "id",
+          "columns": [
+            {
+              "title": "记录 ID",
+              "dataIndex": "id",
+              "key": "id"
+            },
+            {
+              "title": "操作人",
+              "dataIndex": "user",
+              "key": "user"
+            },
+            {
+              "title": "操作类型",
+              "dataIndex": "action",
+              "key": "action"
+            },
+            {
+              "title": "状态",
+              "dataIndex": "status",
+              "key": "status",
+              "renderAs": "tag",
+              "statusColors": {
+                "成功": "success",
+                "处理中": "processing"
+              }
+            },
+            {
+              "title": "时间",
+              "dataIndex": "time",
+              "key": "time"
+            }
+          ],
+          "data": {
+            "path": "/tableData"
+          },
+          "style": {
+            "marginBottom": "24px"
+          }
+        },
+        {
+          "id": "text-list-header-36",
+          "component": "text",
+          "content": "待办事项 (Mock)",
+          "style": {
+            "fontWeight": "bold",
+            "fontSize": "16px",
+            "marginBottom": "8px",
+            "display": "block"
+          }
+        },
+        {
+          "id": "list-37",
+          "component": "list",
+          "data": {
+            "path": "/listData"
+          },
+          "children": [
+            "text-list-item-38"
+          ],
+          "style": {
+            "marginBottom": "24px",
+            "paddingLeft": "16px"
+          }
+        },
+        {
+          "id": "text-list-item-38",
+          "component": "text",
+          "content": "• ${$current.content}",
+          "style": {
+            "display": "block",
+            "marginBottom": "4px"
+          }
+        },
+        {
+          "id": "collapse-39",
+          "component": "collapse",
+          "options": [
+            {
+              "label": "如何修改系统主题色？",
+              "value": "q1",
+              "children": [
+                "text-collapse1-40"
+              ]
+            },
+            {
+              "label": "上传附件的格式限制有哪些？",
+              "value": "q2",
+              "children": [
+                "text-collapse2-41"
+              ]
+            }
+          ]
+        },
+        {
+          "id": "text-collapse1-40",
+          "component": "text",
+          "content": "您可以在上方\"系统配置中心\"找到\"项目主题色\"进行修改，修改后将实时生效，不会出现硬编码颜色冲突的问题。"
+        },
+        {
+          "id": "text-collapse2-41",
+          "component": "text",
+          "content": "目前支持的文件格式包括：.jpg, .png, .pdf, .docx, 最大限制为 10MB。"
+        }
+      ],
+      "dataModel": {
+        "formData": {
+          "projectName": "FAUI 重构项目",
+          "projectDesc": "这是一个为了提升系统交互体验而进行的前端重构项目。",
+          "budget": 500,
+          "level": "S",
+          "department": "fe",
+          "location": [
+            "bj",
+            "cy"
+          ],
+          "isPublic": "yes",
+          "tags": [
+            "innovate",
+            "urgent"
+          ],
+          "startDate": "2023-11-01",
+          "meetingTime": "10:30:00",
+          "themeColor": "#1890ff",
+          "enableMonitor": true,
+          "resourceQuota": 75,
+          "importance": 4.5,
+          "members": [
+            "1",
+            "2",
+            "3"
+          ],
+          "techStack": "React",
+          "mentions": "@zhangsan 需要注意进度",
+          "attachments": []
+        },
+        "tableData": [
+          {
+            "id": "LOG-001",
+            "user": "张三",
+            "action": "修改项目配置",
+            "status": "成功",
+            "time": "2023-10-25 10:00"
+          },
+          {
+            "id": "LOG-002",
+            "user": "李四",
+            "action": "上传附件",
+            "status": "成功",
+            "time": "2023-10-25 11:30"
+          },
+          {
+            "id": "LOG-003",
+            "user": "王五",
+            "action": "审核通过",
+            "status": "处理中",
+            "time": "2023-10-26 09:15"
+          },
+          {
+            "id": "LOG-004",
+            "user": "系统",
+            "action": "自动备份",
+            "status": "成功",
+            "time": "2023-10-26 02:00"
+          }
+        ],
+        "listData": [
+          {
+            "content": "【紧急】修复线上登录异常问题 (负责人: 张三)"
+          },
+          {
+            "content": "【日常】更新 Q4 季度财务报表 (负责人: 李四)"
+          },
+          {
+            "content": "【提醒】参加下午 2 点的技术分享会 (地点: 会议室A)"
+          }
+        ]
+      }
+    }
+  }
+]

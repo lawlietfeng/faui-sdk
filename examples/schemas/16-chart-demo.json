@@ -1,0 +1,206 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "components": [
+        {
+          "id": "root",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 24,
+          "padding": 24,
+          "on_mount": [
+            { "action": "update_data", "path": "/loading", "value": true },
+            {
+              "action": "http_proxy",
+              "payload": { "http_config": { "method": "GET", "path": "/api/mock/chart-data" } },
+              "on_success": [
+                { "action": "update_data", "path": "/monthly", "value": "${$result.data.monthly}" },
+                { "action": "update_data", "path": "/categories", "value": "${$result.data.categories}" },
+                { "action": "update_data", "path": "/loading", "value": false },
+                { "action": "message", "payload": { "type": "success", "content": "图表数据加载完成" } }
+              ],
+              "on_error": [
+                { "action": "update_data", "path": "/loading", "value": false },
+                { "action": "notification", "payload": { "type": "error", "message": "加载失败", "description": "${$error}" } }
+              ]
+            }
+          ],
+          "children": ["title", "desc", "divider1", "row1", "divider2", "row2", "divider3", "native-title", "native-chart"]
+        },
+
+        {
+          "id": "title",
+          "component": "typography",
+          "level": 3,
+          "content": "Chart 可视化组件演示"
+        },
+        {
+          "id": "desc",
+          "component": "text",
+          "content": "基于 ECharts 的声明式图表渲染。支持简化模式（chartType + xField/yField）和原生模式（直接传 ECharts option）。",
+          "style": { "color": "#666" }
+        },
+
+        { "id": "divider1", "component": "divider", "content": "简化模式 — 折线图 & 柱状图" },
+
+        {
+          "id": "row1",
+          "component": "grid",
+          "gutter": 16,
+          "children": ["col-line", "col-bar"]
+        },
+        {
+          "id": "col-line",
+          "component": "col",
+          "span": 12,
+          "children": ["card-line"]
+        },
+        {
+          "id": "card-line",
+          "component": "card",
+          "title": "月度营收趋势（折线图）",
+          "children": ["line-chart"]
+        },
+        {
+          "id": "line-chart",
+          "component": "chart",
+          "chartType": "line",
+          "data": { "path": "/monthly" },
+          "xField": "month",
+          "yField": ["revenue", "profit"],
+          "title": "",
+          "height": 320,
+          "smooth": true,
+          "showLegend": true,
+          "showTooltip": true,
+          "loading": "${$root.loading}"
+        },
+        {
+          "id": "col-bar",
+          "component": "col",
+          "span": 12,
+          "children": ["card-bar"]
+        },
+        {
+          "id": "card-bar",
+          "component": "card",
+          "title": "月度成本对比（柱状图）",
+          "children": ["bar-chart"]
+        },
+        {
+          "id": "bar-chart",
+          "component": "chart",
+          "chartType": "bar",
+          "data": { "path": "/monthly" },
+          "xField": "month",
+          "yField": ["revenue", "cost"],
+          "height": 320,
+          "stacked": false,
+          "showLegend": true,
+          "loading": "${$root.loading}"
+        },
+
+        { "id": "divider2", "component": "divider", "content": "简化模式 — 饼图 & 面积图" },
+
+        {
+          "id": "row2",
+          "component": "grid",
+          "gutter": 16,
+          "children": ["col-pie", "col-area"]
+        },
+        {
+          "id": "col-pie",
+          "component": "col",
+          "span": 12,
+          "children": ["card-pie"]
+        },
+        {
+          "id": "card-pie",
+          "component": "card",
+          "title": "品类销售占比（饼图）",
+          "children": ["pie-chart"]
+        },
+        {
+          "id": "pie-chart",
+          "component": "chart",
+          "chartType": "pie",
+          "data": { "path": "/categories" },
+          "xField": "name",
+          "yField": "value",
+          "height": 320,
+          "loading": "${$root.loading}"
+        },
+        {
+          "id": "col-area",
+          "component": "col",
+          "span": 12,
+          "children": ["card-area"]
+        },
+        {
+          "id": "card-area",
+          "component": "card",
+          "title": "利润趋势（面积图）",
+          "children": ["area-chart"]
+        },
+        {
+          "id": "area-chart",
+          "component": "chart",
+          "chartType": "area",
+          "data": { "path": "/monthly" },
+          "xField": "month",
+          "yField": "profit",
+          "height": 320,
+          "smooth": true,
+          "loading": "${$root.loading}"
+        },
+
+        { "id": "divider3", "component": "divider", "content": "原生模式 — ECharts option 直传" },
+
+        {
+          "id": "native-title",
+          "component": "text",
+          "content": "以下图表使用原生 ECharts option 配置，支持完整 50+ 图表类型和全部配置项。",
+          "style": { "color": "#666", "marginBottom": 16 }
+        },
+        {
+          "id": "native-chart",
+          "component": "chart",
+          "option": {
+            "tooltip": { "trigger": "axis" },
+            "legend": { "data": ["销售额", "利润率"] },
+            "xAxis": [
+              { "type": "category", "data": ["Q1", "Q2", "Q3", "Q4"] }
+            ],
+            "yAxis": [
+              { "type": "value", "name": "销售额 (万)" },
+              { "type": "value", "name": "利润率 (%)", "axisLabel": { "formatter": "{value}%" } }
+            ],
+            "series": [
+              {
+                "name": "销售额",
+                "type": "bar",
+                "data": [1520, 1830, 2210, 2650],
+                "itemStyle": { "color": "#5B8FF9" }
+              },
+              {
+                "name": "利润率",
+                "type": "line",
+                "yAxisIndex": 1,
+                "data": [18.5, 22.3, 26.1, 30.8],
+                "smooth": true,
+                "itemStyle": { "color": "#5AD8A6" }
+              }
+            ]
+          },
+          "height": 400
+        }
+      ],
+      "dataModel": {
+        "loading": false,
+        "monthly": [],
+        "categories": []
+      }
+    }
+  }
+]

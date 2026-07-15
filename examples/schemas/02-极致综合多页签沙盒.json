@@ -1,0 +1,323 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "id": "ultra-complex-tabs-demo",
+      "name": "Tabs 极致综合复杂测试沙盒",
+      "version": "1.0.0",
+      "dataModel": {
+        "currentTab": "dashboard",
+        "user": {
+          "name": "FAUI 体验官",
+          "role": "高级架构师",
+          "status": "processing"
+        },
+        "stats": {
+          "revenue": 158400.5,
+          "users": 1024
+        },
+        "form": {
+          "projectName": "FAUI 核心渲染引擎",
+          "priority": "high",
+          "progress": 65,
+          "rating": 4,
+          "notify": true
+        }
+      },
+      "components": [
+        {
+          "id": "root",
+          "component": "flex",
+          "vertical": true,
+          "gap": 24,
+          "style": {
+            "padding": "24px",
+            "background": "#f0f2f5",
+            "minHeight": "100vh"
+          },
+          "children": ["header-section", "tabs-section"]
+        },
+        {
+          "id": "header-section",
+          "component": "card",
+          "variant": "borderless",
+          "style": {
+            "borderRadius": "8px",
+            "boxShadow": "0 1px 2px 0 rgba(0, 0, 0, 0.03)"
+          },
+          "children": ["header-flex"]
+        },
+        {
+          "id": "header-flex",
+          "component": "flex",
+          "align": "center",
+          "justify": "space-between",
+          "children": ["header-user-info", "header-badge"]
+        },
+        {
+          "id": "header-user-info",
+          "component": "flex",
+          "align": "center",
+          "gap": 16,
+          "children": ["user-avatar", "user-typography"]
+        },
+        {
+          "id": "user-avatar",
+          "component": "avatar",
+          "size": 64,
+          "style": { "backgroundColor": "#1677ff" },
+          "content": "FA"
+        },
+        {
+          "id": "user-typography",
+          "component": "typography",
+          "items": [
+            { "type": "title", "level": 4, "content": "欢迎回来, ${$root.user.name} 👋", "style": { "margin": 0 } },
+            { "type": "text", "textType": "secondary", "content": "当前角色: ${$root.user.role} | 状态: 正常运行" }
+          ]
+        },
+        {
+          "id": "header-badge",
+          "component": "badge",
+          "count": 12,
+          "status": { "path": "/user/status" },
+          "text": "系统消息"
+        },
+        {
+          "id": "tabs-section",
+          "component": "card",
+          "variant": "borderless",
+          "style": {
+            "borderRadius": "8px",
+            "boxShadow": "0 1px 2px 0 rgba(0, 0, 0, 0.03)"
+          },
+          "children": ["main-tabs"]
+        },
+        {
+          "id": "main-tabs",
+          "component": "tabs",
+          "activeKey": { "path": "/currentTab" },
+          "type": "card",
+          "size": "large",
+          "animated": true,
+          "items": [
+            {
+              "key": "dashboard",
+              "label": "📈 数据大盘",
+              "children": ["tab-dashboard-content"]
+            },
+            {
+              "key": "forms",
+              "label": "📝 复杂表单",
+              "children": ["tab-form-content"]
+            },
+            {
+              "key": "components",
+              "label": "🧩 综合展示区",
+              "children": ["tab-components-content"]
+            }
+          ]
+        },
+        {
+          "id": "tab-dashboard-content",
+          "component": "flex",
+          "vertical": true,
+          "gap": 24,
+          "style": { "padding": "16px 0" },
+          "children": ["dashboard-alert", "dashboard-stats-row", "dashboard-timeline-card"]
+        },
+        {
+          "id": "dashboard-alert",
+          "component": "alert",
+          "message": "系统核心提示",
+          "description": "FAUI 渲染引擎已更新至最新版本，当前激活的 Tab Key 为: ${$root.currentTab}。您可以尝试切换到表单并进行交互。",
+          "type": "success",
+          "showIcon": true
+        },
+        {
+          "id": "dashboard-stats-row",
+          "component": "row",
+          "gutter": 16,
+          "children": ["stat-col-1", "stat-col-2"]
+        },
+        {
+          "id": "stat-col-1",
+          "component": "col",
+          "span": 12,
+          "children": ["stat-card-1"]
+        },
+        {
+          "id": "stat-card-1",
+          "component": "card",
+          "children": ["stat-revenue"]
+        },
+        {
+          "id": "stat-revenue",
+          "component": "statistic",
+          "title": "本季度营收预测 (CNY)",
+          "value": { "path": "/stats/revenue" },
+          "precision": 2,
+          "prefix": "¥",
+          "valueStyle": { "color": "#cf1322" }
+        },
+        {
+          "id": "stat-col-2",
+          "component": "col",
+          "span": 12,
+          "children": ["stat-card-2"]
+        },
+        {
+          "id": "stat-card-2",
+          "component": "card",
+          "children": ["stat-users"]
+        },
+        {
+          "id": "stat-users",
+          "component": "statistic",
+          "title": "系统在线活跃用户",
+          "value": { "path": "/stats/users" },
+          "valueStyle": { "color": "#3f8600" }
+        },
+        {
+          "id": "dashboard-timeline-card",
+          "component": "card",
+          "title": "近期版本动态",
+          "variant": "borderless",
+          "children": ["dashboard-timeline"]
+        },
+        {
+          "id": "dashboard-timeline",
+          "component": "timeline",
+          "mode": "alternate",
+          "items": [
+            { "color": "green", "content": "创建了 FAUI 项目，奠定 JSON Schema 基础 (2023-01-01)" },
+            { "color": "blue", "content": "发布了 v1.0.0 核心版本，引入 Pub-Sub (2023-06-15)" },
+            { "color": "red", "content": "深度修复了 React 节点导致的 Maximum call stack 溢出问题 (刚刚)" }
+          ]
+        },
+        {
+          "id": "tab-form-content",
+          "component": "form",
+          "layout": "vertical",
+          "style": { "maxWidth": "600px", "padding": "16px 0" },
+          "children": [
+            "form-input-title",
+            "form-radio-priority",
+            "form-slider-progress",
+            "form-rate-rating",
+            "form-switch-notify",
+            "form-submit-btn"
+          ]
+        },
+        {
+          "id": "form-input-title",
+          "component": "input",
+          "label": "项目名称",
+          "value": { "path": "/form/projectName" }
+        },
+        {
+          "id": "form-radio-priority",
+          "component": "radio",
+          "label": "开发优先级",
+          "value": { "path": "/form/priority" },
+          "options": [
+            { "label": "高 (High)", "value": "high" },
+            { "label": "中 (Medium)", "value": "medium" },
+            { "label": "低 (Low)", "value": "low" }
+          ]
+        },
+        {
+          "id": "form-slider-progress",
+          "component": "slider",
+          "label": "当前工程进度: ${$root.form.progress}%",
+          "value": { "path": "/form/progress" }
+        },
+        {
+          "id": "form-rate-rating",
+          "component": "rate",
+          "label": "项目评级",
+          "value": { "path": "/form/rating" }
+        },
+        {
+          "id": "form-switch-notify",
+          "component": "switch",
+          "checkedChildren": "开启通知",
+          "unCheckedChildren": "关闭通知",
+          "checked": { "path": "/form/notify" }
+        },
+        {
+          "id": "form-submit-btn",
+          "component": "button",
+          "type": "primary",
+          "block": true,
+          "content": "提交表单 (当前项目: ${$root.form.projectName})",
+          "on_tap": [
+            { "action": "update_data", "path": "/stats/users", "value": 2048 }
+          ]
+        },
+        {
+          "id": "tab-components-content",
+          "component": "space",
+          "direction": "vertical",
+          "size": "large",
+          "style": { "width": "100%", "padding": "16px 0" },
+          "children": ["comp-collapse", "comp-qrcode-watermark", "comp-empty"]
+        },
+        {
+          "id": "comp-collapse",
+          "component": "collapse",
+          "items": [
+            {
+              "key": "1",
+              "label": "❓ 什么是 FAUI？",
+              "children": ["collapse-text-1"]
+            },
+            {
+              "key": "2",
+              "label": "🚀 核心优势与性能保障",
+              "children": ["collapse-text-2"]
+            }
+          ]
+        },
+        {
+          "id": "collapse-text-1",
+          "component": "typography",
+          "content": "FAUI 是一个基于 Ant Design 5.x 和 JSON Schema 驱动的高性能动态渲染引擎。一切 UI 皆可 JSON 化。"
+        },
+        {
+          "id": "collapse-text-2",
+          "component": "typography",
+          "content": "通过极致的 useSyncExternalStore 结合 Pub-Sub 订阅机制，完美避免了 React Context 引起的全局重渲染灾难。即使在庞大的表单或 Tabs 嵌套下，依然能保持丝滑的交互体验。"
+        },
+        {
+          "id": "comp-qrcode-watermark",
+          "component": "flex",
+          "gap": 48,
+          "children": ["qrcode-item", "watermark-item"]
+        },
+        {
+          "id": "qrcode-item",
+          "component": "qrcode",
+          "content": "https://github.com/ant-design/ant-design",
+          "color": "#1677ff"
+        },
+        {
+          "id": "watermark-item",
+          "component": "watermark",
+          "content": "FAUI Confidential",
+          "children": ["watermark-box"]
+        },
+        {
+          "id": "watermark-box",
+          "component": "box",
+          "style": { "height": "160px", "width": "400px", "background": "#fafafa", "border": "1px dashed #d9d9d9" }
+        },
+        {
+          "id": "comp-empty",
+          "component": "empty",
+          "description": "这是底部的空状态组件演示区"
+        }
+      ]
+    }
+  }
+]

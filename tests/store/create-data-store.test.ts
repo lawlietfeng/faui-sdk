@@ -81,6 +81,40 @@ describe("createDataStore", () => {
     expect(listener).not.toHaveBeenCalled();
   });
 
+  it("notifies a shared listener only once for one update", () => {
+    const store = createDataStore({ user: { name: "Ann" } });
+    const listener = vi.fn();
+
+    store.subscribe(listener);
+    store.subscribe("/user", listener);
+    store.subscribe("/user/name", listener);
+    store.setByPath("/user/name", "Bob");
+
+    expect(listener).toHaveBeenCalledTimes(1);
+  });
+
+  it("returns a harmless unsubscribe function when a path listener is omitted", () => {
+    const store = createDataStore({ ready: false });
+    const unsubscribe = (store.subscribe as any)("/ready");
+
+    expect(() => unsubscribe()).not.toThrow();
+    store.setByPath("/ready", true);
+    expect(store.getByPath("/ready")).toBe(true);
+  });
+
+  it("notifies every path subscription when the root is replaced", () => {
+    const store = createDataStore({ user: { name: "Ann" }, ready: false });
+    const userListener = vi.fn();
+    const readyListener = vi.fn();
+
+    store.subscribe("/user/name", userListener);
+    store.subscribe("/ready", readyListener);
+    store.setByPath("/", { user: { name: "Bob" }, ready: true });
+
+    expect(userListener).toHaveBeenCalledTimes(1);
+    expect(readyListener).toHaveBeenCalledTimes(1);
+  });
+
   it("keeps 100 path subscriptions inside the expected update boundary", () => {
     const store = createDataStore({
       items: Array.from({ length: 100 }, (_, index) => ({
@@ -117,5 +151,12 @@ describe("path helpers", () => {
   it("sets root and missing nested paths", () => {
     expect(setByPath({ old: true }, "/", { next: true })).toEqual({ next: true });
     expect(setByPath({}, "/items/0/name", "Ann")).toEqual({ items: [{ name: "Ann" }] });
+  });
+
+  it("handles normalized roots, numeric object keys and escaped segments", () => {
+    expect(normalizeDataPath("///")).toBe("/");
+    expect(normalizeDataPath("/items//0/name")).toBe("/items/0/name");
+    expect(setByPath({}, "/2026/value", true)).toEqual({ 2026: { value: true } });
+    expect(setByPath({}, "/a~1b/~0key", 1)).toEqual({ "a/b": { "~key": 1 } });
   });
 });

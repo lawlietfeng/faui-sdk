@@ -29,6 +29,7 @@ export interface RendererContextValue {
 }
 
 const RendererContext = createContext<RendererContextValue | null>(null);
+const EMPTY_DATA: DataModel = {};
 
 export const useRendererContext = (): RendererContextValue => {
   const context = useContext(RendererContext);
@@ -123,7 +124,7 @@ interface RendererContextProviderProps {
 
 export const RendererContextProvider: React.FC<RendererContextProviderProps> = ({
   dataModel: initialDataModel,
-  initialData = {},
+  initialData = EMPTY_DATA,
   liveData,
   componentRegistry,
   httpRequest,

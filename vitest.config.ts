@@ -6,6 +6,22 @@ export default defineConfig({
   test: {
     environment: "happy-dom",
     include: ["tests/**/*.{test,spec}.{ts,tsx}"],
-    setupFiles: ["tests/setup.ts"]
+    setupFiles: ["tests/setup.ts"],
+    coverage: {
+      provider: "v8",
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: [
+        "src/types/**",
+        "src/**/*.d.ts"
+      ],
+      reporter: ["text", "html", "json-summary"],
+      reportOnFailure: true,
+      thresholds: {
+        statements: 85,
+        branches: 80,
+        functions: 85,
+        lines: 85
+      }
+    }
   }
 });

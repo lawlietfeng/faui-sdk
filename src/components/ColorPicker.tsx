@@ -59,8 +59,14 @@ export const ColorPicker: React.FC<ComponentProps<'colorpicker'>> = ({ config })
     if (config.on_change) {
       const [resolved, extra] = resolveOnChange(config.on_change, hexString);
       handleAction(resolved, extra);
+    } else if (path) {
+      handleAction({
+        action: 'update_data',
+        path,
+        value: hexString,
+      });
     }
-  }, [config.id, config.on_change, formContext, handleAction]);
+  }, [config.id, config.on_change, formContext, handleAction, path]);
 
   const errorInfo = formContext?.getFieldErrorInfo(config.id);
 

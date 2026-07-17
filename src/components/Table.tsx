@@ -18,7 +18,26 @@ export const Table: React.FC<ComponentProps<'table'>> = ({ config, componentMap 
   const dataPath = config.data?.path;
   const rawData = useDataSelector(dataPath);
   const dataSource = useExpression(Array.isArray(rawData) ? rawData : []) as TableRow[];
-  const evaluatedColumns = (useExpression(config.columns) || []) as TableColumn[];
+  const columnsWithoutTemplates = useMemo(
+    () => Array.isArray(config.columns)
+      ? config.columns.map(column => {
+          const result = { ...column };
+          delete result.template;
+          return result;
+        })
+      : config.columns,
+    [config.columns]
+  );
+  const evaluatedColumnFields = useExpression(columnsWithoutTemplates);
+  const evaluatedColumns = useMemo(
+    () => Array.isArray(evaluatedColumnFields)
+      ? evaluatedColumnFields.map((column, index) => ({
+          ...column,
+          template: Array.isArray(config.columns) ? config.columns[index]?.template : column.template,
+        })) as TableColumn[]
+      : [],
+    [evaluatedColumnFields, config.columns]
+  );
   const evaluatedPagination = useExpression(config.pagination);
   const evaluatedBordered = useExpression(config.bordered) as boolean | undefined;
   const evaluatedTableSize = useExpression(config.tableSize) as 'small' | 'middle' | 'large' | undefined;

@@ -38,7 +38,7 @@ export async function httpProxyAction(
     headers: http_config.headers || {},
   };
 
-  if (http_body) {
+  if (http_body !== undefined) {
     config.body = evaluateHttpBody(http_body, executor);
   }
 

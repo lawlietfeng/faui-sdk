@@ -3,12 +3,12 @@ import { describe, expect, it } from "vitest";
 import App from "../examples/App";
 
 describe("App", () => {
-  it("renders the SDK example information", () => {
+  it("renders the SDK example shell", () => {
     render(<App />);
 
-    expect(screen.getByRole("heading", { name: "FAUI SDK" })).toBeInTheDocument();
-    expect(screen.getByText("@lawlietfeng/faui-sdk")).toBeInTheDocument();
-    expect(screen.getByText("Version: 0.0.0")).toBeInTheDocument();
-    expect(screen.getByText("Mode: form")).toBeInTheDocument();
+    expect(screen.getByText("FAUI")).toBeInTheDocument();
+    expect(screen.getByRole("option", { name: "01-企业级复杂表单" })).toBeInTheDocument();
+    expect(screen.getByText("Lifecycle")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /\{ \} JSON/ })).toBeInTheDocument();
   });
 });

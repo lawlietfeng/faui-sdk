@@ -97,7 +97,7 @@
     "url": "https://github.com/lawlietfeng/faui-sdk.git"
   },
   "homepage": "https://github.com/lawlietfeng/faui-sdk#readme",
-  "license": "AGPL-3.0-only",
+  "license": "MIT",
   "dependencies": {
     "fast-json-patch": "^3.1.1"
   }

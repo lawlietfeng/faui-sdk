@@ -14,6 +14,11 @@ interface FieldErrorInfo {
   help?: string;
 }
 
+export interface FormValidationResult {
+  valid: boolean;
+  errors: Record<string, string>;
+}
+
 export interface FormFieldRegistration {
   name: string;
   rules?: Rule[];
@@ -28,6 +33,11 @@ export interface FormContextValue {
   syncFieldValue: (componentId: string, value: unknown) => void;
   validateField: (componentId: string, trigger?: ValidateTrigger) => Promise<boolean>;
   validateAll: () => Promise<boolean>;
+  validateAllDetailed: () => Promise<FormValidationResult>;
+  setExternalErrors: (errors: Record<string, string>) => void;
+  submit: (submitButtonId?: string) => Promise<boolean>;
+  registerSubmitHandler: (componentId: string, handler: () => void | Promise<void>) => void;
+  unregisterSubmitHandler: (componentId: string) => void;
   isSubmitButton: (componentId: string) => boolean;
   getFieldErrorInfo: (componentId: string) => FieldErrorInfo;
 }
@@ -43,9 +53,10 @@ interface FormProviderProps {
   children: React.ReactNode;
 }
 
-export const FormProvider: React.FC<FormProviderProps> = ({ submitButtonId, children }) => {
+export const FormProvider: React.FC<FormProviderProps> = ({ submitButtonId: submitButtonIdFromProvider, children }) => {
   const [form] = AntForm.useForm();
   const fieldsRef = useRef<Map<string, RegisteredField>>(new Map());
+  const submitHandlersRef = useRef<Map<string, () => void | Promise<void>>>(new Map());
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const setFieldError = useCallback((componentId: string, message?: string) => {
@@ -130,9 +141,48 @@ export const FormProvider: React.FC<FormProviderProps> = ({ submitButtonId, chil
     return allPassed;
   }, [form, setFieldError]);
 
+  const validateAllDetailed = useCallback(async (): Promise<FormValidationResult> => {
+    const nextErrors: Record<string, string> = {};
+    for (const [componentId, field] of fieldsRef.current.entries()) {
+      const value = form.getFieldValue(field.name);
+      const message = getFirstRuleError(value, field.rules);
+      if (message) {
+        nextErrors[componentId] = message;
+      }
+    }
+    setErrors(nextErrors);
+    return { valid: Object.keys(nextErrors).length === 0, errors: nextErrors };
+  }, [form]);
+
+  const setExternalErrors = useCallback((nextErrors: Record<string, string>) => {
+    setErrors(nextErrors);
+  }, []);
+
+  const registerSubmitHandler = useCallback((componentId: string, handler: () => void | Promise<void>) => {
+    submitHandlersRef.current.set(componentId, handler);
+  }, []);
+
+  const unregisterSubmitHandler = useCallback((componentId: string) => {
+    submitHandlersRef.current.delete(componentId);
+  }, []);
+
+  const submit = useCallback(async (submitButtonId?: string): Promise<boolean> => {
+    const passed = await validateAll();
+    if (!passed) {
+      return false;
+    }
+
+    const buttonId = submitButtonId ?? submitButtonIdFromProvider;
+    const handler = buttonId ? submitHandlersRef.current.get(buttonId) : undefined;
+    if (handler) {
+      await handler();
+    }
+    return true;
+  }, [validateAll, submitButtonIdFromProvider]);
+
   const isSubmitButton = useCallback((componentId: string): boolean => {
-    return Boolean(submitButtonId) && componentId === submitButtonId;
-  }, [submitButtonId]);
+    return Boolean(submitButtonIdFromProvider) && componentId === submitButtonIdFromProvider;
+  }, [submitButtonIdFromProvider]);
 
   const getFieldErrorInfo = useCallback((componentId: string): FieldErrorInfo => {
     const error = errors[componentId];
@@ -152,9 +202,14 @@ export const FormProvider: React.FC<FormProviderProps> = ({ submitButtonId, chil
     syncFieldValue,
     validateField,
     validateAll,
+    validateAllDetailed,
+    setExternalErrors,
+    submit,
+    registerSubmitHandler,
+    unregisterSubmitHandler,
     isSubmitButton,
     getFieldErrorInfo,
-  }), [form, registerField, unregisterField, syncFieldValue, validateField, validateAll, isSubmitButton, getFieldErrorInfo]);
+  }), [form, registerField, unregisterField, syncFieldValue, validateField, validateAll, validateAllDetailed, setExternalErrors, submit, registerSubmitHandler, unregisterSubmitHandler, isSubmitButton, getFieldErrorInfo]);
 
   return (
     <FormContext.Provider value={value}>

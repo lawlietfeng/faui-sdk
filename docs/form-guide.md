@@ -14,7 +14,7 @@
 | ---------------- | ---------- | --------------------------------------------------- |
 | `component`      | `"form"`   | 声明这是一个表单容器。                                         |
 | `children`       | `string[]` | 包含表单内所有字段组件和提交按钮的 ID 数组。                            |
-| `submitButtonId` | `string`   | **重要**：指定触发提交的按钮 ID。当该按钮被点击时，`form` 会先拦截点击并执行全表单校验。 |
+| `submitButtonId` | `string`   | 内部提交模式使用。指定触发校验和 `on_tap` 的按钮 ID；外部提交模式可省略。 |
 
 ```json
 {
@@ -24,6 +24,12 @@
   "children": ["name-input", "submit-btn"]
 }
 ```
+
+## 外部提交模式
+
+如果提交按钮位于 FAUI schema 外部，可以通过 `Renderer` ref 调用 `validate()` 和 `submit()`。该模式不需要 `submitButtonId`，并且不会执行内部 `http_proxy`。
+
+完整 API 和示例见 [外部校验与提交](./external-submit.md)。
 
 ## 核心机制：数据双向绑定与自动回写 (The "Magic")
 
@@ -302,7 +308,7 @@
 
 **Q: 提交按钮点击没反应，也不发请求？**
 
-- 检查 `form` 的 `submitButtonId` 是否与提交按钮的 `id` 拼写**完全一致**。
+- 内部提交模式下，检查 `form` 的 `submitButtonId` 是否与提交按钮的 `id` 拼写**完全一致**。
 - 检查页面上是否有字段校验未通过（红色报错提示可能在页面下方，滚动查看）。表单校验不通过时会直接阻断 `on_tap`。
 
 **Q: 输入框输入了内容，但提交时发现数据是空的？**
@@ -322,4 +328,3 @@
 **Q: inputnumber 组件无法输入任何内容？**
 
 - `inputnumber` 只接受数字。如果初始值渲染为空，请确认 `dataModel` 中对应的字段是 `number` 类型而非 `string`。
-

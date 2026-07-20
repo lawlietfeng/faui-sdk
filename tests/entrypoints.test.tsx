@@ -2,6 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import type { Activity, Component } from "../src/types/schema";
+import type { RendererHandle } from "../src/SchemaRenderer";
 import * as packageEntry from "../src/index";
 import * as formEntry from "../src/index.tsx";
 import * as fullEntry from "../src/full";
@@ -48,6 +49,18 @@ describe("package entry points", () => {
     const Custom = () => <div>Custom entry</div>;
     render(<EntryRenderer schema={snapshot("custom")} componentRegistry={{ custom: Custom }} />);
     expect(screen.getByText("Custom entry")).toBeInTheDocument();
+  });
+
+  it.each([
+    ["form", formEntry.Renderer],
+    ["full", fullEntry.Renderer],
+  ] as const)("exposes the renderer handle through the %s entry", (_name, EntryRenderer) => {
+    const ref = React.createRef<RendererHandle>();
+    render(<EntryRenderer ref={ref} schema={snapshot()} />);
+    expect(ref.current).toEqual(expect.objectContaining({
+      validate: expect.any(Function),
+      submit: expect.any(Function),
+    }));
   });
 
   it("exposes the documented shared runtime API", () => {

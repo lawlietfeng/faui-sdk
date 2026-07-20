@@ -1,7 +1,16 @@
-import React, { Component, useEffect, useMemo, useState, useCallback, type ReactNode } from 'react';
+import React, { Component, useEffect, useMemo, useState, useCallback, useRef, type ReactNode } from 'react';
 import { ConfigProvider, Switch, theme } from 'antd';
 import { ActionRegistry, ComponentRegistry, Renderer, SchemaRenderer, evaluateExpression } from '../src/full';
-import type { ActionConfig, Activity, ActivitySnapshot, HttpRequestConfig } from '../src/full';
+import type {
+  ActionConfig,
+  Activity,
+  ActivitySnapshot,
+  DataModel,
+  HttpRequestConfig,
+  RendererHandle,
+  SubmitResult,
+  ValidationResult,
+} from '../src/full';
 
 const schemaModules = import.meta.glob('./schemas/*.json', { eager: true }) as Record<
   string,
@@ -172,6 +181,39 @@ class RendererErrorBoundary extends Component<
 }
 
 const BAR_HEIGHT = 48;
+const EXTERNAL_SUBMIT_SCHEMA_KEY = '19-外部提交演示';
+const EXTERNAL_SUBMIT_FORM_ID = 'external-submit-form';
+
+interface ExternalSubmitDemoState {
+  status: string;
+  data?: DataModel;
+  validation?: ValidationResult;
+  error?: string;
+}
+
+interface ResultPanelProps {
+  title: string;
+  value: unknown;
+  colors: {
+    panelBorder: string;
+    textMuted: string;
+    inputBg: string;
+    text: string;
+  };
+}
+
+const ResultPanel: React.FC<ResultPanelProps> = ({ title, value, colors }) => (
+  <div style={{ border: `1px solid ${colors.panelBorder}`, borderRadius: 8, overflow: 'hidden' }}>
+    <div style={{ padding: '6px 10px', color: colors.textMuted, fontSize: 12 }}>{title}</div>
+    <pre style={{
+      margin: 0, padding: 10, minHeight: 64,
+      background: colors.inputBg, color: colors.text,
+      fontSize: 11, whiteSpace: 'pre-wrap', overflowWrap: 'anywhere',
+    }}>
+      {value === undefined ? '—' : typeof value === 'string' ? value : JSON.stringify(value, null, 2)}
+    </pre>
+  </div>
+);
 
 export default function App() {
   useEffect(() => {
@@ -183,6 +225,11 @@ export default function App() {
   const [isDark, setIsDark] = useState(false);
   const [renderMode, setRenderMode] = useState<'lifecycle' | 'pure'>('lifecycle');
   const [showJson, setShowJson] = useState(false);
+  const rendererRef = useRef<RendererHandle>(null);
+  const [simulateSubmitFailure, setSimulateSubmitFailure] = useState(false);
+  const [externalSubmitState, setExternalSubmitState] = useState<ExternalSubmitDemoState>({
+    status: '等待操作',
+  });
 
   const selectedOption = useMemo(
     () => schemaOptions.find(option => option.key === selectedKey) ?? initialOption,
@@ -315,6 +362,73 @@ export default function App() {
   }, [showJson]);
 
   const rendererKey = `${selectedKey}:${schemaRevision}`;
+  const isExternalSubmitDemo = selectedKey === EXTERNAL_SUBMIT_SCHEMA_KEY;
+
+  useEffect(() => {
+    setExternalSubmitState({ status: '等待操作' });
+    setSimulateSubmitFailure(false);
+  }, [selectedKey, renderMode]);
+
+  const handleDemoValidate = useCallback(async () => {
+    setExternalSubmitState({ status: '校验中' });
+    const result = await rendererRef.current?.validate(EXTERNAL_SUBMIT_FORM_ID);
+    if (!result) {
+      setExternalSubmitState({ status: '校验失败', error: 'Renderer ref 尚未就绪' });
+      return;
+    }
+    setExternalSubmitState({
+      status: result.valid ? '校验通过，未执行提交' : '校验未通过',
+      data: result.data,
+      validation: result,
+    });
+  }, []);
+
+  const handleDemoSubmit = useCallback(async (validate: boolean) => {
+    setExternalSubmitState(previous => ({ ...previous, status: validate ? '校验并提交中' : '跳过校验提交中', error: undefined }));
+    const result: SubmitResult | undefined = await rendererRef.current?.submit(
+      EXTERNAL_SUBMIT_FORM_ID,
+      { validate },
+    );
+    if (!result) {
+      setExternalSubmitState({ status: '提交失败', error: 'Renderer ref 尚未就绪' });
+      return;
+    }
+    setExternalSubmitState({
+      status: result.status,
+      data: result.data,
+      validation: result.validation,
+      error: result.error instanceof Error ? result.error.message : result.error ? String(result.error) : undefined,
+    });
+  }, []);
+
+  const handleDemoCustomValidate = useCallback(async (
+    data: DataModel,
+    context: { formId: string },
+  ): Promise<ValidationResult> => {
+    const profile = data.profile as Record<string, unknown> | undefined;
+    const blocked = profile?.name === 'blocked';
+    return {
+      valid: !blocked,
+      formId: context.formId,
+      data,
+      errors: blocked ? { 'profile-name': '姓名 blocked 被自定义校验拒绝' } : {},
+    };
+  }, []);
+
+  const handleDemoOnSubmit = useCallback(async (data: DataModel, context: { formId: string }) => {
+    setExternalSubmitState({
+      status: 'onSubmit 请求处理中',
+      data,
+    });
+    await new Promise(resolve => setTimeout(resolve, 800));
+    if (simulateSubmitFailure) {
+      throw new Error('模拟外部提交请求失败');
+    }
+    console.log('[External Submit Demo]', {
+      formId: context.formId,
+      data,
+    });
+  }, [simulateSubmitFailure]);
 
   const colors = useMemo(
     () =>
@@ -487,22 +601,58 @@ export default function App() {
         minHeight: '100vh',
         background: colors.appBg,
       }}>
+        {isExternalSubmitDemo && (
+          <div style={{
+            margin: '16px 24px 0', padding: 16,
+            border: `1px solid ${colors.panelBorder}`,
+            borderRadius: 10, background: colors.panelBg, color: colors.text,
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: 8 }}>
+              <strong>宿主页面外部操作区</strong>
+              <button onClick={handleDemoValidate} style={btnStyle()}>校验</button>
+              <button onClick={() => handleDemoSubmit(true)} style={btnStyle(true)}>外部提交</button>
+              <button onClick={() => handleDemoSubmit(false)} style={btnStyle()}>跳过校验提交</button>
+              <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12 }}>
+                <input
+                  type="checkbox"
+                  checked={simulateSubmitFailure}
+                  onChange={event => setSimulateSubmitFailure(event.target.checked)}
+                />
+                模拟请求失败
+              </label>
+              <span style={{ color: colors.accent, fontSize: 12 }}>
+                状态：{externalSubmitState.status}
+              </span>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: 12, marginTop: 12 }}>
+              <ResultPanel title="提交 data" value={externalSubmitState.data} colors={colors} />
+              <ResultPanel title="validation" value={externalSubmitState.validation} colors={colors} />
+              <ResultPanel title="error" value={externalSubmitState.error} colors={colors} />
+            </div>
+          </div>
+        )}
         <RendererErrorBoundary schemaKey={rendererKey}>
           {renderMode === 'lifecycle' ? (
             <Renderer
+              ref={rendererRef}
               key={rendererKey}
               schema={activeSchema}
               httpRequest={httpRequest}
+              onValidate={isExternalSubmitDemo ? handleDemoCustomValidate : undefined}
+              onSubmit={isExternalSubmitDemo ? handleDemoOnSubmit : undefined}
               onAction={(action, context) => {
                 console.log('Action executed (Lifecycle):', action, context);
               }}
             />
           ) : (
             <SchemaRenderer
+              rendererRef={rendererRef}
               key={rendererKey}
               schema={activeSchema}
               componentRegistry={ComponentRegistry}
               httpRequest={httpRequest}
+              onValidate={isExternalSubmitDemo ? handleDemoCustomValidate : undefined}
+              onSubmit={isExternalSubmitDemo ? handleDemoOnSubmit : undefined}
               onAction={(action, context) => {
                 console.log('Action executed (Pure UI):', action, context);
               }}

@@ -28,6 +28,45 @@ export interface Content {
 
 export type DataModel = Record<string, unknown>;
 
+export interface ValidationResult {
+  valid: boolean;
+  formId: string;
+  data: DataModel;
+  errors: Record<string, string>;
+}
+
+export interface SubmitOptions {
+  validate?: boolean;
+}
+
+export type SubmitStatus = 'submitted' | 'validation_failed' | 'busy' | 'error' | 'no_handler';
+
+export interface SubmitContext {
+  formId: string;
+  validated: boolean;
+  validation?: ValidationResult;
+  source: 'external';
+}
+
+export interface SubmitResult {
+  success: boolean;
+  status: SubmitStatus;
+  formId: string;
+  data: DataModel;
+  validation?: ValidationResult;
+  error?: unknown;
+}
+
+export type OnValidateHandler = (
+  data: DataModel,
+  context: { formId: string },
+) => ValidationResult | Promise<ValidationResult>;
+
+export type OnSubmitHandler = (
+  data: DataModel,
+  context: SubmitContext,
+) => void | Promise<void>;
+
 export interface ValueBinding {
   path: string;
 }

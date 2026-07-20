@@ -100,6 +100,22 @@ describe("RendererContext", () => {
     expect(result.current.$parent).toBeNull();
   });
 
+  it("does not reset local data when equivalent base objects are recreated", () => {
+    let dataModel: Record<string, unknown> = { version: 1 };
+    const wrapper = ({ children }: { children: React.ReactNode }) => (
+      <RendererContextProvider dataModel={dataModel} componentRegistry={registry}>
+        {children}
+      </RendererContextProvider>
+    );
+    const { result, rerender } = renderHook(() => useRendererContext(), { wrapper });
+
+    act(() => result.current.updateData("/name", "Ann"));
+    dataModel = { version: 1 };
+    rerender();
+
+    expect(result.current.getDataModel()).toEqual({ version: 1, name: "Ann" });
+  });
+
   it("notifies path and global subscribers", () => {
     const wrapper = ({ children }: { children: React.ReactNode }) => (
       <RendererContextProvider dataModel={{ user: { name: "Ann" } }} componentRegistry={registry}>
@@ -153,6 +169,38 @@ describe("RendererContext", () => {
       $current: null,
       $parent: null,
       event: "change",
+    });
+  });
+
+  it("routes validation and submit calls to registered forms", async () => {
+    const wrapper = ({ children }: { children: React.ReactNode }) => (
+      <RendererContextProvider dataModel={{ value: 1 }} componentRegistry={registry}>
+        {children}
+      </RendererContextProvider>
+    );
+    const { result } = renderHook(() => useRendererContext(), { wrapper });
+    const validate = vi.fn(async () => ({
+      valid: true,
+      formId: "form",
+      data: { value: 1 },
+      errors: {},
+    }));
+    const submit = vi.fn(async () => ({
+      success: true,
+      status: "submitted" as const,
+      formId: "form",
+      data: { value: 1 },
+    }));
+
+    act(() => result.current.registerForm("form", { validate, submit }));
+    await expect(result.current.validateForm()).resolves.toMatchObject({ valid: true, formId: "form" });
+    await expect(result.current.submitForm(undefined, { validate: false })).resolves.toMatchObject({ status: "submitted" });
+    expect(submit).toHaveBeenCalledWith({ validate: false });
+
+    act(() => result.current.unregisterForm("form"));
+    await expect(result.current.validateForm("form")).resolves.toMatchObject({
+      valid: false,
+      errors: { $form: expect.stringContaining("Form not found") },
     });
   });
 });

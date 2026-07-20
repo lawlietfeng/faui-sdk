@@ -1,8 +1,19 @@
 import React, { createContext, useContext, useState, useCallback, useMemo, useEffect, useRef } from 'react';
-import type { DataModel, ActionConfig, ActionSequence, HttpRequestConfig } from '../types/schema';
+import type {
+  DataModel,
+  ActionConfig,
+  ActionSequence,
+  HttpRequestConfig,
+  OnSubmitHandler,
+  OnValidateHandler,
+  SubmitOptions,
+  SubmitResult,
+  ValidationResult,
+} from '../types/schema';
 import type { ComponentRegistry as ComponentRegistryType } from '../components';
 import { executeAction } from '../actions';
 import { createDataStore, type DataStore } from '../store/create-data-store';
+import { areDataModelsEqual, cloneDataModel } from '../utils/submission';
 
 export interface ActionContext {
   $root: DataModel;
@@ -20,12 +31,23 @@ export interface RendererContextValue {
   componentRegistry: ComponentRegistryType;
   httpRequest?: (config: HttpRequestConfig) => Promise<unknown>;
   onAction?: (action: ActionConfig, context: ActionContext) => void | Promise<void>;
+  onValidate?: OnValidateHandler;
+  onSubmit?: OnSubmitHandler;
   $current: unknown;
   $parent: unknown;
   $scopePath?: string;
   setCurrent: (item: unknown) => void;
   setParent: (item: unknown) => void;
   handleAction: (action: ActionSequence, extra?: Record<string, unknown>) => Promise<void>;
+  registerForm: (formId: string, controller: RegisteredFormController) => void;
+  unregisterForm: (formId: string) => void;
+  validateForm: (formId?: string) => Promise<ValidationResult>;
+  submitForm: (formId?: string, options?: SubmitOptions) => Promise<SubmitResult>;
+}
+
+export interface RegisteredFormController {
+  validate: () => Promise<ValidationResult>;
+  submit: (options?: SubmitOptions) => Promise<SubmitResult>;
 }
 
 const RendererContext = createContext<RendererContextValue | null>(null);
@@ -119,6 +141,8 @@ interface RendererContextProviderProps {
   componentRegistry: ComponentRegistryType;
   httpRequest?: (config: HttpRequestConfig) => Promise<unknown>;
   onAction?: (action: ActionConfig, context: ActionContext) => void | Promise<void>;
+  onValidate?: OnValidateHandler;
+  onSubmit?: OnSubmitHandler;
   children: React.ReactNode;
 }
 
@@ -129,17 +153,27 @@ export const RendererContextProvider: React.FC<RendererContextProviderProps> = (
   componentRegistry,
   httpRequest,
   onAction,
+  onValidate,
+  onSubmit,
   children,
 }) => {
+  const initialBaseData = { ...initialDataModel, ...initialData };
   const storeRef = useRef<DataStore<DataModel>>(
-    createDataStore({ ...initialDataModel, ...initialData }),
+    createDataStore(initialBaseData),
   );
+  const baseDataRef = useRef<DataModel>(cloneDataModel(initialBaseData));
+  const formsRef = useRef<Map<string, RegisteredFormController>>(new Map());
 
   const [$current, setCurrent] = useState<unknown>(null);
   const [$parent, setParent] = useState<unknown>(null);
 
   useEffect(() => {
-    storeRef.current.setByPath('/', { ...initialDataModel, ...initialData });
+    const nextBaseData = { ...initialDataModel, ...initialData };
+    if (areDataModelsEqual(baseDataRef.current, nextBaseData)) {
+      return;
+    }
+    baseDataRef.current = cloneDataModel(nextBaseData);
+    storeRef.current.setByPath('/', nextBaseData);
     setCurrent(null);
     setParent(null);
   }, [initialDataModel, initialData]);
@@ -190,6 +224,42 @@ export const RendererContextProvider: React.FC<RendererContextProviderProps> = (
     }
   }, [$current, $parent, onAction, updateData, getData, httpRequest]);
 
+  const registerForm = useCallback((formId: string, controller: RegisteredFormController) => {
+    formsRef.current.set(formId, controller);
+  }, []);
+
+  const unregisterForm = useCallback((formId: string) => {
+    formsRef.current.delete(formId);
+  }, []);
+
+  const validateForm = useCallback(async (formId?: string): Promise<ValidationResult> => {
+    const resolved = resolveForm(formsRef.current, formId);
+    if (resolved.controller) {
+      return resolved.controller.validate();
+    }
+    return {
+      valid: false,
+      formId: resolved.formId,
+      data: storeRef.current.getSnapshot(),
+      errors: { $form: resolved.error },
+    };
+  }, []);
+
+  const submitForm = useCallback(async (formId?: string, options?: SubmitOptions): Promise<SubmitResult> => {
+    const resolved = resolveForm(formsRef.current, formId);
+    if (resolved.controller) {
+      return resolved.controller.submit(options);
+    }
+    const data = storeRef.current.getSnapshot();
+    return {
+      success: false,
+      status: 'error',
+      formId: resolved.formId,
+      data,
+      error: new Error(resolved.error),
+    };
+  }, []);
+
   const value = useMemo(() => ({
     // 强制转换为 getters 以获取最新值，但不触发 re-render
     get dataModel() { return storeRef.current.getSnapshot(); },
@@ -200,13 +270,19 @@ export const RendererContextProvider: React.FC<RendererContextProviderProps> = (
     componentRegistry,
     httpRequest,
     onAction,
+    onValidate,
+    onSubmit,
     $current,
     $parent,
     $scopePath: undefined,
     setCurrent,
     setParent,
     handleAction,
-  }), [updateData, getData, subscribeData, componentRegistry, httpRequest, onAction, $current, $parent, handleAction]);
+    registerForm,
+    unregisterForm,
+    validateForm,
+    submitForm,
+  }), [updateData, getData, subscribeData, componentRegistry, httpRequest, onAction, onValidate, onSubmit, $current, $parent, handleAction, registerForm, unregisterForm, validateForm, submitForm]);
 
   return (
     <RendererContext.Provider value={value}>
@@ -214,6 +290,28 @@ export const RendererContextProvider: React.FC<RendererContextProviderProps> = (
     </RendererContext.Provider>
   );
 };
+
+function resolveForm(
+  forms: Map<string, RegisteredFormController>,
+  formId?: string,
+): { controller?: RegisteredFormController; formId: string; error: string } {
+  if (formId) {
+    const controller = forms.get(formId);
+    return controller
+      ? { controller, formId, error: '' }
+      : { formId, error: `[FAUI] Form not found: ${formId}` };
+  }
+  if (forms.size === 1) {
+    const [resolvedFormId, controller] = forms.entries().next().value as [string, RegisteredFormController];
+    return { controller, formId: resolvedFormId, error: '' };
+  }
+  return {
+    formId: '',
+    error: forms.size === 0
+      ? '[FAUI] No form is rendered.'
+      : '[FAUI] A formId is required when multiple forms are rendered.',
+  };
+}
 
 function resolveScopedPath(path: string, scopePath?: string): string {
   if (!scopePath || !path.startsWith('./')) {

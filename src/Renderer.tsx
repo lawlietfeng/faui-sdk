@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Activity } from './types/schema';
-import { SchemaRenderer, SchemaRendererProps } from './SchemaRenderer';
+import { SchemaRenderer, type SchemaRendererProps } from './SchemaRenderer';
 import { useActivityContent } from './lifecycle/use-activity-content';
 
 export interface RendererProps extends Omit<SchemaRendererProps, 'schema'> {

@@ -134,6 +134,7 @@ export default function App() {
 Form 属于相对复杂场景（容器、字段规则、触发时机、提交流程），详细文档已拆分到：
 
 - [docs/form-guide.md](./docs/form-guide.md)
+- [docs/external-submit.md](./docs/external-submit.md) — 宿主页面通过 ref 校验和提交
 
 建议优先阅读该文档，再结合 `examples/schemas/form-rules-demo.json` 快速上手。
 

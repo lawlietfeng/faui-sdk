@@ -113,7 +113,29 @@ export default function App() {
 <Renderer schema={schema} liveData={{ status: 'online' }} />
 ```
 
-### 4.2 监听 action 执行
+### 4.2 使用外部按钮提交表单
+
+`Renderer` 支持通过 ref 在 schema 外部独立校验和提交：
+
+```tsx
+import { useRef } from 'react';
+import { Renderer, type RendererHandle } from '@lawlietfeng/faui-sdk';
+
+const rendererRef = useRef<RendererHandle>(null);
+
+<button onClick={() => rendererRef.current?.submit('login-form')}>
+  外部提交
+</button>
+<Renderer
+  ref={rendererRef}
+  schema={schema}
+  onSubmit={async data => saveData(data)}
+/>
+```
+
+完整的 API、校验、状态、多表单和示例验证说明见 [外部校验与提交](./external-submit.md)。
+
+### 4.3 监听 action 执行
 
 ```tsx
 <Renderer
@@ -125,7 +147,7 @@ export default function App() {
 />
 ```
 
-### 4.3 注入自定义组件
+### 4.4 注入自定义组件
 
 ```tsx
 import { Renderer } from '@lawlietfeng/faui-sdk';

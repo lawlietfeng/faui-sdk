@@ -1,0 +1,98 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "components": [
+        {
+          "id": "root",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 16,
+          "padding": 24,
+          "children": [
+            "title",
+            "description",
+            "external-submit-form"
+          ]
+        },
+        {
+          "id": "title",
+          "component": "text",
+          "content": "外部提交演示",
+          "style": {
+            "fontSize": 24,
+            "fontWeight": 700
+          }
+        },
+        {
+          "id": "description",
+          "component": "text",
+          "content": "此表单没有内部提交按钮。请使用页面上方的外部校验和提交按钮。姓名填写 blocked 可验证自定义校验。",
+          "style": {
+            "color": "#64748b"
+          }
+        },
+        {
+          "id": "external-submit-form",
+          "component": "form",
+          "children": [
+            "profile-name",
+            "profile-age",
+            "profile-note"
+          ]
+        },
+        {
+          "id": "profile-name",
+          "component": "input",
+          "label": "姓名",
+          "placeholder": "请输入姓名",
+          "value": {
+            "path": "/profile/name"
+          },
+          "rules": [
+            {
+              "required": true,
+              "message": "请输入姓名"
+            }
+          ]
+        },
+        {
+          "id": "profile-age",
+          "component": "inputnumber",
+          "label": "年龄",
+          "value": {
+            "path": "/profile/age"
+          },
+          "min": 1,
+          "max": 120,
+          "rules": [
+            {
+              "required": true,
+              "message": "请输入年龄"
+            }
+          ]
+        },
+        {
+          "id": "profile-note",
+          "component": "textarea",
+          "label": "备注",
+          "placeholder": "修改后可观察外部提交数据",
+          "value": {
+            "path": "/profile/note"
+          }
+        }
+      ],
+      "dataModel": {
+        "profile": {
+          "name": "",
+          "age": 18,
+          "note": ""
+        },
+        "tenantId": "demo-tenant",
+        "metadata": {
+          "source": "external-submit-demo"
+        }
+      }
+    }
+  }
+]

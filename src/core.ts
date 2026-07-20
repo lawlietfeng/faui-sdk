@@ -2,7 +2,7 @@
 // Used by both form and full entry points
 
 export { SchemaRenderer, ComponentRenderer } from './SchemaRenderer';
-export type { SchemaRendererProps } from './SchemaRenderer';
+export type { RendererHandle, SchemaRendererProps } from './SchemaRenderer';
 
 // Renderer (base — requires componentRegistry prop)
 export { Renderer as CoreRenderer } from './Renderer';

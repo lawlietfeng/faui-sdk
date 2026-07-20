@@ -170,4 +170,24 @@ describe("FormContext", () => {
     expect(result.current.isSubmitButton("submit")).toBe(true);
     expect(result.current.isSubmitButton("other")).toBe(false);
   });
+
+  it("returns detailed validation errors and accepts external errors", async () => {
+    const { result } = renderFormContext();
+    act(() => result.current.registerField("name", {
+      name: "name",
+      rules: [{ required: true, message: "Name required" }],
+    }));
+
+    await act(async () => {
+      await expect(result.current.validateAllDetailed()).resolves.toEqual({
+        valid: false,
+        errors: { name: "Name required" },
+      });
+    });
+    act(() => result.current.setExternalErrors({ name: "Custom error" }));
+    expect(result.current.getFieldErrorInfo("name")).toEqual({
+      validateStatus: "error",
+      help: "Custom error",
+    });
+  });
 });

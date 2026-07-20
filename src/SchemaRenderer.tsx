@@ -1,7 +1,18 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useMemo } from 'react';
 import { App as AntdApp } from 'antd';
 import { RendererContextProvider, useRendererContext } from './context/RendererContext';
-import type { Content, Component, DataModel, HttpRequestConfig, ActionConfig } from './types/schema';
+import type {
+  Content,
+  Component,
+  DataModel,
+  HttpRequestConfig,
+  ActionConfig,
+  OnSubmitHandler,
+  OnValidateHandler,
+  SubmitOptions,
+  SubmitResult,
+  ValidationResult,
+} from './types/schema';
 import { useExpression } from './hooks/useExpression';
 import { setMessageApi } from './actions/message';
 import { setNotificationApi } from './actions/notification';
@@ -19,6 +30,17 @@ export interface SchemaRendererProps {
   customComponents?: Record<string, React.FC<{ config: Component; componentMap: Map<string, Component> }>>;
   httpRequest?: (config: HttpRequestConfig) => Promise<unknown>;
   onAction?: (action: ActionConfig, context: { $root: DataModel; $current: unknown; $parent: unknown }) => void | Promise<void>;
+  /** Custom validation executed after built-in rules pass for an external submission. */
+  onValidate?: OnValidateHandler;
+  /** Called only by the external renderer submit API. */
+  onSubmit?: OnSubmitHandler;
+  /** Imperative API used by an external submit button. */
+  rendererRef?: React.Ref<RendererHandle>;
+}
+
+export interface RendererHandle {
+  validate: (formId?: string) => Promise<ValidationResult>;
+  submit: (formId?: string, options?: SubmitOptions) => Promise<SubmitResult>;
 }
 
 const EMPTY_DATA: DataModel = {};
@@ -31,6 +53,9 @@ export const SchemaRenderer: React.FC<SchemaRendererProps> = ({
   customComponents,
   httpRequest,
   onAction,
+  onValidate,
+  onSubmit,
+  rendererRef,
 }) => {
   const componentRegistry = useMemo(() => {
     if (!customComponents) return baseRegistry;
@@ -51,12 +76,28 @@ export const SchemaRenderer: React.FC<SchemaRendererProps> = ({
         componentRegistry={componentRegistry}
         httpRequest={httpRequest}
         onAction={onAction}
+        onValidate={onValidate}
+        onSubmit={onSubmit}
       >
+        <RendererHandleBridge ref={rendererRef} />
         <AnimatedRoot content={schema} />
       </RendererContextProvider>
     </AntdApp>
   );
 };
+
+const RendererHandleBridge = forwardRef<RendererHandle>((_props, ref) => {
+  const { submitForm, validateForm } = useRendererContext();
+
+  useImperativeHandle(ref, () => ({
+    validate: validateForm,
+    submit: submitForm,
+  }), [submitForm, validateForm]);
+
+  return null;
+});
+
+RendererHandleBridge.displayName = 'RendererHandleBridge';
 
 const AnimatedRoot: React.FC<RootComponentProps> = ({ content }) => {
   const { LayoutGroup, isReady } = useMotion();

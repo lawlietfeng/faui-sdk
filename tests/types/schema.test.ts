@@ -21,15 +21,20 @@ import type {
   HttpRequestConfig,
   HttpRequestHandler,
   InputnumberComponentConfig,
+  OnSubmitHandler,
+  OnValidateHandler,
   RadioComponentConfig,
+  RendererHandle,
   RendererComponent,
   RendererProps,
   RepeaterComponentConfig,
   SchemaRendererProps,
   SelectComponentConfig,
   SwitchComponentConfig,
+  SubmitResult,
   TextareaComponentConfig,
   TimepickerComponentConfig,
+  ValidationResult,
   ValueBinding
 } from "../../src";
 
@@ -466,6 +471,37 @@ describe("schema type assertions", () => {
     expect(componentProps.componentMap.get("root")?.component).toBe("form");
     expectTypeOf(schemaRendererProps).toMatchTypeOf<SchemaRendererProps>();
     expectTypeOf(rendererProps).toMatchTypeOf<RendererProps>();
+  });
+
+  it("exports external validation and submit callback types", () => {
+    const onValidate: OnValidateHandler = async (data, { formId }) => ({
+      valid: true,
+      formId,
+      data,
+      errors: {},
+    });
+    const onSubmit: OnSubmitHandler = async (data, context) => {
+      expect(data).toEqual({ name: "Bob" });
+      expect(context.source).toBe("external");
+    };
+    const handle: RendererHandle = {
+      validate: async (): Promise<ValidationResult> => ({
+        valid: true,
+        formId: "form",
+        data: {},
+        errors: {},
+      }),
+      submit: async (): Promise<SubmitResult> => ({
+        success: true,
+        status: "submitted",
+        formId: "form",
+        data: {},
+      }),
+    };
+
+    expectTypeOf(onValidate).toMatchTypeOf<OnValidateHandler>();
+    expectTypeOf(onSubmit).toMatchTypeOf<OnSubmitHandler>();
+    expectTypeOf(handle).toMatchTypeOf<RendererHandle>();
   });
 
   it("keeps field component typings available on schema samples", () => {

@@ -20,13 +20,23 @@ npm run release
 }
 ```
 
-执行时可用 `NPM_CONFIG_REGISTRY` 临时覆盖。账号登录在脚本外完成：
+执行时可用 `NPM_CONFIG_REGISTRY` 临时覆盖。本地可先手动登录：
 
 ```bash
 npm login --registry=https://packages.aliyun.com/5f278b52d248146039338d7b/npm/npm-registry/
 ```
 
 不要把账号、密码或令牌写入仓库和发布脚本。
+
+## 流水线账号登录
+
+在云效流水线变量组中新增以下私密字符变量：
+
+- `NPM_USERNAME`：仓库指南中显示的 NPM 用户名。
+- `NPM_PASSWORD`：仓库指南中显示的 NPM 密码。
+- `NPM_EMAIL`：NPM 登录邮箱。
+
+三个变量同时存在时，发布脚本会使用 `npm adduser --auth-type=legacy` 登录云效仓库。登录生成的 `.npmrc` 仅存放在临时目录，脚本结束后会删除；无需配置 `NPMRC_CONTENT`。
 
 流水线是非交互环境，必须传入发布渠道：
 

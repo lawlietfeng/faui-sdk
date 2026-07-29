@@ -187,7 +187,6 @@ async function main() {
 
   let versionChanged = false;
   try {
-    run("npm", ["whoami", "--registry", registry]);
     if (versionMode === "bump") {
       writePackageVersion(pkg, nextVersion);
       versionChanged = true;

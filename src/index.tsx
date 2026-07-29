@@ -5,6 +5,7 @@ import React, { forwardRef } from 'react';
 import { FormComponentRegistry } from './components/formRegistry';
 import { Renderer as CoreRenderer, type RendererProps } from './Renderer';
 import type { RendererHandle } from './SchemaRenderer';
+import type { ComponentRegistry as ComponentRegistryType } from './types/schema';
 
 export * from './core';
 export type { RendererProps };
@@ -19,5 +20,6 @@ export const Renderer = forwardRef<RendererHandle, FormRendererProps>(({ compone
 
 Renderer.displayName = 'FormRenderer';
 
-export { FormComponentRegistry as ComponentRegistry };
+export const ComponentRegistry = FormComponentRegistry;
+export type ComponentRegistry = ComponentRegistryType;
 export type { RendererHandle };

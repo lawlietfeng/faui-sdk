@@ -1,4 +1,5 @@
 import React from 'react';
+import type { FullComponentName } from '../manifest';
 import type { Component, ComponentType, ExtractComponent } from '../types/schema';
 import { Form } from './Form';
 import { Flex } from './Flex';
@@ -77,7 +78,7 @@ export interface ComponentProps<T extends ComponentType | any = any> {
 
 export type ComponentRegistry = Record<string, React.FC<ComponentProps<any>>>;
 
-export const ComponentRegistry: ComponentRegistry = {
+const componentRegistry = {
   form: Form,
   flex: Flex,
   grid: Row, // Mapping grid component to Row to fix Unknown component type: grid
@@ -153,7 +154,9 @@ export const ComponentRegistry: ComponentRegistry = {
   condition: Condition,
   repeater: Repeater,
   chart: Chart,
-};
+} satisfies Record<FullComponentName, React.FC<ComponentProps<any>>>;
+
+export const ComponentRegistry: ComponentRegistry = componentRegistry;
 
 export function registerComponent(
   type: ComponentType,

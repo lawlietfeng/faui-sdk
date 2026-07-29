@@ -9,28 +9,14 @@ import {
 } from "../../src/components";
 import { FormComponentRegistry } from "../../src/components/formRegistry";
 import { RendererContextProvider } from "../../src/context/RendererContext";
+import {
+  componentManifest,
+  formComponentNames,
+  fullComponentNames,
+} from "../../src/manifest";
 
-const fullRegistryKeys = [
-  "form", "flex", "grid", "row", "col", "space", "layout", "header", "sider",
-  "content", "footer", "avatar", "badge", "empty", "statistic", "timeline", "qrcode",
-  "typography", "icon", "watermark", "skeleton", "box", "text", "button", "input",
-  "textarea", "select", "radio", "checkbox", "datepicker", "upload", "stepindicator",
-  "list", "table", "switch", "inputnumber", "slider", "rate", "cascader", "treeselect",
-  "timepicker", "colorpicker", "transfer", "autocomplete", "mentions", "card", "divider",
-  "collapse", "tag", "image", "descriptions", "alert", "pagination", "progress", "spin",
-  "tabs", "menu", "segmented", "tree", "calendar", "steps", "carousel", "tour", "modal",
-  "drawer", "popover", "tooltip", "popconfirm", "dropdown", "float_button", "affix", "anchor",
-  "condition", "repeater", "chart",
-] as const;
-
-const formRegistryKeys = [
-  "box", "flex", "grid", "row", "col", "space", "layout", "header", "sider", "content",
-  "footer", "divider", "form", "input", "textarea", "select", "radio", "checkbox",
-  "datepicker", "timepicker", "upload", "switch", "inputnumber", "slider", "rate", "cascader",
-  "treeselect", "colorpicker", "transfer", "autocomplete", "mentions", "button", "calendar",
-  "segmented", "text", "icon", "typography", "alert", "tag", "spin", "skeleton", "progress",
-  "modal", "drawer", "tooltip", "popover", "popconfirm", "condition", "repeater",
-] as const;
+const fullRegistryKeys = fullComponentNames;
+const formRegistryKeys = formComponentNames;
 
 function minimalConfig(component: string): Component {
   const base: Record<string, unknown> = {
@@ -62,6 +48,26 @@ function minimalConfig(component: string): Component {
 }
 
 describe("component registries", () => {
+  it("publishes a versioned static manifest for documentation consumers", () => {
+    expect(componentManifest.manifestVersion).toBe(1);
+    expect(componentManifest.framework).toBe("react");
+    expect(componentManifest.editions.form.componentNames).toEqual(formComponentNames);
+    expect(componentManifest.editions.full.componentNames).toEqual(fullComponentNames);
+    expect(new Set(fullComponentNames).size).toBe(fullComponentNames.length);
+    for (const component of componentManifest.components) {
+      const categoryExists = componentManifest.categories.some(({ id }) => id === component.category);
+      const availableComponentNames = component.availability === "form-full"
+        ? formComponentNames
+        : fullComponentNames;
+      const registryNamesAreAvailable = component.registryNames.every((name) => availableComponentNames.includes(name));
+      expect(Boolean(component.slug && component.title && component.summary)).toBe(true);
+      expect(component.registryNames.length).toBeGreaterThan(0);
+      expect(categoryExists).toBe(true);
+      expect(registryNamesAreAvailable).toBe(true);
+    }
+    expect(JSON.parse(JSON.stringify(componentManifest))).toEqual(componentManifest);
+  });
+
   it("contains every full-edition component", () => {
     expect(Object.keys(ComponentRegistry).sort()).toEqual([...fullRegistryKeys].sort());
   });

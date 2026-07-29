@@ -4,6 +4,7 @@ export default defineConfig({
   entry: {
     index: 'src/index.tsx',
     full: 'src/full.tsx',
+    manifest: 'src/manifest.ts',
   },
   format: ['cjs', 'esm'],
   dts: true,

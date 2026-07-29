@@ -1,4 +1,5 @@
 import React from 'react';
+import type { FormComponentName } from '../manifest';
 import type { ComponentProps } from './index';
 import { Form } from './Form';
 import { Flex } from './Flex';
@@ -46,7 +47,7 @@ import { Repeater } from './Repeater';
 
 export type FormComponentRegistryType = Record<string, React.FC<ComponentProps>>;
 
-export const FormComponentRegistry: FormComponentRegistryType = {
+const formComponentRegistry = {
   // Layout
   box: Box,
   flex: Flex,
@@ -101,4 +102,6 @@ export const FormComponentRegistry: FormComponentRegistryType = {
   popconfirm: Popconfirm,
   condition: Condition,
   repeater: Repeater,
-};
+} satisfies Record<FormComponentName, React.FC<ComponentProps>>;
+
+export const FormComponentRegistry: FormComponentRegistryType = formComponentRegistry;

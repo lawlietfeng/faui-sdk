@@ -1,6 +1,6 @@
 {
   "name": "@faui/react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "engines": {
     "node": ">=22"
   },
@@ -21,13 +21,19 @@
       "types": "./dist/full.d.ts",
       "import": "./dist/full.mjs",
       "require": "./dist/full.js"
+    },
+    "./manifest": {
+      "types": "./dist/manifest.d.ts",
+      "import": "./dist/manifest.mjs",
+      "require": "./dist/manifest.js"
     }
   },
   "sideEffects": [
     "./dist/chunk-*.js",
     "./dist/chunk-*.mjs",
     "./dist/index.*",
-    "./dist/full.*"
+    "./dist/full.*",
+    "./dist/manifest.*"
   ],
   "scripts": {
     "dev": "vite --host 0.0.0.0 examples",

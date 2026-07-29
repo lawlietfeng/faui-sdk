@@ -1,5 +1,4 @@
 const fs = require("fs");
-const os = require("os");
 const path = require("path");
 const readline = require("readline");
 const { execFileSync } = require("child_process");
@@ -7,7 +6,6 @@ const { execFileSync } = require("child_process");
 const projectRoot = path.resolve(__dirname, "..");
 const packageJsonPath = path.join(projectRoot, "package.json");
 const packageLockPath = path.join(projectRoot, "package-lock.json");
-let npmUserConfigPath;
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
@@ -161,64 +159,11 @@ function getRegistry(pkg) {
   return url.toString();
 }
 
-function getNpmCredentials() {
-  const credentials = {
-    username: process.env.NPM_USERNAME,
-    password: process.env.NPM_PASSWORD,
-    email: process.env.NPM_EMAIL
-  };
-  const definedCount = Object.values(credentials).filter(Boolean).length;
-
-  if (definedCount === 0) return null;
-  if (definedCount !== 3) {
-    throw new Error("使用账号登录时，必须同时设置 NPM_USERNAME、NPM_PASSWORD 和 NPM_EMAIL。");
-  }
-
-  for (const [name, value] of Object.entries(credentials)) {
-    if (/[\r\n]/.test(value)) {
-      throw new Error(`${name} 不能包含换行符。`);
-    }
-  }
-
-  return credentials;
-}
-
-function getNpmEnvironment() {
-  if (!npmUserConfigPath) return process.env;
-  return { ...process.env, NPM_CONFIG_USERCONFIG: npmUserConfigPath };
-}
-
-function run(command, args, options = {}) {
+function run(command, args) {
   execFileSync(command, args, {
     cwd: projectRoot,
-    stdio: "inherit",
-    env: getNpmEnvironment(),
-    ...options
+    stdio: "inherit"
   });
-}
-
-function loginWithNpmCredentials(registry) {
-  const credentials = getNpmCredentials();
-  if (!credentials) return () => {};
-
-  const configDirectory = fs.mkdtempSync(path.join(os.tmpdir(), "faui-npm-auth-"));
-  npmUserConfigPath = path.join(configDirectory, ".npmrc");
-
-  try {
-    run("npm", ["adduser", "--auth-type=legacy", "--registry", registry], {
-      input: `${credentials.username}\n${credentials.password}\n${credentials.email}\n`,
-      stdio: ["pipe", "inherit", "inherit"]
-    });
-  } catch (error) {
-    npmUserConfigPath = undefined;
-    fs.rmSync(configDirectory, { recursive: true, force: true });
-    throw error;
-  }
-
-  return () => {
-    npmUserConfigPath = undefined;
-    fs.rmSync(configDirectory, { recursive: true, force: true });
-  };
 }
 
 async function main() {
@@ -240,10 +185,8 @@ async function main() {
   console.log(`目标版本: ${nextVersion}`);
   console.log(`制品仓库: ${registry}`);
 
-  let cleanupNpmCredentials = () => {};
   let versionChanged = false;
   try {
-    cleanupNpmCredentials = loginWithNpmCredentials(registry);
     run("npm", ["whoami", "--registry", registry]);
     if (versionMode === "bump") {
       writePackageVersion(pkg, nextVersion);
@@ -264,8 +207,6 @@ async function main() {
     }
     console.error(`发布失败: ${message}`);
     process.exitCode = 1;
-  } finally {
-    cleanupNpmCredentials();
   }
 }
 

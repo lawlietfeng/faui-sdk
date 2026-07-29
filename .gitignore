@@ -2,6 +2,8 @@
 .env
 .env.*
 !.env.example
+.npmrc
+.npmrc.*
 
 .venv/
 venv/

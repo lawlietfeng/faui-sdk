@@ -1,29 +1,29 @@
 # npm 包使用指南（开箱即用）
 
-本文面向“在你自己的 React 项目里直接使用 faui”的场景，不涉及组件实现细节。
+本文面向“在你自己的 React 项目里直接使用 faui-react”的场景，不涉及组件实现细节。
 
 ## 1. 安装
 
 推荐一次性安装：
 
 ```bash
-npm i @lawlietfeng/faui-sdk react react-dom antd dayjs
+npm i faui-react react react-dom antd dayjs
 ```
 
 或：
 
 ```bash
-yarn add faui react react-dom antd dayjs
+yarn add faui-react react react-dom antd dayjs
 # 或
-pnpm add faui react react-dom antd dayjs
+pnpm add faui-react react react-dom antd dayjs
 ```
 
 ## 2. 最小可运行示例
 
 ```tsx
 import React from 'react';
-import { Renderer } from '@lawlietfeng/faui-sdk';
-import type { ActivitySnapshot, HttpRequestConfig } from '@lawlietfeng/faui-sdk';
+import { Renderer } from 'faui-react';
+import type { ActivitySnapshot, HttpRequestConfig } from 'faui-react';
 
 const schema: ActivitySnapshot[] = [
   {
@@ -119,7 +119,7 @@ export default function App() {
 
 ```tsx
 import { useRef } from 'react';
-import { Renderer, type RendererHandle } from '@lawlietfeng/faui-sdk';
+import { Renderer, type RendererHandle } from 'faui-react';
 
 const rendererRef = useRef<RendererHandle>(null);
 
@@ -150,8 +150,8 @@ const rendererRef = useRef<RendererHandle>(null);
 ### 4.4 注入自定义组件
 
 ```tsx
-import { Renderer } from '@lawlietfeng/faui-sdk';
-import type { ComponentProps } from '@lawlietfeng/faui-sdk';
+import { Renderer } from 'faui-react';
+import type { ComponentProps } from 'faui-react';
 
 // 也可以直接指定具体的组件类型，获取严格的类型提示：
 // const MyBadge: React.FC<ComponentProps<'text'>> = ({ config }) => { ... }

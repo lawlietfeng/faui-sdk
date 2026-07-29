@@ -1,5 +1,5 @@
 // Form Edition entry point (default)
-// import { Renderer } from '@lawlietfeng/faui-sdk' -> Form Edition
+// import { Renderer } from 'faui-react' -> Form Edition
 
 import React, { forwardRef } from 'react';
 import { FormComponentRegistry } from './components/formRegistry';

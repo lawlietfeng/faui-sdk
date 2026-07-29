@@ -1,4 +1,4 @@
-# faui
+# faui-react
 
 FAUI (Fantasy Agent UI) — JSON Schema renderer based on Ant Design.
 
@@ -8,13 +8,13 @@ FAUI 提供两个版本，按需引入：
 
 | 版本 | 导入路径 | 组件数 | 适用场景 |
 |------|---------|--------|---------|
-| **表单版** (Form Edition) | `import { Renderer } from '@lawlietfeng/faui-sdk'` | ~47 | AI 表单生成、数据采集 |
-| **完整版** (Full Edition) | `import { Renderer } from '@lawlietfeng/faui-sdk/full'` | 66+ | 全功能页面渲染 |
+| **表单版** (Form Edition) | `import { Renderer } from 'faui-react'` | ~47 | AI 表单生成、数据采集 |
+| **完整版** (Full Edition) | `import { Renderer } from 'faui-react/full'` | 66+ | 全功能页面渲染 |
 
 ## 安装
 
 ```bash
-npm install @lawlietfeng/faui-sdk
+npm install faui-react
 ```
 
 ## Peer Dependencies
@@ -46,7 +46,7 @@ npm install
 npm run dev
 ```
 
-如果你是在其他 React 项目中使用本库，只需安装 `faui` 与 Peer Dependencies。
+如果你是在其他 React 项目中使用本库，只需安装 `faui-react` 与 Peer Dependencies。
 
 ### 2. 最小可运行示例
 
@@ -59,9 +59,9 @@ FAUI 提供了两种渲染器（`SchemaRenderer` 纯 UI 渲染 和 `Renderer` �
 
 ```tsx
 import React from 'react';
-import { SchemaRenderer, ComponentRegistry } from '@lawlietfeng/faui-sdk';       // 表单版组件
-// import { SchemaRenderer, ComponentRegistry } from '@lawlietfeng/faui-sdk/full'; // 完整版组件
-import type { Content } from '@lawlietfeng/faui-sdk';
+import { SchemaRenderer, ComponentRegistry } from 'faui-react';       // 表单版组件
+// import { SchemaRenderer, ComponentRegistry } from 'faui-react/full'; // 完整版组件
+import type { Content } from 'faui-react';
 
 const schema: Content = {
   components: [
@@ -85,9 +85,9 @@ export default function App() {
 
 ```tsx
 import React from 'react';
-import { Renderer } from '@lawlietfeng/faui-sdk';       // 表单版（默认 ~47 组件）
-// import { Renderer } from '@lawlietfeng/faui-sdk/full'; // 完整版（全部 66+ 组件）
-import type { Activity } from '@lawlietfeng/faui-sdk';
+import { Renderer } from 'faui-react';       // 表单版（默认 ~47 组件）
+// import { Renderer } from 'faui-react/full'; // 完整版（全部 66+ 组件）
+import type { Activity } from 'faui-react';
 
 const schema: Activity[] = [
   {
@@ -553,7 +553,7 @@ Form 属于相对复杂场景（容器、字段规则、触发时机、提交流
 
 ## 双版本架构
 
-### 表单版 (`faui`)
+### 表单版 (`faui-react`)
 
 默认导入。包含 ~47 个组件，覆盖表单场景：
 
@@ -562,7 +562,7 @@ Form 属于相对复杂场景（容器、字段规则、触发时机、提交流
 - **辅助**: text, icon, typography, alert, tag, spin, skeleton, progress, modal, drawer, tooltip, popover, popconfirm
 - **逻辑**: condition, repeater
 
-### 完整版 (`@lawlietfeng/faui-sdk/full`)
+### 完整版 (`faui-react/full`)
 
 包含全部 66+ 组件，在表单版基础上额外提供：table, list, card, tabs, menu, steps, collapse, image, descriptions, avatar, badge, empty, statistic, timeline, qrcode, watermark, carousel, tree, tour, pagination, dropdown, floatbutton, affix, anchor, stepindicator, chart 等。
 
@@ -579,7 +579,7 @@ dist/
 ## 扩展组件
 
 ```tsx
-import { Renderer, registerComponent } from '@lawlietfeng/faui-sdk';
+import { Renderer, registerComponent } from 'faui-react';
 import { CustomComponent } from './CustomComponent';
 
 registerComponent('custom', CustomComponent);

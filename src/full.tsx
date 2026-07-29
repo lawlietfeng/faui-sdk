@@ -1,5 +1,5 @@
 // Full Edition entry point
-// import { Renderer } from '@lawlietfeng/faui-sdk/full' -> Full Edition
+// import { Renderer } from 'faui-react/full' -> Full Edition
 
 import React, { forwardRef } from 'react';
 import { ComponentRegistry as FullRegistry } from './components';

@@ -1,14 +1,16 @@
 {
-  "name": "@lawlietfeng/faui-sdk",
-  "version": "0.0.0",
-  "private": true,
+  "name": "faui-react",
+  "version": "0.0.1",
   "engines": {
     "node": ">=22"
   },
-  "description": "FAUI JSON Schema renderer SDK based on React and Ant Design",
+  "description": "FAUI React JSON Schema renderer SDK based on Ant Design",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
+  "publishConfig": {
+    "registry": "https://packages.aliyun.com/5f278b52d248146039338d7b/npm/npm-registry/"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -30,6 +32,8 @@
   "scripts": {
     "dev": "vite --host 0.0.0.0 examples",
     "build": "tsup",
+    "prepack": "npm run build",
+    "release": "node scripts/release.cjs",
     "lint": "eslint src examples tests --ext .ts,.tsx",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
@@ -89,6 +93,7 @@
   "keywords": [
     "json-schema",
     "renderer",
+    "react",
     "antd",
     "form",
     "sdk"

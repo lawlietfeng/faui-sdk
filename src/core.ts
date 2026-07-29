@@ -1,6 +1,8 @@
 // Shared core exports (hooks, utils, actions, types, context)
 // Used by both form and full entry points
 
+import packageJson from '../package.json';
+
 export { SchemaRenderer, ComponentRenderer } from './SchemaRenderer';
 export type { RendererHandle, SchemaRendererProps } from './SchemaRenderer';
 
@@ -18,8 +20,8 @@ export interface RendererBootstrapOptions {
 }
 
 export const fauiSdkInfo: FauiSdkInfo = {
-  name: '@lawlietfeng/faui-sdk',
-  version: '0.0.0',
+  name: packageJson.name,
+  version: packageJson.version,
 };
 
 export function createRendererBootstrap(

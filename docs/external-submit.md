@@ -46,7 +46,7 @@ import {
   Renderer,
   type RendererHandle,
   type ValidationResult,
-} from 'faui-react';
+} from '@faui/react';
 
 const rendererRef = useRef<RendererHandle>(null);
 

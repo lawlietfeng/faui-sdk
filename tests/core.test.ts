@@ -4,7 +4,7 @@ import { createRendererBootstrap, fauiSdkInfo } from "../src";
 describe("fauiSdkInfo", () => {
   it("exposes package name and version", () => {
     expect(fauiSdkInfo).toEqual({
-      name: "faui-react",
+      name: "@faui/react",
       version: "0.0.1"
     });
   });

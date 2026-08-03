@@ -40,7 +40,6 @@
     "build": "tsup",
     "prepack": "npm run build",
     "release": "node scripts/release.cjs",
-    "release:prepare": "node scripts/prepare-release.cjs",
     "lint": "eslint src examples tests --ext .ts,.tsx",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",

@@ -2,18 +2,39 @@ const fs = require("fs");
 const path = require("path");
 const readline = require("readline");
 const { execFileSync } = require("child_process");
-const { assertReleasedVersionInChangelog } = require("./prepare-release.cjs");
 
 const projectRoot = path.resolve(__dirname, "..");
 const packageJsonPath = path.join(projectRoot, "package.json");
-const changelogPath = path.join(projectRoot, "CHANGELOG.md");
+const packageLockPath = path.join(projectRoot, "package-lock.json");
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, "utf8"));
 }
 
+function writeJson(filePath, value) {
+  fs.writeFileSync(filePath, `${JSON.stringify(value, null, 2)}\n`, "utf8");
+}
+
 function readPackageJson() {
   return readJson(packageJsonPath);
+}
+
+function writePackageVersion(pkg, version) {
+  pkg.version = version;
+  writeJson(packageJsonPath, pkg);
+
+  if (!fs.existsSync(packageLockPath)) return;
+
+  const packageLock = readJson(packageLockPath);
+  packageLock.name = pkg.name;
+  packageLock.version = version;
+
+  if (packageLock.packages?.[""]) {
+    packageLock.packages[""].name = pkg.name;
+    packageLock.packages[""].version = version;
+  }
+
+  writeJson(packageLockPath, packageLock);
 }
 
 function parseVersion(version) {
@@ -25,6 +46,27 @@ function parseVersion(version) {
     patch: Number(match[3]),
     prerelease: match[4] || ""
   };
+}
+
+function getNextStable(version) {
+  const parsed = parseVersion(version);
+  if (!parsed) return "0.0.1";
+  if (parsed.prerelease) {
+    return `${parsed.major}.${parsed.minor}.${parsed.patch}`;
+  }
+  return `${parsed.major}.${parsed.minor}.${parsed.patch + 1}`;
+}
+
+function getNextBeta(version) {
+  const parsed = parseVersion(version);
+  if (!parsed) return "0.0.1-beta.0";
+
+  const betaMatch = /^beta\.(\d+)$/.exec(parsed.prerelease);
+  if (betaMatch) {
+    return `${parsed.major}.${parsed.minor}.${parsed.patch}-beta.${Number(betaMatch[1]) + 1}`;
+  }
+
+  return `${parsed.major}.${parsed.minor}.${parsed.patch + 1}-beta.0`;
 }
 
 function assertReleaseTagMatchesVersion(releaseTag, version) {
@@ -88,9 +130,9 @@ async function getReleaseTag() {
 }
 
 function getReleaseVersionMode() {
-  const mode = String(process.env.RELEASE_VERSION_MODE || "current").trim().toLowerCase();
-  if (mode === "current") return mode;
-  throw new Error("发布前请先执行版本准备脚本；RELEASE_VERSION_MODE 只支持 current。");
+  const mode = String(process.env.RELEASE_VERSION_MODE || "bump").trim().toLowerCase();
+  if (mode === "bump" || mode === "current") return mode;
+  throw new Error("RELEASE_VERSION_MODE 只支持 bump 或 current。");
 }
 
 function getRegistry(pkg) {
@@ -125,30 +167,43 @@ function run(command, args) {
 }
 
 async function main() {
+  const pkg = readPackageJson();
+  const currentVersion = pkg.version || "0.0.0";
+  const releaseTag = await getReleaseTag();
+  const versionMode = getReleaseVersionMode();
+  const nextVersion = versionMode === "current"
+    ? currentVersion
+    : releaseTag === "beta"
+      ? getNextBeta(currentVersion)
+      : getNextStable(currentVersion);
+  assertReleaseTagMatchesVersion(releaseTag, nextVersion);
+  const registry = getRegistry(pkg);
+
+  console.log(`当前制品: ${pkg.name}@${currentVersion}`);
+  console.log(`发布类型: ${releaseTag}`);
+  console.log(`版本模式: ${versionMode}`);
+  console.log(`目标版本: ${nextVersion}`);
+  console.log(`制品仓库: ${registry}`);
+
+  let versionChanged = false;
   try {
-    const pkg = readPackageJson();
-    const currentVersion = pkg.version || "0.0.0";
-    const releaseTag = await getReleaseTag();
-    const versionMode = getReleaseVersionMode();
-    assertReleaseTagMatchesVersion(releaseTag, currentVersion);
-    assertReleasedVersionInChangelog(fs.readFileSync(changelogPath, "utf8"), currentVersion);
-    const registry = getRegistry(pkg);
-
-    console.log(`当前制品: ${pkg.name}@${currentVersion}`);
-    console.log(`发布类型: ${releaseTag}`);
-    console.log(`版本模式: ${versionMode}`);
-    console.log(`目标版本: ${currentVersion}`);
-    console.log(`制品仓库: ${registry}`);
-
+    if (versionMode === "bump") {
+      writePackageVersion(pkg, nextVersion);
+      versionChanged = true;
+    }
     run("npm", ["run", "lint"]);
     run("npm", ["run", "typecheck"]);
     run("npm", ["run", "test"]);
     run("npm", ["run", "build"]);
     run("npm", ["pack", "--dry-run"]);
     run("npm", ["publish", "--tag", releaseTag, "--registry", registry]);
-    console.log(`发布成功: ${pkg.name}@${currentVersion} (${releaseTag})`);
+    console.log(`发布成功: ${pkg.name}@${nextVersion} (${releaseTag})`);
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error);
+    if (versionChanged) {
+      writePackageVersion(pkg, currentVersion);
+      console.error(`发布失败，版本号已回滚到 ${currentVersion}。`);
+    }
     console.error(`发布失败: ${message}`);
     process.exitCode = 1;
   }

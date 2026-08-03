@@ -1,5 +1,23 @@
 # 脚本目录
 
+## 准备正式版本
+
+先在 `CHANGELOG.md` 的 `[Unreleased]` 中写入本次变更、升级建议和破坏性变更说明。
+
+预览 `major`、`minor` 或 `patch` 的目标版本与 Diff，不修改文件：
+
+```bash
+RELEASE_BUMP=major npm run release:prepare -- --dry-run
+```
+
+确认后执行准备脚本。它只会更新 `package.json`、`package-lock.json` 和 `CHANGELOG.md`；不会执行 Git 操作或发布制品：
+
+```bash
+RELEASE_BUMP=major npm run release:prepare
+```
+
+发布后会保留一个新的空 `[Unreleased]` 区块，供下一次版本继续记录变更。
+
 ## 发布
 
 执行：
@@ -8,7 +26,7 @@
 npm run release
 ```
 
-发布脚本会校验登录身份、运行 lint、类型检查、测试、构建和制品预览，然后发布。
+发布脚本会校验正式版本已写入 `CHANGELOG.md`，再运行 lint、类型检查、测试、构建和制品预览，然后发布。它不会修改版本号。
 
 当前云效制品仓库地址已配置为：
 
@@ -35,6 +53,6 @@ RELEASE_TAG=latest RELEASE_VERSION_MODE=current npm run release
 # 或 RELEASE_TAG=beta RELEASE_VERSION_MODE=current npm run release
 ```
 
-`RELEASE_VERSION_MODE=current` 会发布 `package.json` 中已提交的版本号；适用于流水线，避免每次从相同源码重复计算版本号。未设置时为 `bump`，脚本会自动递增版本号，适用于本地手动发布。
+`RELEASE_VERSION_MODE=current` 会发布 `package.json` 中已提交的版本号；这是唯一支持的发布模式。请先使用 `release:prepare` 准备版本，再执行发布。
 
 `latest` 只能发布正式版本，例如 `0.0.1`；`beta` 只能发布 `-beta.N` 版本，例如 `0.0.2-beta.0`。

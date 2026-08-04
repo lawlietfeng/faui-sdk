@@ -195,6 +195,126 @@ describe("Repeater", () => {
   });
 });
 
+describe("form text required marks", () => {
+  it("shows a required mark for a directly adjacent required field", () => {
+    renderSchema([
+      { id: "root", component: "form", children: ["name-item"] } as Component,
+      { id: "name-item", component: "box", children: ["name-label", "name"] } as Component,
+      { id: "name-label", component: "text", content: "Name" } as Component,
+      { id: "name", component: "input", rules: [{ required: true }] } as Component,
+    ]);
+
+    const mark = screen.getByText("Name").querySelector('[aria-hidden="true"]');
+    expect(mark).toHaveTextContent("*");
+    expect(mark).toHaveStyle({ marginInlineEnd: "4px" });
+  });
+
+  it("does not show a required mark when the adjacent field is optional", () => {
+    renderSchema([
+      { id: "root", component: "form", children: ["name-item"] } as Component,
+      { id: "name-item", component: "box", children: ["name-label", "name"] } as Component,
+      { id: "name-label", component: "text", content: "Name" } as Component,
+      { id: "name", component: "input", rules: [{ min: 2 }] } as Component,
+    ]);
+
+    expect(screen.getByText("Name").querySelector('[aria-hidden="true"]')).toBeNull();
+  });
+
+  it("adds a required mark even when the label content already contains an asterisk", () => {
+    renderSchema([
+      { id: "root", component: "form", children: ["name-item"] } as Component,
+      { id: "name-item", component: "box", children: ["name-label", "name"] } as Component,
+      { id: "name-label", component: "text", content: "*Name" } as Component,
+      { id: "name", component: "input", rules: [{ required: true }] } as Component,
+    ]);
+
+    expect(screen.getByText("*Name")).toHaveTextContent("**Name");
+  });
+
+  it("does not infer a required mark outside a form", () => {
+    renderSchema([
+      { id: "root", component: "box", children: ["name-label", "name"] } as Component,
+      { id: "name-label", component: "text", content: "Name" } as Component,
+      { id: "name", component: "input", rules: [{ required: true }] } as Component,
+    ]);
+
+    expect(screen.getByText("Name").querySelector('[aria-hidden="true"]')).toBeNull();
+  });
+
+  it("does not infer a required mark when the field is not directly adjacent", () => {
+    renderSchema([
+      { id: "root", component: "form", children: ["name-item"] } as Component,
+      { id: "name-item", component: "box", children: ["name-label", "hint", "name"] } as Component,
+      { id: "name-label", component: "text", content: "Name" } as Component,
+      { id: "hint", component: "text", content: "Hint" } as Component,
+      { id: "name", component: "input", rules: [{ required: true }] } as Component,
+    ]);
+
+    expect(screen.getByText("Name").querySelector('[aria-hidden="true"]')).toBeNull();
+  });
+
+  it("does not infer a required mark for a text component used by multiple parents", () => {
+    renderSchema([
+      { id: "root", component: "form", children: ["first-item", "second-item"] } as Component,
+      { id: "first-item", component: "box", children: ["name-label", "name"] } as Component,
+      { id: "second-item", component: "box", children: ["name-label"] } as Component,
+      { id: "name-label", component: "text", content: "Name" } as Component,
+      { id: "name", component: "input", rules: [{ required: true }] } as Component,
+    ]);
+
+    for (const label of screen.getAllByText("Name")) {
+      expect(label.querySelector('[aria-hidden="true"]')).toBeNull();
+    }
+  });
+
+  it("does not infer a required mark when a parent references the text component more than once", () => {
+    renderSchema([
+      { id: "root", component: "form", children: ["name-item"] } as Component,
+      { id: "name-item", component: "box", children: ["name-label", "name", "name-label"] } as Component,
+      { id: "name-label", component: "text", content: "Name" } as Component,
+      { id: "name", component: "input", rules: [{ required: true }] } as Component,
+    ]);
+
+    for (const label of screen.getAllByText("Name")) {
+      expect(label.querySelector('[aria-hidden="true"]')).toBeNull();
+    }
+  });
+
+  it("hides a required mark when the adjacent field is not visible", () => {
+    renderSchema([
+      { id: "root", component: "form", children: ["name-item"] } as Component,
+      { id: "name-item", component: "box", children: ["name-label", "name"] } as Component,
+      { id: "name-label", component: "text", content: "Name" } as Component,
+      {
+        id: "name",
+        component: "input",
+        visible: "${$root.showName}",
+        rules: [{ required: true }],
+      } as Component,
+    ], { dataModel: { showName: false } });
+
+    expect(screen.getByText("Name").querySelector('[aria-hidden="true"]')).toBeNull();
+  });
+
+  it("uses required rules from directly adjacent custom components", () => {
+    const CustomField: React.FC = () => <div data-testid="custom-field" />;
+    render(
+      <SchemaRenderer
+        schema={content([
+          { id: "root", component: "form", children: ["name-item"] } as Component,
+          { id: "name-item", component: "box", children: ["name-label", "custom-name"] } as Component,
+          { id: "name-label", component: "text", content: "Name" } as Component,
+          { id: "custom-name", component: "custom-field", rules: [{ required: true }] } as Component,
+        ])}
+        componentRegistry={{ ...ComponentRegistry, "custom-field": CustomField }}
+      />,
+    );
+
+    expect(screen.getByTestId("custom-field")).toBeInTheDocument();
+    expect(screen.getByText("Name").querySelector('[aria-hidden="true"]')).toHaveTextContent("*");
+  });
+});
+
 describe("form component integration", () => {
   it("blocks submit actions until required fields are valid", async () => {
     const user = userEvent.setup();

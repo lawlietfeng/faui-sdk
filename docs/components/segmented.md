@@ -15,7 +15,7 @@
 | `value` | `ValueBinding` | - | 双向绑定的数据路径，用于回显和写入当前选中的值 |
 | `options` | `Array \| string` | - | 分段控制器选项数据，支持插值表达式 |
 | `block` | `boolean \| string` | `false` | 是否将宽度调整为父元素宽度的 100%，支持插值表达式 |
-| `disabled` | `boolean \| string` | `false` | 是否禁用整个分段控制器，支持插值表达式 |
+| `disabled` | `boolean` \| `string` \| `{ path: string }` | `false` | 是否禁用整个分段控制器，支持表达式和数据绑定 |
 | `size` | `'large' \| 'middle' \| 'small' \| string` | `'middle'` | 控件大小，支持插值表达式 |
 | `on_change` | `ActionConfig` | - | 选中项变化时的自定义回调动作。自定义时可通过 `${$value}` 引用最新值，组件会保留你设置的自定义 `value` 表达式不覆盖。 |
 | `rules` | `FormRule[]` | - | 表单校验规则 |

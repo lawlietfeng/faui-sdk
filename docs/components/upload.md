@@ -18,6 +18,7 @@
 | `maxCount` | `number \| string` | - | 限制最多允许上传的文件数量，支持表达式 |
 | `listType` | `string` | `'text'` | 上传列表的展示样式，可选 `'text' \| 'picture' \| 'picture-card'`，支持表达式 |
 | `showUploadList` | `boolean \| string` | `true` | 是否展示已上传或正在上传的文件列表，支持表达式 |
+| `disabled` | `boolean` \| `string` \| `{ path: string }` | `false` | 是否禁用上传操作，支持表达式和数据绑定 |
 | `label` | `string` | `'点击上传'` | 默认上传按钮上的文字，支持表达式 |
 | `children` | `string[]` | - | 用于替换默认上传按钮的自定义子组件 ID |
 

@@ -9,6 +9,7 @@ import { useDataSelector } from '../hooks/useDataSelector';
 import { useFormContextOptional } from '../context/FormContext';
 import type { ComponentProps } from './index';
 import { useExpression } from '../hooks/useExpression';
+import { useBooleanControlValue } from '../hooks/useBooleanControlValue';
 
 export const Radio: React.FC<ComponentProps<'radio'>> = ({ config }) => {
   const { handleAction } = useRendererContext();
@@ -76,11 +77,13 @@ export const Radio: React.FC<ComponentProps<'radio'>> = ({ config }) => {
 
   const evaluatedOptions = useExpression(config.options);
   const options = Array.isArray(evaluatedOptions) ? evaluatedOptions : [];
+  const evaluatedDisabled = useBooleanControlValue(config.disabled);
 
   return (
     <div>
       <AntRadio.Group
         options={options as any}
+        disabled={evaluatedDisabled}
         value={value}
         onChange={handleChange}
         onBlur={handleBlur}

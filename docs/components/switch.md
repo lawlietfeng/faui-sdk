@@ -17,7 +17,7 @@
 | `on_change` | `ActionConfig` | - | 状态改变时触发的动作。如果不配置但绑定了路径，引擎会自动回写状态。自定义时可通过 `${$value}` 引用最新值，组件会保留你设置的自定义 `value` 表达式不覆盖。 |
 | `checkedChildren` | `string` | - | 开启状态下显示的文本内容 |
 | `unCheckedChildren` | `string` | - | 关闭状态下显示的文本内容 |
-| `disabled` | `boolean` \| `string` | `false` | 是否禁用开关 |
+| `disabled` | `boolean` \| `string` \| `{ path: string }` | `false` | 是否禁用开关，支持表达式和数据绑定 |
 | `size` | `string` | `"default"` | 开关大小，可选 `"small"`、`"default"` |
 | `rules` | `FormRule[]` | - | 在 `form` 中使用时的表单校验规则 |
 

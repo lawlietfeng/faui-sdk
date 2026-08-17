@@ -8,6 +8,7 @@ import { useFormContextOptional } from '../context/FormContext';
 import type { ComponentProps } from './index';
 import { useExpression } from '../hooks/useExpression';
 import type { Component } from '../types/schema';
+import { useBooleanControlValue } from '../hooks/useBooleanControlValue';
 
 export const Segmented: React.FC<ComponentProps<'segmented'>> = ({ config }) => {
   const { handleAction } = useRendererContext();
@@ -72,7 +73,7 @@ export const Segmented: React.FC<ComponentProps<'segmented'>> = ({ config }) => 
 
   // Dynamic props resolution
   const evaluatedOptions = (useExpression(config.options) || []) as any[];
-  const evaluatedDisabled = useExpression(config.disabled) as boolean | undefined;
+  const evaluatedDisabled = useBooleanControlValue(config.disabled);
   const evaluatedBlock = useExpression(config.block) as boolean | undefined;
   const evaluatedSize = useExpression(config.size) as 'large' | 'middle' | 'small' | undefined;
   const evaluatedStyle = useExpression(config.style) as React.CSSProperties | undefined;

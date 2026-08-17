@@ -42,6 +42,18 @@
 }
 ```
 
+### disabled（禁用）
+
+支持布尔值、表达式或数据绑定；禁用后不可更改当前选择。
+
+```json
+{
+  "id": "type-select",
+  "component": "select",
+  "disabled": { "path": "/form/locked" }
+}
+```
+
 ### value.path（数据绑定）
 
 将选中值绑定到 `dataModel`：

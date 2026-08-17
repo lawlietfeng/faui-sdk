@@ -1,4 +1,4 @@
-import type { BaseComponentConfig } from '../schema';
+import type { BaseComponentConfig, ComponentControlValue } from '../schema';
 import type { FormRule, ValueBinding } from '../schema';
 
 export interface DatepickerComponentConfig extends BaseComponentConfig {
@@ -9,6 +9,7 @@ export interface DatepickerComponentConfig extends BaseComponentConfig {
   picker?: 'date' | 'month' | 'year';
   format?: string;
   showTime?: boolean;
+  disabled?: ComponentControlValue;
   disabledDate?: {
     before?: ValueBinding;
     after?: ValueBinding;

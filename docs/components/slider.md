@@ -16,7 +16,7 @@
 | max | `number \| string` | `100` | 最大值（支持 `useExpression` 插值） |
 | step | `number \| string` | `1` | 每次拖动的最小单位步长（支持 `useExpression` 插值） |
 | range | `boolean \| string` | `false` | 是否开启双滑块模式，开启后返回范围数组（支持 `useExpression` 插值） |
-| disabled | `boolean \| string` | `false` | 是否禁用滑块（支持 `useExpression` 插值） |
+| disabled | `boolean \| string \| { path: string }` | `false` | 是否禁用滑块，支持表达式和数据绑定 |
 | value.path | `string` | - | 绑定的数据源路径 |
 | on_change | `ActionConfig` | - | 值变化时触发的事件（未配置且有 path 时自动触发 update_data）。自定义时可通过 `${$value}` 引用最新值，组件会保留你设置的自定义 `value` 表达式不覆盖。 |
 

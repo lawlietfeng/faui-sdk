@@ -6,6 +6,7 @@ import { useRendererContext } from '../context/RendererContext';
 import { resolveOnChange } from '../utils/resolveOnChange';
 import { useDataSelector } from '../hooks/useDataSelector';
 import { useExpression } from '../hooks/useExpression';
+import { useBooleanControlValue } from '../hooks/useBooleanControlValue';
 import { useFormContextOptional } from '../context/FormContext';
 import type { ComponentProps } from './index';
 
@@ -70,7 +71,7 @@ export const Switch: React.FC<ComponentProps<'switch'>> = ({ config }) => {
 
   const evaluatedCheckedChildren = useExpression(config.checkedChildren) as string | undefined;
   const evaluatedUnCheckedChildren = useExpression(config.unCheckedChildren) as string | undefined;
-  const evaluatedDisabled = useExpression(config.disabled) as boolean | undefined;
+  const evaluatedDisabled = useBooleanControlValue(config.disabled);
   const evaluatedSize = useExpression(config.size) as 'small' | 'default' | undefined;
 
   return (

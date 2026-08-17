@@ -18,6 +18,7 @@
 | `max` | `number` | - | 允许输入的最大值。 |
 | `step` | `number` | `1` | 每次改变步数，可以为小数。 |
 | `placeholder` | `string` | - | 输入框为空时的提示文字，支持表达式插值。 |
+| `disabled` | `boolean` \| `string` \| `{ path: string }` | `false` | 是否禁用数字输入框，支持表达式和数据绑定。 |
 | `rules` | `FormRule[]` | - | 配合 `form` 校验的规则数组。 |
 
 ### value.path 与 on_change（数据双向绑定）

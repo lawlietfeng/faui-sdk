@@ -17,6 +17,7 @@
 | `value.path`  | `string`                                                    | -      | 双向绑定的数据路径，值类型通常为选中节点的值数组（如 `["zhejiang", "hangzhou"]`）。 |
 | `options`     | `Array` (支持表达式)                                        | -      | 可选项数据源。包含 `value`, `label`, `children`。            |
 | `placeholder` | `string` (支持表达式)                                       | -      | 输入框占位文本。                                             |
+| `disabled`    | `boolean` \| `string` \| `{ path: string }`              | `false` | 是否禁用级联选择器，支持表达式和数据绑定。                   |
 | `field`       | `string`                                                    | -      | 表单字段名。未配置时将退化使用 `value.path` 的尾部或 `id`。  |
 | `rules`       | `FormRule[]`                                                | -      | 表单校验规则（如必填项）。                                   |
 | `on_change`   | `Action`                                                    | -      | 选中项变化时的回调。默认会自动回写到 `value.path`。自定义时可通过 `${$value}` 引用最新值，组件会保留你设置的自定义 `value` 表达式不覆盖。 |

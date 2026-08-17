@@ -8,6 +8,7 @@ import { useDataSelector } from '../hooks/useDataSelector';
 import { useFormContextOptional } from '../context/FormContext';
 import type { ComponentProps } from './index';
 import { useExpression } from '../hooks/useExpression';
+import { useBooleanControlValue } from '../hooks/useBooleanControlValue';
 
 export const Input: React.FC<ComponentProps<'input'>> = ({ config }) => {
   const { handleAction } = useRendererContext();
@@ -73,11 +74,13 @@ export const Input: React.FC<ComponentProps<'input'>> = ({ config }) => {
 
   const errorInfo = formContext?.getFieldErrorInfo(config.id);
   const evaluatedPlaceholder = useExpression(config.placeholder);
+  const evaluatedDisabled = useBooleanControlValue(config.disabled);
 
   return (
     <div>
       <AntdInput
         placeholder={evaluatedPlaceholder}
+        disabled={evaluatedDisabled}
         value={value}
         onChange={handleChange}
         onBlur={handleBlur}

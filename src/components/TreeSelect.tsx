@@ -8,6 +8,7 @@ import { useDataSelector } from '../hooks/useDataSelector';
 import { useFormContextOptional } from '../context/FormContext';
 import type { ComponentProps } from './index';
 import { useExpression } from '../hooks/useExpression';
+import { useBooleanControlValue } from '../hooks/useBooleanControlValue';
 
 export const TreeSelect: React.FC<ComponentProps<'treeselect'>> = ({ config }) => {
   const { handleAction } = useRendererContext();
@@ -75,7 +76,7 @@ export const TreeSelect: React.FC<ComponentProps<'treeselect'>> = ({ config }) =
   const evaluatedPlaceholder = useExpression(config.placeholder) as string | undefined;
   const evaluatedOptions = useExpression(config.options);
   const evaluatedMultiple = useExpression(config.multiple) as boolean | undefined;
-  const evaluatedDisabled = useExpression(config.disabled) as boolean | undefined;
+  const evaluatedDisabled = useBooleanControlValue(config.disabled);
 
   return (
     <div>

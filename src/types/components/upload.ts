@@ -1,9 +1,10 @@
-import type { BaseComponentConfig } from '../schema';
+import type { BaseComponentConfig, ComponentControlValue } from '../schema';
 import type { FormRule } from '../schema';
 
 export interface UploadComponentConfig extends BaseComponentConfig {
   component: 'upload';
   field?: string;
+  disabled?: ComponentControlValue;
   rules?: FormRule[];
   accept?: string;
   multiple?: boolean | string;

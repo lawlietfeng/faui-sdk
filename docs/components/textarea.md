@@ -14,7 +14,7 @@
 | `value` | `ValueBinding` | - | 绑定输入框的文本值，使用 `path` 指定全局状态路径 |
 | `on_change` | `ActionConfig` | - | 输入内容改变时触发。若不配置且存在 `path`，引擎会自动回写状态。自定义时可通过 `${$value}` 引用最新值，组件会保留你设置的自定义 `value` 表达式不覆盖。 |
 | `placeholder` | `string` | - | 输入框为空时的占位提示文本，支持表达式 |
-| `disabled` | `boolean` \| `string` | `false` | 是否禁用输入框 |
+| `disabled` | `boolean` \| `string` \| `{ path: string }` | `false` | 是否禁用输入框，支持表达式和数据绑定 |
 | `rows` | `number` \| `string` | - | 输入框显示的默认行数 |
 | `maxLength` | `number` \| `string` | - | 允许输入的最大字符数。配置后会自动在右下角显示字数统计 |
 | `rules` | `FormRule[]` | - | 在 `form` 中使用时的表单校验规则 |

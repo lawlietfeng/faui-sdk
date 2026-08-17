@@ -15,6 +15,7 @@
 | 属性名 | 类型 | 默认值 | 说明 |
 | --- | --- | --- | --- |
 | `value.path` | `string` | - | **核心**：双向绑定的数据路径，通常绑定为十六进制颜色字符串。 |
+| `disabled` | `boolean` \| `string` \| `{ path: string }` | `false` | 是否禁用颜色选择器，支持表达式和数据绑定。 |
 | `field` | `string` | - | 表单字段名（可选），如果未提供则默认使用 `value.path` 或 `id`。 |
 | `on_change` | `ActionConfig` | - | 值变化时触发的动作。如果不配置，组件会自动 fallback 执行 `update_data` 更新 `value.path` 对应的数据。自定义时可通过 `${$value}` 引用最新值，组件会保留你设置的自定义 `value` 表达式不覆盖。 |
 | `rules` | `FormRule[]` | - | 表单校验规则（如必填、正则校验等）。 |

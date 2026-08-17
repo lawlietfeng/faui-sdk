@@ -14,6 +14,7 @@
 | --- | --- | --- | --- |
 | `options` | `Array \| string` | `[]` | **必填**，数据源配置数组，支持插值表达式动态获取全局数据 |
 | `value.path` | `string` | - | **必填**，双向绑定的数据路径，值将是一个包含所有“已选项” `value` 的字符串数组 |
+| `disabled` | `boolean` \| `string` \| `{ path: string }` | `false` | 是否禁用整个穿梭框，支持表达式和数据绑定 |
 
 ### options（数据源选项）
 

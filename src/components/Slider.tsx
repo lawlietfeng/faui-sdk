@@ -8,6 +8,7 @@ import { useDataSelector } from '../hooks/useDataSelector';
 import { useFormContextOptional } from '../context/FormContext';
 import { useExpression } from '../hooks/useExpression';
 import type { ComponentProps } from './index';
+import { useBooleanControlValue } from '../hooks/useBooleanControlValue';
 
 export const Slider: React.FC<ComponentProps<'slider'>> = ({ config }) => {
   const { handleAction } = useRendererContext();
@@ -17,7 +18,7 @@ export const Slider: React.FC<ComponentProps<'slider'>> = ({ config }) => {
   const evaluatedMax = useExpression(config.max) as number | undefined;
   const evaluatedStep = useExpression(config.step) as number | undefined;
   const evaluatedRange = useExpression(config.range) as boolean | undefined;
-  const evaluatedDisabled = useExpression(config.disabled) as boolean | undefined;
+  const evaluatedDisabled = useBooleanControlValue(config.disabled);
   const evaluatedStyle = useExpression(config.style) as React.CSSProperties | undefined;
   const evaluatedClassName = useExpression(config.className) as string | undefined;
 

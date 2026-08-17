@@ -22,7 +22,7 @@ button 组件用于响应用户的点击操作，触发业务逻辑（如提交�
 | `shape`    | `'default' \| 'circle' \| 'round'` | `'default'` | 按钮的形状。                                     |
 | `size`     | `'large' \| 'middle' \| 'small'` | `'middle'`  | 按钮的尺寸。                                     |
 | `block`    | `boolean`                    | `false`     | 将按钮宽度调整为其父宽度的 100%。                |
-| `disabled` | `boolean` (支持表达式)       | `false`     | 是否禁用按钮。                                   |
+| `disabled` | `boolean` \| `string` \| `{ path: string }` | `false` | 是否禁用按钮，支持表达式和数据绑定。 |
 | `on_tap`   | `Action[]`                   | -           | 点击按钮时触发的动作数组。                       |
 | `children` | `string[]`                   | -           | 嵌套子组件（仅在未设置 `label/content` 时生效）。|
 

@@ -17,6 +17,7 @@
 | `field`    | `string`                                                    | -      | 表单字段名。                             |
 | `rules`    | `FormRule[]`                                                | -      | 表单校验规则。                           |
 | `options`  | `Array<{ label: string; value: string; children?: any[] }>` | -      | 自动完成的下拉建议选项列表（支持表达式）。 |
+| `disabled` | `boolean` \| `string` \| `{ path: string }`              | `false` | 是否禁用自动完成，支持表达式和数据绑定。 |
 
 ---
 

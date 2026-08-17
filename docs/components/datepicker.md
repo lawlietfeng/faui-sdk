@@ -19,6 +19,7 @@
 | `format` | `string` | - | 日期格式化字符串，如 `YYYY-MM-DD`。默认会根据 `picker` 和 `showTime` 自动适配。 |
 | `showTime` | `boolean` | `false` | 是否同时显示时间选择器（仅当 `picker` 为 `date` 时有效）。 |
 | `placeholder` | `string` | - | 输入框占位提示文字。 |
+| `disabled` | `boolean` \| `string` \| `{ path: string }` | `false` | 是否禁用整个日期选择器，支持表达式和数据绑定。 |
 | `disabledDate` | `object` | - | 日期禁用规则，支持 `before` 和 `after` 约束。详见下方说明。 |
 | `field` | `string` | - | 表单字段名（可选），未提供则默认使用 `value.path` 或 `id`。 |
 | `on_change` | `ActionConfig` | - | 值变化时触发的动作。如果不配置，组件会自动 fallback 执行 `update_data` 更新对应数据。自定义时可通过 `${$value}` 引用最新值，组件会保留你设置的自定义 `value` 表达式不覆盖。 |

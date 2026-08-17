@@ -8,6 +8,7 @@ import { resolveOnChange } from '../utils/resolveOnChange';
 import { useDataSelector } from '../hooks/useDataSelector';
 import { useFormContextOptional } from '../context/FormContext';
 import type { ComponentProps } from './index';
+import { useBooleanControlValue } from '../hooks/useBooleanControlValue';
 
 
 
@@ -87,6 +88,7 @@ export const DatePicker: React.FC<ComponentProps<'datepicker'>> = ({ config }) =
   }, [config.id, formContext]);
 
   const errorInfo = formContext?.getFieldErrorInfo(config.id);
+  const evaluatedDisabled = useBooleanControlValue(config.disabled);
 
   return (
     <div>
@@ -98,6 +100,7 @@ export const DatePicker: React.FC<ComponentProps<'datepicker'>> = ({ config }) =
         value={value ? dayjs(value) : null}
         onChange={handleChange}
         onBlur={handleBlur}
+        disabled={evaluatedDisabled}
         disabledDate={config.disabledDate ? disabledDate : undefined}
         style={{ width: '100%', ...config.style }}
         className={config.className}

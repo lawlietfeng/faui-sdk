@@ -8,6 +8,7 @@ import { useDataSelector } from '../hooks/useDataSelector';
 import { useFormContextOptional } from '../context/FormContext';
 import type { ComponentProps } from './index';
 import { useExpression } from '../hooks/useExpression';
+import { useBooleanControlValue } from '../hooks/useBooleanControlValue';
 
 export const Textarea: React.FC<ComponentProps<'textarea'>> = ({ config }) => {
   const { handleAction } = useRendererContext();
@@ -73,7 +74,7 @@ export const Textarea: React.FC<ComponentProps<'textarea'>> = ({ config }) => {
 
   const errorInfo = formContext?.getFieldErrorInfo(config.id);
   const evaluatedPlaceholder = useExpression(config.placeholder) as string | undefined;
-  const evaluatedDisabled = useExpression(config.disabled) as boolean | undefined;
+  const evaluatedDisabled = useBooleanControlValue(config.disabled);
   const evaluatedRows = useExpression(config.rows) as number | undefined;
   const evaluatedMaxLength = useExpression(config.maxLength) as number | undefined;
 

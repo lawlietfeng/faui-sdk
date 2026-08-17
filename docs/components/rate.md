@@ -15,6 +15,7 @@
 | `value` | `ValueBinding` | - | 双向绑定的数据路径，用于回显和写入当前的评分数值 |
 | `count` | `number \| string` | `5` | 设置评分的星星总数，支持插值表达式 |
 | `allowHalf` | `boolean \| string` | `false` | 是否允许半星评分，支持插值表达式 |
+| `disabled` | `boolean` \| `string` \| `{ path: string }` | `false` | 是否禁用评分，支持表达式和数据绑定 |
 | `on_change` | `ActionConfig` | - | 评分发生变化时的回调动作。自定义时可通过 `${$value}` 引用最新值，组件会保留你设置的自定义 `value` 表达式不覆盖。 |
 | `rules` | `FormRule[]` | - | 表单校验规则，支持必填、最大/最小值等校验 |
 | `validateTrigger` | `string \| string[]` | `'onChange'` | 触发校验的时机 |
@@ -88,7 +89,7 @@
 
 ### 纯展示用途
 
-如果只希望展示已有的评分结果而不允许用户修改（或者修改了也不保存），可以仅绑定 `value.path` 并利用表达式禁用它，或者通过外层增加透明遮罩阻止点击。虽然组件本身没有暴露出 `disabled` 属性，但你可以通过不处理回写（且不触发其他动作）来充当一个展示器。
+如果只希望展示已有的评分结果而不允许用户修改，可配置 `disabled: true`，也可使用表达式或数据绑定动态禁用。
 
 ### 带提示文字的联动
 

@@ -1,4 +1,4 @@
-import { BaseComponentConfig, FormRule } from '../schema';
+import { BaseComponentConfig, ComponentControlValue, FormRule } from '../schema';
 
 export interface SegmentedOption {
   label: string;
@@ -13,6 +13,6 @@ export interface SegmentedComponentConfig extends BaseComponentConfig {
   rules?: FormRule[];
   options: (string | number | SegmentedOption)[] | string;
   block?: boolean | string;
-  disabled?: boolean | string;
+  disabled?: ComponentControlValue;
   size?: 'large' | 'middle' | 'small' | string;
 }

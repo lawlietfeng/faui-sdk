@@ -13,6 +13,7 @@
 | --- | --- | --- | --- |
 | `value` | `ValueBinding` | - | 双向绑定的数据路径，用于回显和写入当前选中的值 |
 | `options` | `Array \| string` | - | 选项列表，支持通过插值表达式动态获取数组 |
+| `disabled` | `boolean` \| `string` \| `{ path: string }` | `false` | 是否禁用整组单选项，支持表达式和数据绑定 |
 | `on_change` | `ActionConfig` | - | 选中项发生变化时的回调动作。自定义时可通过 `${$value}` 引用最新值，组件会保留你设置的自定义 `value` 表达式不覆盖。 |
 | `rules` | `FormRule[]` | - | 表单校验规则，支持必填等校验 |
 | `validateTrigger` | `string \| string[]` | `'onChange'` | 触发校验的时机 |

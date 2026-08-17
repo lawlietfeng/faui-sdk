@@ -1,4 +1,4 @@
-import type { BaseComponentConfig } from '../schema';
+import type { BaseComponentConfig, ComponentControlValue } from '../schema';
 import type { FormRule } from '../schema';
 
 export interface TextareaComponentConfig extends BaseComponentConfig {
@@ -6,7 +6,7 @@ export interface TextareaComponentConfig extends BaseComponentConfig {
   field?: string;
   placeholder?: string;
   rules?: FormRule[];
-  disabled?: boolean | string;
+  disabled?: ComponentControlValue;
   rows?: number | string;
   maxLength?: number | string;
 }

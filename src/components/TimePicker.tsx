@@ -10,6 +10,7 @@ import { useDataSelector } from '../hooks/useDataSelector';
 import { useExpression } from '../hooks/useExpression';
 import { useFormContextOptional } from '../context/FormContext';
 import type { ComponentProps } from './index';
+import { useBooleanControlValue } from '../hooks/useBooleanControlValue';
 
 export const TimePicker: React.FC<ComponentProps<'timepicker'>> = ({ config }) => {
   const { handleAction } = useRendererContext();
@@ -77,7 +78,7 @@ export const TimePicker: React.FC<ComponentProps<'timepicker'>> = ({ config }) =
 
   const format = config.format || 'HH:mm:ss';
   const evaluatedPlaceholder = useExpression(config.placeholder) as string | undefined;
-  const evaluatedDisabled = useExpression(config.disabled) as boolean | undefined;
+  const evaluatedDisabled = useBooleanControlValue(config.disabled);
   const evaluatedMinuteStep = useExpression(config.minuteStep) as number | undefined;
   const evaluatedSecondStep = useExpression(config.secondStep) as number | undefined;
   const evaluatedHourStep = useExpression(config.hourStep) as number | undefined;

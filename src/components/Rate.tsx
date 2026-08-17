@@ -8,6 +8,7 @@ import { useDataSelector } from '../hooks/useDataSelector';
 import { useFormContextOptional } from '../context/FormContext';
 import type { ComponentProps } from './index';
 import { useExpression } from '../hooks/useExpression';
+import { useBooleanControlValue } from '../hooks/useBooleanControlValue';
 
 export const Rate: React.FC<ComponentProps<'rate'>> = ({ config }) => {
   const { handleAction } = useRendererContext();
@@ -72,6 +73,7 @@ export const Rate: React.FC<ComponentProps<'rate'>> = ({ config }) => {
   const evaluatedCount = Number(useExpression(config.count)) || undefined;
   const evaluatedStyle = useExpression(config.style) as React.CSSProperties | undefined;
   const evaluatedClassName = useExpression(config.className) as string | undefined;
+  const evaluatedDisabled = useBooleanControlValue(config.disabled);
 
   return (
     <div>
@@ -80,6 +82,7 @@ export const Rate: React.FC<ComponentProps<'rate'>> = ({ config }) => {
         onChange={handleChange}
         allowHalf={evaluatedAllowHalf}
         count={evaluatedCount}
+        disabled={evaluatedDisabled}
         style={evaluatedStyle}
         className={evaluatedClassName}
       />

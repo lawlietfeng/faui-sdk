@@ -15,6 +15,7 @@
 | `value.path` | `string` | - | 双向绑定的数据路径。配合 `on_change` 实现输入回写。 |
 | `on_change` | `ActionConfig` | - | 文本改变时触发的动作。如果不配置但配置了 `value.path`，将默认执行回写数据的 fallback 操作。自定义 `on_change` 时，可通过 `${$value}` 引用组件的最新值。如果 on_change 中未设置 `value` 字段，组件会自动注入当前值；如果设置了自定义 `value` 表达式，组件会保留你的表达式不覆盖。 |
 | `placeholder` | `string` | - | 输入框为空时的提示文字，支持表达式插值。 |
+| `disabled` | `boolean` \| `string` \| `{ path: string }` | `false` | 是否禁用输入框，支持表达式和数据绑定。 |
 | `rules` | `FormRule[]` | - | 配合 `form` 校验的规则数组。 |
 | `validateTrigger` | `string` \| `string[]` | `"onChange"` | 触发校验的时机。可选值有 `"onChange"` 和 `"onBlur"`。 |
 | `field` | `string` | - | 表单注册的字段名，默认为 `value.path` 或 `id`。 |

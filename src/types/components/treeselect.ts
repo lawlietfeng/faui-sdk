@@ -1,4 +1,4 @@
-import type { BaseComponentConfig } from '../schema';
+import type { BaseComponentConfig, ComponentControlValue } from '../schema';
 import type { FormRule } from '../schema';
 
 export interface TreeselectComponentConfig extends BaseComponentConfig {
@@ -8,5 +8,5 @@ export interface TreeselectComponentConfig extends BaseComponentConfig {
   options?: Array<{ label: string; value: string; children?: any[] }> | string;
   multiple?: boolean | string;
   placeholder?: string;
-  disabled?: boolean | string;
+  disabled?: ComponentControlValue;
 }

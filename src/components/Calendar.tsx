@@ -8,6 +8,7 @@ import { resolveOnChange } from '../utils/resolveOnChange';
 import { useDataSelector } from '../hooks/useDataSelector';
 import { useFormContextOptional } from '../context/FormContext';
 import { useExpression } from '../hooks/useExpression';
+import { useBooleanControlValue } from '../hooks/useBooleanControlValue';
 import type { ComponentProps } from './index';
 import type { Component } from '../types/schema';
 
@@ -23,6 +24,7 @@ export const Calendar: React.FC<ComponentProps<'calendar'>> = ({ config: baseCon
   const [value, setValue] = useState<string | undefined>(initialValue as string | undefined);
   const fieldName = resolveFieldName(config);
   const rules = useMemo(() => normalizeRules(config.rules), [config.rules]);
+  const evaluatedDisabled = useBooleanControlValue(config.disabled);
 
   // Sync from dataModel
   useEffect(() => {
@@ -54,9 +56,13 @@ export const Calendar: React.FC<ComponentProps<'calendar'>> = ({ config: baseCon
   const evaluatedFullscreen = useExpression(config.fullscreen);
   const evaluatedMode = useExpression(config.mode) as 'month' | 'year' | undefined;
   const format = config.format || 'YYYY-MM-DD';
+  const disabledDate = useCallback((_current: Dayjs) => evaluatedDisabled === true, [evaluatedDisabled]);
 
   const onSelect = useCallback(
     (date: Dayjs, selectInfo: { source: 'year' | 'month' | 'date' | 'customize' }) => {
+      if (evaluatedDisabled) {
+        return;
+      }
       const dateString = date.format(format);
       setValue(dateString);
       formContext?.syncFieldValue(config.id, dateString);
@@ -80,11 +86,14 @@ export const Calendar: React.FC<ComponentProps<'calendar'>> = ({ config: baseCon
         });
       }
     },
-    [config.id, config.on_change, format, formContext, handleAction, path]
+    [config.id, config.on_change, evaluatedDisabled, format, formContext, handleAction, path]
   );
 
   const onPanelChange = useCallback(
     (date: Dayjs, mode: 'month' | 'year') => {
+      if (evaluatedDisabled) {
+        return;
+      }
       const dateString = date.format(format);
       if (config.on_panel_change) {
         handleAction({
@@ -94,19 +103,24 @@ export const Calendar: React.FC<ComponentProps<'calendar'>> = ({ config: baseCon
         });
       }
     },
-    [config.on_panel_change, format, handleAction]
+    [config.on_panel_change, evaluatedDisabled, format, handleAction]
   );
 
   const errorInfo = formContext?.getFieldErrorInfo(config.id);
 
   return (
-    <div style={config.style} className={config.className}>
+    <div
+      style={{ ...config.style, pointerEvents: evaluatedDisabled ? 'none' : undefined }}
+      className={config.className}
+      aria-disabled={evaluatedDisabled}
+    >
       <AntdCalendar
         value={value ? dayjs(value, format) : undefined}
         fullscreen={evaluatedFullscreen !== false}
         mode={evaluatedMode}
         onSelect={onSelect}
         onPanelChange={onPanelChange}
+        disabledDate={evaluatedDisabled ? disabledDate : undefined}
       />
       {errorInfo?.help && (
         <div style={{ color: '#ff4d4f', fontSize: 12, marginTop: 4 }}>{errorInfo.help}</div>

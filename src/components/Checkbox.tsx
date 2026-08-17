@@ -8,6 +8,7 @@ import { useDataSelector } from '../hooks/useDataSelector';
 import { useFormContextOptional } from '../context/FormContext';
 import type { ComponentProps } from './index';
 import { useExpression } from '../hooks/useExpression';
+import { useBooleanControlValue } from '../hooks/useBooleanControlValue';
 
 export const Checkbox: React.FC<ComponentProps<'checkbox'>> = ({ config }) => {
   const { handleAction } = useRendererContext();
@@ -100,6 +101,7 @@ export const Checkbox: React.FC<ComponentProps<'checkbox'>> = ({ config }) => {
   const evaluatedLabel = useExpression(config.label);
   const evaluatedOptions = useExpression(config.options);
   const options = Array.isArray(evaluatedOptions) ? evaluatedOptions : [];
+  const evaluatedDisabled = useBooleanControlValue(config.disabled);
 
   if (isGroup) {
     return (
@@ -107,6 +109,7 @@ export const Checkbox: React.FC<ComponentProps<'checkbox'>> = ({ config }) => {
         <AntdCheckbox.Group
           options={options as any}
           value={Array.isArray(value) ? value : []}
+          disabled={evaluatedDisabled}
           onChange={handleGroupChange}
           style={config.style}
           className={config.className}
@@ -123,6 +126,7 @@ export const Checkbox: React.FC<ComponentProps<'checkbox'>> = ({ config }) => {
       <AntdCheckbox
         name={config.name}
         checked={Boolean(value)}
+        disabled={evaluatedDisabled}
         onChange={handleChange}
         onBlur={handleBlur}
         style={config.style}

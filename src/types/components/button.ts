@@ -1,11 +1,11 @@
-import type { BaseComponentConfig } from '../schema';
+import type { BaseComponentConfig, ComponentControlValue } from '../schema';
 
 export interface ButtonComponentConfig extends BaseComponentConfig {
   component: 'button';
   label?: string;
   title?: string;
   color?: string;
-  disabled?: boolean;
+  disabled?: ComponentControlValue;
   type?: 'primary' | 'dashed' | 'link' | 'text' | 'default';
   danger?: boolean;
   ghost?: boolean;

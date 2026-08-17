@@ -8,6 +8,7 @@ import { useDataSelector } from '../hooks/useDataSelector';
 import { useFormContextOptional } from '../context/FormContext';
 import type { ComponentProps } from './index';
 import { useExpression } from '../hooks/useExpression';
+import { useBooleanControlValue } from '../hooks/useBooleanControlValue';
 
 export const Transfer: React.FC<ComponentProps<'transfer'>> = ({ config }) => {
   const { handleAction } = useRendererContext();
@@ -70,6 +71,7 @@ export const Transfer: React.FC<ComponentProps<'transfer'>> = ({ config }) => {
   const errorInfo = formContext?.getFieldErrorInfo(config.id);
 
   const evaluatedOptions = useExpression(config.options);
+  const evaluatedDisabled = useBooleanControlValue(config.disabled);
 
   const dataSource = useMemo(() => {
     if (!evaluatedOptions) return [];
@@ -86,6 +88,7 @@ export const Transfer: React.FC<ComponentProps<'transfer'>> = ({ config }) => {
       <AntdTransfer
         dataSource={dataSource}
         targetKeys={value}
+        disabled={evaluatedDisabled}
         onChange={handleChange}
         render={(item) => item.title ?? ''}
         style={config.style}

@@ -11,6 +11,7 @@ import type { ComponentProps } from './index';
 import type { UploadFile } from 'antd/es/upload/interface';
 import { useExpression } from '../hooks/useExpression';
 import { useDataSelector } from '../hooks/useDataSelector';
+import { useBooleanControlValue } from '../hooks/useBooleanControlValue';
 
 export const Upload: React.FC<ComponentProps<'upload'>> = ({ config, componentMap }) => {
   const { handleAction } = useRendererContext();
@@ -63,6 +64,7 @@ export const Upload: React.FC<ComponentProps<'upload'>> = ({ config, componentMa
   const evaluatedMaxCount = useExpression(config.maxCount) as number | undefined;
   const evaluatedListType = useExpression(config.listType) as 'text' | 'picture' | 'picture-card' | undefined;
   const evaluatedShowUploadList = useExpression(config.showUploadList) as boolean | undefined;
+  const evaluatedDisabled = useBooleanControlValue(config.disabled);
 
   return (
     <div>
@@ -72,6 +74,7 @@ export const Upload: React.FC<ComponentProps<'upload'>> = ({ config, componentMa
         maxCount={evaluatedMaxCount}
         listType={evaluatedListType}
         showUploadList={evaluatedShowUploadList}
+        disabled={evaluatedDisabled}
         onChange={handleChange}
         className={config.className}
         fileList={Array.isArray(dataValue) ? dataValue as UploadFile[] : undefined}

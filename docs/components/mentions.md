@@ -17,6 +17,7 @@
 | `prefix` | `string` \| `string[]` | `"@"` | 触发建议列表的字符。 |
 | `options` | `Array<{ label, value }>` | `[]` | 建议选项列表。`label` 为展示文本，`value` 为选中后插入的真实值。 |
 | `placeholder` | `string` | - | 输入框为空时的提示文字。 |
+| `disabled` | `boolean` \| `string` \| `{ path: string }` | `false` | 是否禁用提及输入框，支持表达式和数据绑定。 |
 | `rules` | `FormRule[]` | - | 配合 `form` 校验的规则数组。 |
 
 ### prefix（触发符配置）

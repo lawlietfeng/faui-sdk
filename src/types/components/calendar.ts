@@ -1,4 +1,4 @@
-import { BaseComponentConfig, ActionConfig } from '../schema';
+import { BaseComponentConfig, ActionConfig, ComponentControlValue } from '../schema';
 
 export interface CalendarComponentConfig extends BaseComponentConfig {
   component: 'calendar';
@@ -6,6 +6,7 @@ export interface CalendarComponentConfig extends BaseComponentConfig {
   // Appearance
   fullscreen?: boolean | string;
   mode?: 'month' | 'year' | string;
+  disabled?: ComponentControlValue;
   
   // Date format string when saving to dataModel (default: YYYY-MM-DD)
   format?: string;

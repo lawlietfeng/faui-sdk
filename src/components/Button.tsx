@@ -3,6 +3,7 @@ import { Button as AntButton } from 'antd';
 import { useRendererContext } from '../context/RendererContext';
 import { useFormContextOptional } from '../context/FormContext';
 import { useExpression } from '../hooks/useExpression';
+import { useBooleanControlValue } from '../hooks/useBooleanControlValue';
 import { ComponentRenderer } from '../SchemaRenderer';
 import type { ComponentProps } from './index';
 
@@ -40,7 +41,7 @@ export const Button: React.FC<ComponentProps<'button'>> = ({ config, componentMa
   const style = useExpression(config.style || {});
   const evaluatedContent = useExpression(config.content);
   const evaluatedLabel = useExpression(config.label);
-  const evaluatedDisabled = useExpression(config.disabled);
+  const evaluatedDisabled = useBooleanControlValue(config.disabled);
 
   return (
     <AntButton
@@ -53,7 +54,7 @@ export const Button: React.FC<ComponentProps<'button'>> = ({ config, componentMa
       shape={config.shape as any}
       size={config.size as any}
       block={config.block}
-      disabled={!!evaluatedDisabled}
+      disabled={evaluatedDisabled}
     >
       {evaluatedContent || evaluatedLabel}
       {(!evaluatedContent && !evaluatedLabel && config.children) ? config.children.map(childId => {

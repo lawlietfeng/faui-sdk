@@ -22,7 +22,7 @@
 | `value.path` | `string` | - | **必填**，双向绑定的数据路径，选中的时间会以字符串格式写回该路径 |
 | `format` | `string` | `"HH:mm:ss"` | 控制显示和提交的时间字符串格式 |
 | `placeholder` | `string` | - | 未选择时的占位提示文本，支持表达式 |
-| `disabled` | `boolean \| string` | `false` | 是否禁用时间选择器，支持表达式 |
+| `disabled` | `boolean` \| `string` \| `{ path: string }` | `false` | 是否禁用时间选择器，支持表达式和数据绑定 |
 | `hourStep` | `number \| string` | `1` | 小时选项的间隔步长，支持表达式 |
 | `minuteStep` | `number \| string` | `1` | 分钟选项的间隔步长，支持表达式 |
 | `secondStep` | `number \| string` | `1` | 秒钟选项的间隔步长，支持表达式 |

@@ -1,4 +1,4 @@
-import type { BaseComponentConfig } from '../schema';
+import type { BaseComponentConfig, ComponentControlValue } from '../schema';
 import type { FormRule } from '../schema';
 
 export interface InputnumberComponentConfig extends BaseComponentConfig {
@@ -9,5 +9,5 @@ export interface InputnumberComponentConfig extends BaseComponentConfig {
   max?: number;
   step?: number;
   precision?: number;
-  disabled?: boolean | string;
+  disabled?: ComponentControlValue;
 }

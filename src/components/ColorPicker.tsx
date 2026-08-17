@@ -8,6 +8,7 @@ import { resolveOnChange } from '../utils/resolveOnChange';
 import { useDataSelector } from '../hooks/useDataSelector';
 import { useFormContextOptional } from '../context/FormContext';
 import type { ComponentProps } from './index';
+import { useBooleanControlValue } from '../hooks/useBooleanControlValue';
 
 
 
@@ -69,12 +70,14 @@ export const ColorPicker: React.FC<ComponentProps<'colorpicker'>> = ({ config })
   }, [config.id, config.on_change, formContext, handleAction, path]);
 
   const errorInfo = formContext?.getFieldErrorInfo(config.id);
+  const evaluatedDisabled = useBooleanControlValue(config.disabled);
 
   return (
     <div>
       <AntColorPicker
         value={value}
         onChange={handleChange}
+        disabled={evaluatedDisabled}
         style={config.style}
         className={config.className}
       />

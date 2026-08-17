@@ -17,6 +17,7 @@
 | `checked.path` | `string`                                                    | -       | 同 `value.path`，向后兼容的别名属性。                             |
 | `label`        | `string` (支持表达式)                                       | -       | 单个 checkbox 的展示文本（仅在单选模式生效）。                      |
 | `options`      | `Array` (支持表达式)                                        | -       | 决定是否为多选组。包含 `label` 和 `value` 的数组。                  |
+| `disabled`     | `boolean` \| `string` \| `{ path: string }`              | `false` | 是否禁用复选框或复选框组，支持表达式和数据绑定。                    |
 | `field`        | `string`                                                    | -       | 表单字段名。                                                      |
 | `rules`        | `FormRule[]`                                                | -       | 表单校验规则（如必选）。                                          |
 | `on_change`    | `Action`                                                    | -       | 选中状态改变时的回调。默认会自动回写。自定义时可通过 `${$value}` 引用最新值，组件会保留你设置的自定义 `value` 表达式不覆盖。 |

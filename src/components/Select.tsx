@@ -8,6 +8,7 @@ import { useDataSelector } from '../hooks/useDataSelector';
 import { useFormContextOptional } from '../context/FormContext';
 import type { ComponentProps } from './index';
 import { useExpression } from '../hooks/useExpression';
+import { useBooleanControlValue } from '../hooks/useBooleanControlValue';
 
 export const Select: React.FC<ComponentProps<'select'>> = ({ config }) => {
   const { handleAction } = useRendererContext();
@@ -76,7 +77,7 @@ export const Select: React.FC<ComponentProps<'select'>> = ({ config }) => {
   const evaluatedPlaceholder = useExpression(config.placeholder);
   const evaluatedOptions = useExpression(config.options);
   const options = Array.isArray(evaluatedOptions) ? evaluatedOptions : [];
-  const evaluatedDisabled = useExpression(config.disabled) as boolean | undefined;
+  const evaluatedDisabled = useBooleanControlValue(config.disabled);
   const evaluatedAllowClear = useExpression(config.allowClear) as boolean | undefined;
   const evaluatedShowSearch = useExpression(config.showSearch) as boolean | undefined;
   const evaluatedMaxTagCount = useExpression(config.maxTagCount) as number | undefined;

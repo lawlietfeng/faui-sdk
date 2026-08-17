@@ -1,4 +1,4 @@
-import type { BaseComponentConfig } from '../schema';
+import type { BaseComponentConfig, ComponentControlValue } from '../schema';
 import type { FormRule } from '../schema';
 
 export interface SliderComponentConfig extends BaseComponentConfig {
@@ -9,5 +9,5 @@ export interface SliderComponentConfig extends BaseComponentConfig {
   max?: number | string;
   step?: number | string;
   range?: boolean | string;
-  disabled?: boolean | string;
+  disabled?: ComponentControlValue;
 }

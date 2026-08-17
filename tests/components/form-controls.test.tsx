@@ -70,6 +70,7 @@ import type { ActionConfig, Component } from "../../src/types/schema";
 import { RendererContextProvider } from "../../src/context/RendererContext";
 import { FormProvider } from "../../src/context/FormContext";
 import { AutoComplete } from "../../src/components/AutoComplete";
+import { Input } from "../../src/components/Input";
 import { InputNumber } from "../../src/components/InputNumber";
 import { Select } from "../../src/components/Select";
 import { Radio } from "../../src/components/Radio";
@@ -88,6 +89,7 @@ import { Mentions } from "../../src/components/Mentions";
 import { Segmented } from "../../src/components/Segmented";
 import { Textarea } from "../../src/components/Textarea";
 import { Calendar } from "../../src/components/Calendar";
+import { Button } from "../../src/components/Button";
 
 const componentMap = new Map<string, Component>();
 
@@ -178,6 +180,69 @@ describe("form control change contracts", () => {
       expect.objectContaining({ path: "/custom", value: expected }),
       expect.objectContaining({ $value: expected }),
     ));
+  });
+});
+
+const disabledControlCases: ControlCase[] = [
+  { name: "input", component: Input, antd: "Input", args: [{ target: { value: "next" } }], expected: "next" },
+  ...controlCases,
+  { name: "button", component: Button, antd: "Button", config: { label: "Submit" }, args: [], expected: undefined },
+];
+
+describe("form control disabled contracts", () => {
+  it.each(disabledControlCases)("$name resolves disabled data bindings", ({ component, antd, config }) => {
+    const onAction = vi.fn();
+    renderControl(component, {
+      ...config,
+      disabled: { path: "/locked" },
+    }, onAction, { value: "initial", locked: false });
+
+    expect(lastProps(antd)).toMatchObject({ disabled: false });
+  });
+
+  it.each(disabledControlCases)("$name resolves disabled expressions", ({ component, antd, config }) => {
+    const onAction = vi.fn();
+    renderControl(component, {
+      ...config,
+      disabled: "${locked}",
+    }, onAction, { value: "initial", locked: true });
+
+    expect(lastProps(antd)).toMatchObject({ disabled: true });
+  });
+
+  it("updates disabled when its data binding changes", async () => {
+    const onAction = vi.fn();
+    const config = {
+      id: "control",
+      component: "input" as const,
+      disabled: { path: "/locked" },
+    };
+    const renderInput = (dataModel: Record<string, unknown>) => (
+      <RendererContextProvider dataModel={dataModel} componentRegistry={{}} onAction={onAction}>
+        <Input config={config} componentMap={componentMap} />
+      </RendererContextProvider>
+    );
+    const view = render(renderInput({ locked: false }));
+
+    expect(lastProps("Input")).toMatchObject({ disabled: false });
+
+    view.rerender(renderInput({ locked: true }));
+
+    await waitFor(() => expect(lastProps("Input")).toMatchObject({ disabled: true }));
+  });
+
+  it("Calendar disables each date and suppresses selection events", () => {
+    const onAction = vi.fn();
+    renderControl(Calendar, {
+      value: { path: "/value" },
+      disabled: true,
+    }, onAction);
+    const props = lastProps("Calendar");
+
+    expect(props.disabledDate(dayjs("2026-02-03"))).toBe(true);
+    act(() => props.onSelect(dayjs("2026-02-03"), { source: "date" }));
+
+    expect(onAction).not.toHaveBeenCalled();
   });
 });
 

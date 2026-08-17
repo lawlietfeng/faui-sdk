@@ -18,6 +18,7 @@ calendar 组件用于展示日历面板，允许用户通过点击选择具体�
 | `format`          | `string`                        | `'YYYY-MM-DD'` | 选中日期后存入数据的格式，兼容 dayjs 格式字符串。|
 | `fullscreen`      | `boolean \| string` (支持表达式)| `true`         | 是否为全屏日历。`false` 时显示为卡片模式日历。 |
 | `mode`            | `'month' \| 'year' \| string`   | `'month'`      | 初始显示的面板模式（月视图或年视图）。         |
+| `disabled`        | `boolean \| string \| { path: string }` | `false` | 是否禁用日期选择和面板事件，支持表达式和数据绑定。 |
 | `on_change`       | `Action`                        | -              | 选中日期时触发的动作。默认回写 `value.path`。自定义时可通过 `${$value}` 引用最新值，组件会保留你设置的自定义 `value` 表达式不覆盖。 |
 | `on_panel_change` | `Action`                        | -              | 切换面板（年月切换）时触发的动作。             |
 

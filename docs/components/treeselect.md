@@ -24,7 +24,7 @@
 | `options` | `Array \| string` | `[]` | **必填**，树形结构的数据源，支持插值表达式动态获取全局数据 |
 | `multiple` | `boolean \| string` | `false` | 是否支持多选（此时节点前方会出现复选框），支持表达式 |
 | `placeholder` | `string` | - | 选择框的默认提示文字，支持表达式 |
-| `disabled` | `boolean \| string` | `false` | 是否禁用整个树选择器，支持表达式 |
+| `disabled` | `boolean` \| `string` \| `{ path: string }` | `false` | 是否禁用整个树选择器，支持表达式和数据绑定 |
 
 ### options（树形数据源）
 

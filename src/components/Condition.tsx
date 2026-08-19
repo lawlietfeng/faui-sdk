@@ -1,19 +1,21 @@
 import React from 'react';
 import { ComponentRenderer } from '../SchemaRenderer';
 import type { ComponentProps } from './index';
-import { useExpression } from '../hooks/useExpression';
+import { useDynamicValue } from '../hooks/useDynamicValue';
 import { useMotion, resolveAnimation } from '../utils/animation';
 
 export const Condition: React.FC<ComponentProps<'condition'>> = ({ config, componentMap }) => {
-  const evaluatedWhen = useExpression(config.when);
-  const evaluatedMatch = useExpression(config.match);
+  const evaluatedWhen = useDynamicValue(config.when);
+  const evaluatedMatch = useDynamicValue(config.match);
   const { motion, AnimatePresence, isReady } = useMotion();
   const resolved = config.animation ? resolveAnimation(config.animation) : null;
 
   let selectedChildren: string[] | undefined;
 
   if (config.cases && (config.match !== undefined)) {
-    const key = String(evaluatedMatch ?? '');
+    // Preserve an explicit null match as the `null` case key. Undefined still
+    // falls back to the historical empty-string lookup for missing data.
+    const key = evaluatedMatch === null ? 'null' : String(evaluatedMatch ?? '');
     selectedChildren = config.cases[key] ?? config.default;
   } else {
     selectedChildren = evaluatedWhen ? config.then : (config.else ?? config.default);

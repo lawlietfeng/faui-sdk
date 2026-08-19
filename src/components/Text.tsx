@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import { theme } from 'antd';
 import { useFormContextOptional } from '../context/FormContext';
+import { useDynamicValue } from '../hooks/useDynamicValue';
 import { useExpression } from '../hooks/useExpression';
 import type { ComponentProps } from './index';
 
@@ -9,7 +10,7 @@ export const Text: React.FC<ComponentProps<'text'>> = ({ config, componentMap })
   const { token } = theme.useToken();
   const content = useExpression(config.content || '');
   const nextSibling = useMemo(() => getNextSibling(config.id, componentMap), [config.id, componentMap]);
-  const nextSiblingVisible = useExpression(nextSibling?.visible ?? true);
+  const nextSiblingVisible = Boolean(useDynamicValue(nextSibling?.visible ?? true));
   const showRequiredMark = Boolean(
     formContext
     && nextSiblingVisible

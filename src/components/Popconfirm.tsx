@@ -2,6 +2,7 @@ import React from 'react';
 import { Popconfirm as AntdPopconfirm } from 'antd';
 import { useAction } from '../hooks/useAction';
 import { useExpression } from '../hooks/useExpression';
+import { useBooleanControlValue } from '../hooks/useBooleanControlValue';
 import { ComponentRenderer } from '../SchemaRenderer';
 import type { ComponentProps } from './index';
 
@@ -15,7 +16,7 @@ export const Popconfirm: React.FC<ComponentProps<'popconfirm'>> = ({ config, com
   const cancelText = useExpression(config.cancelText);
   const okType = useExpression(config.okType) as 'default' | 'primary' | 'dashed' | 'link' | 'text' | undefined;
   const placement = useExpression(config.placement);
-  const disabled = useExpression(config.disabled);
+  const disabled = useBooleanControlValue(config.disabled);
 
   const handleConfirm = (e?: React.MouseEvent<HTMLElement>) => {
     e?.stopPropagation(); // 阻止冒泡，特别是在 Table 行点击事件中

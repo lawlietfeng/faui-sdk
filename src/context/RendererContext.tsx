@@ -115,17 +115,30 @@ export const RendererContextScope: React.FC<RendererContextScopeProps> = ({
     }
   }, [parentContext, scopedPath, scopedCurrent, scopedParent, updateScopedData, getScopedData]);
 
+  const subscribeScopedData = useCallback(
+    ((pathOrListener: string | (() => void), listener?: () => void) => {
+      if (typeof pathOrListener === 'function') {
+        return parentContext.subscribeData(pathOrListener);
+      }
+      return parentContext.subscribeData(
+        resolveScopedPath(pathOrListener, scopedPath),
+        listener as () => void,
+      );
+    }) as RendererContextValue['subscribeData'],
+    [parentContext, scopedPath],
+  );
+
   const value = useMemo(() => ({
     ...parentContext,
     getData: getScopedData,
     getDataModel: parentContext.getDataModel,
     updateData: updateScopedData,
-    subscribeData: parentContext.subscribeData,
+    subscribeData: subscribeScopedData,
     handleAction: handleScopedAction,
     $current: scopedCurrent,
     $parent: scopedParent,
     $scopePath: scopedPath,
-  }), [parentContext, getScopedData, updateScopedData, handleScopedAction, scopedCurrent, scopedParent, scopedPath]);
+  }), [parentContext, getScopedData, updateScopedData, handleScopedAction, subscribeScopedData, scopedCurrent, scopedParent, scopedPath]);
 
   return (
     <RendererContext.Provider value={value}>

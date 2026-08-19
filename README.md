@@ -146,6 +146,9 @@ Form 属于相对复杂场景（容器、字段规则、触发时机、提交流
 
 建议优先阅读该文档，再结合 `examples/schemas/form-rules-demo.json` 快速上手。
 
+Form Edition 动态绑定、Condition、Skeleton 兼容规则和 Agent 严格校验见：
+[动态绑定规范](./docs/form-dynamic-bindings.md)、[兼容与迁移说明](./docs/form-edition-migration.md)。组件属性契约从 `@faui/react/manifest` 读取。
+
 ### 3.2 npm 包开箱即用指南
 
 - [docs/npm-usage.md](./docs/npm-usage.md)
@@ -257,10 +260,10 @@ Form 属于相对复杂场景（容器、字段规则、触发时机、提交流
 
 | 属性 | 类型 | 说明 |
 |------|------|------|
-| `when` | `string \| boolean \| ValueBinding` | 布尔模式的条件表达式 |
+| `when` | `boolean \| 纯表达式 \| ValueBinding` | 布尔模式的条件 |
 | `then` | `string[]` | 条件为 truthy 时渲染的子组件 ID |
 | `else` | `string[]` | 条件为 falsy 时渲染的子组件 ID |
-| `match` | `string \| ValueBinding` | switch 模式的匹配表达式 |
+| `match` | `string \| number \| boolean \| null \| 纯表达式 \| ValueBinding` | switch 模式的匹配值 |
 | `cases` | `Record<string, string[]>` | 匹配值 → 子组件 ID 映射 |
 | `default` | `string[]` | 无匹配时的后备子组件 ID |
 
@@ -288,14 +291,16 @@ Form 属于相对复杂场景（容器、字段规则、触发时机、提交流
 | `emptyContent` | `string` | 空数据时的提示文本 |
 
 - 完整演示：`examples/schemas/15-condition-repeater-demo.json`
+- 动态绑定演示：`examples/schemas/16-form-dynamic-binding-demo.json`
 
 ### 5. 核心开发规范与防呆指南
 
 如果你计划参与 FAUI 的组件开发或进行二次扩展，请务必阅读以下核心规范，避免踩坑：
 
 - **动态表达式 (useExpression)**：凡是“文本”或“配置”属性（如 `title`, `label`, `options`），必须使用 `useExpression()` 包装后才能渲染，否则 `${xxx}` 语法将失效。
-- **$root 作用域**：在 JSON 中编写表达式时，访问全局 `dataModel` 必须带上 `$root.` 前缀（如 `${$root.user.name}`）。
-- **双向绑定回写**：表单组件的 `onChange` 事件中，如果没有自定义的 `on_change` action，但配置了 `value.path`，必须提供默认的 `update_data` 回写逻辑。
+- **动态属性契约**：普通 `visible`、布尔 `disabled` 和 `condition.when` 支持布尔值、纯表达式或 `{ "path": ... }`；`value`、`checked`、`data` 只使用契约声明的路径绑定。
+- **$root 作用域**：在 JSON 中编写表达式时，访问全局 `dataModel` 必须带上 `$root.` 前缀（如 `${$root.user.name}`）；Repeater 模板才可使用 `./field`。
+- **双向绑定回写**：表单组件没有自定义 `on_change` 时，`value.path` 或 `checked.path` 会自动回写；配置 `on_change` 后保留旧行为并覆盖默认回写，事件上下文统一使用 `$value`。
 - **单/多选状态隔离**：对于 `Checkbox` 等既能单选又能多组选的组件，状态必须兼容 `boolean` 和 `array`，传给多选组时需做 `Array.isArray` 保护。
 - **废弃 API 警告**：严格遵守 Ant Design 5.x 的最新 API，例如使用 `destroyOnHidden` 代替 `destroyInactiveTabPane`，使用 `variant` 代替 `bordered`。
 - **React 节点保护 (栈溢出防范)**：底层表达式引擎 (`useExpression`) 现已支持混合包含 ReactNode 的对象。直接遍历 React 对象由于其内部的循环引用 (`_owner`) 曾导致 `Maximum call stack size exceeded` 错误，现通过 `isValidElement` 安全跳过。

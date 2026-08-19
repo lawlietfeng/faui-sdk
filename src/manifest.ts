@@ -132,3 +132,22 @@ export const componentManifest = {
     },
   },
 } as const;
+
+// Form contracts are exported from this static manifest entry point so that
+// `@faui/react/manifest` remains safe for documentation and agent consumers.
+export {
+  formComponentContractVersion,
+  formComponentContracts,
+  formSchemaContract,
+} from './formComponentContracts';
+export type {
+  BindingKind,
+  ChildrenMode,
+  ContractDependency,
+  ContractSchema,
+  DataModelBindingContract,
+  EventContract,
+  FormComponentContract,
+  PropertyBindingContract,
+  PropertyContract,
+} from './formComponentContracts';

@@ -13,7 +13,7 @@ import type {
   SubmitResult,
   ValidationResult,
 } from './types/schema';
-import { useExpression } from './hooks/useExpression';
+import { useDynamicValue } from './hooks/useDynamicValue';
 import { setMessageApi } from './actions/message';
 import { setNotificationApi } from './actions/notification';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -167,7 +167,13 @@ export const ComponentRenderer: React.FC<ComponentRendererInternalProps> = ({
   componentMap,
 }) => {
   const { componentRegistry, handleAction } = useRendererContext();
-  const evaluatedVisible = useExpression(component.visible ?? true);
+  // Skeleton historically used `visible` as its loading flag. Keep that
+  // alias inside Skeleton and let the component itself resolve it; otherwise
+  // the shared renderer would treat it as overall component visibility.
+  const visibility = component.component === 'skeleton'
+    ? true
+    : (component.visible ?? true);
+  const evaluatedVisible = Boolean(useDynamicValue(visibility));
   const ComponentType = componentRegistry[component.component];
   const { motion, AnimatePresence, isReady } = useMotion();
   const resolved = component.animation ? resolveAnimation(component.animation) : null;

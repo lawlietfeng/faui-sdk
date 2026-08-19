@@ -1,0 +1,67 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "components": [
+        {
+          "id": "root",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 12,
+          "children": ["all-day-field", "visible-by-path", "visible-by-expression", "condition-by-path", "loading-skeleton", "people-repeater"]
+        },
+        {
+          "id": "all-day-field",
+          "component": "checkbox",
+          "label": "全天",
+          "checked": { "path": "/allDay" }
+        },
+        {
+          "id": "visible-by-path",
+          "component": "text",
+          "content": "勾选全天后显示（visible.path）",
+          "visible": { "path": "/allDay" }
+        },
+        {
+          "id": "visible-by-expression",
+          "component": "text",
+          "content": "未勾选全天时显示（反向表达式）",
+          "visible": "${!$root.allDay}"
+        },
+        {
+          "id": "condition-by-path",
+          "component": "condition",
+          "when": { "path": "/allDay" },
+          "then": ["all-day-message"],
+          "else": ["not-all-day-message"]
+        },
+        { "id": "all-day-message", "component": "alert", "content": "当前是全天" },
+        { "id": "not-all-day-message", "component": "alert", "content": "当前不是全天" },
+        {
+          "id": "loading-skeleton",
+          "component": "skeleton",
+          "loading": { "path": "/loading" },
+          "children": ["loaded-message"]
+        },
+        { "id": "loaded-message", "component": "text", "content": "加载完成" },
+        {
+          "id": "people-repeater",
+          "component": "repeater",
+          "data": { "path": "/people" },
+          "children": ["person-input"]
+        },
+        {
+          "id": "person-input",
+          "component": "input",
+          "placeholder": "姓名",
+          "value": { "path": "./name" }
+        }
+      ],
+      "dataModel": {
+        "allDay": false,
+        "loading": true,
+        "people": [{ "name": "Ada" }]
+      }
+    }
+  }
+]

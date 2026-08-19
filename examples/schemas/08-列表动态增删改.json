@@ -45,7 +45,7 @@
             {
               "action": "update_data",
               "path": "/items",
-              "value": "${[...($root.items || []), Object.fromEntries([['category', '交通'], ['date', ''], ['amount', null], ['invoiceNo', ''], ['remark', '']])]}"
+              "value": "${[...($root.items || []), Object.fromEntries([['id', String(Date.now())], ['category', '交通'], ['date', ''], ['amount', null], ['invoiceNo', ''], ['remark', '']])]}"
             }
           ]
         },
@@ -145,7 +145,7 @@
         {
           "id": "item-title",
           "component": "text",
-          "content": "报销条目 ${($root.items || []).findIndex(i => i === $current) + 1}",
+          "content": "报销条目 ${($root.items || []).findIndex(i => i.id === $current.id) + 1}",
           "style": {
             "fontSize": "15px",
             "fontWeight": "bold"
@@ -160,7 +160,7 @@
             {
               "action": "update_data",
               "path": "/items",
-              "value": "${($root.items || []).filter((_, i) => i !== ($root.items || []).findIndex(x => x === $current))}"
+              "value": "${($root.items || []).filter(item => item.id !== $current.id)}"
             }
           ]
         },
@@ -221,6 +221,7 @@
       "dataModel": {
         "items": [
           {
+            "id": "item-1",
             "category": "交通",
             "date": "",
             "amount": null,

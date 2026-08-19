@@ -5,7 +5,7 @@ export interface ConditionComponentConfig extends BaseComponentConfig {
   when?: string | boolean | ValueBinding;
   then?: string[];
   else?: string[];
-  match?: string | ValueBinding;
+  match?: string | number | boolean | null | ValueBinding;
   cases?: Record<string, string[]>;
   default?: string[];
 }

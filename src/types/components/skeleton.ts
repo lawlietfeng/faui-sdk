@@ -1,4 +1,4 @@
-import type { BaseComponentConfig } from '../schema';
+import type { BaseComponentConfig, ComponentControlValue } from '../schema';
 
 export interface SkeletonComponentConfig extends BaseComponentConfig {
   component: 'skeleton';
@@ -11,4 +11,6 @@ export interface SkeletonComponentConfig extends BaseComponentConfig {
   shape?: 'circle' | 'square' | 'round' | 'default' | string;
   block?: boolean | string;
   size?: 'large' | 'small' | 'default' | number | string;
+  /** Canonical loading flag; supports literals, expressions, and path bindings. */
+  loading?: ComponentControlValue;
 }

@@ -103,6 +103,19 @@ describe("ComponentRenderer", () => {
     expect(screen.getByTestId("conditional")).toBeInTheDocument();
   });
 
+  it("evaluates visibility path bindings", () => {
+    render(
+      <RendererContextProvider dataModel={{ visible: false }} componentRegistry={{ probe: Probe }}>
+        <ComponentRenderer
+          component={{ id: "bound", component: "probe", visible: { path: "/visible" } } as Component}
+          componentMap={new Map()}
+        />
+      </RendererContextProvider>,
+    );
+
+    expect(screen.queryByTestId("bound")).not.toBeInTheDocument();
+  });
+
   it("warns and returns null for unknown component types", () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
     renderComponent({ id: "unknown", component: "missing" } as Component);

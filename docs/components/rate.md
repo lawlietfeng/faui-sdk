@@ -10,15 +10,35 @@
 
 ## 核心属性
 
-| 属性名 | 类型 | 默认值 | 说明 |
-| --- | --- | --- | --- |
-| `value` | `ValueBinding` | - | 双向绑定的数据路径，用于回显和写入当前的评分数值 |
-| `count` | `number \| string` | `5` | 设置评分的星星总数，支持插值表达式 |
-| `allowHalf` | `boolean \| string` | `false` | 是否允许半星评分，支持插值表达式 |
-| `disabled` | `boolean` \| `string` \| `{ path: string }` | `false` | 是否禁用评分，支持表达式和数据绑定 |
-| `on_change` | `ActionConfig` | - | 评分发生变化时的回调动作。自定义时可通过 `${$value}` 引用最新值，组件会保留你设置的自定义 `value` 表达式不覆盖。 |
-| `rules` | `FormRule[]` | - | 表单校验规则，支持必填、最大/最小值等校验 |
-| `validateTrigger` | `string \| string[]` | `'onChange'` | 触发校验的时机 |
+<!-- contract-props:start -->
+## Form 契约属性（rate）
+
+| 属性 | 标题 | 动态绑定 | 说明 | 默认值 |
+| --- | --- | --- | --- | --- |
+| `id` |  | 静态值 | 在 schema 中唯一的组件 ID。 |  |
+| `component` |  | 静态值 | Form Registry 注册名。 |  |
+| `disabled` |  | `boolean`, `expression`, `path`, 路径：`root-or-repeater-relative`, 纯表达式 |  |  |
+| `allowHalf` |  | 静态值 |  |  |
+| `count` |  | 静态值 |  |  |
+| `value` |  | `path`, 路径：`root-or-repeater-relative` |  |  |
+| `field` |  | 静态值 | 表单校验字段名；不负责替代 value.path。 |  |
+| `rules` |  | 静态值 |  |  |
+| `validateTrigger` |  | 静态值 |  |  |
+| `on_change` |  | 静态值 |  |  |
+| `name` |  | 静态值 |  |  |
+| `domId` |  | 静态值 |  |  |
+| `style` |  | 静态值 |  |  |
+| `className` |  | 静态值 |  |  |
+| `animation` |  | 静态值 |  |  |
+| `visible` |  | `boolean`, `expression`, `path`, 路径：`root-or-repeater-relative`, 纯表达式 | 控制组件是否渲染。 |  |
+| `on_mount` |  | 静态值 | 组件挂载时执行的 Action。 |  |
+
+- 子节点模式：`none`
+- 事件：`on_change`
+- dataModel 绑定：`value`（number | null）
+- 属性依赖：无
+- 特殊说明：无
+<!-- contract-props:end -->
 
 ### count（星星总数）
 
@@ -143,13 +163,13 @@
     {
       "action": "update_data",
       "path": "/survey/driverScore",
-      "value": "${value}"
+      "value": "${$value}"
     },
     {
       "action": "message",
       "payload": {
         "type": "info",
-        "content": "您给出了 ${value} 星评价"
+        "content": "您给出了 ${$value} 星评价"
       }
     }
   ]

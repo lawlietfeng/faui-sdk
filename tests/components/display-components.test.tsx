@@ -345,6 +345,15 @@ describe("special display transformations", () => {
     expect(screen.getByText("Child")).toBeInTheDocument();
   });
 
+  it("Skeleton resolves the canonical loading path binding", () => {
+    renderTarget(Skeleton, { loading: { path: "/loading" }, children: ["child"] }, {
+      dataModel: { loading: false },
+    });
+
+    expect(lastProps("Skeleton").loading).toBe(false);
+    expect(screen.getByText("Child")).toBeInTheDocument();
+  });
+
   it("Statistic switches between regular and countdown modes", () => {
     const first = renderTarget(Statistic, {
       value: { path: "/amount" }, title: "Amount", precision: 2, suffix: "元", valueStyle: { color: "red" },

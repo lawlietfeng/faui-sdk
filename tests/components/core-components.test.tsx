@@ -5,6 +5,8 @@ import { describe, expect, it, vi } from "vitest";
 import type { ActionConfig, Component, Content } from "../../src/types/schema";
 import { SchemaRenderer, type RendererHandle } from "../../src/SchemaRenderer";
 import { ComponentRegistry } from "../../src/components";
+import { useDataSelector } from "../../src/hooks/useDataSelector";
+import { useRendererContext } from "../../src/context/RendererContext";
 
 function content(components: Component[], dataModel: Record<string, unknown> = {}): Content {
   return { components, dataModel };
@@ -16,6 +18,7 @@ function renderSchema(
     dataModel?: Record<string, unknown>;
     initialData?: Record<string, unknown>;
     onAction?: (action: ActionConfig) => void | Promise<void>;
+    customComponents?: Record<string, React.FC<any>>;
   } = {},
 ) {
   return render(
@@ -24,6 +27,7 @@ function renderSchema(
       componentRegistry={ComponentRegistry}
       initialData={options.initialData}
       onAction={options.onAction}
+      customComponents={options.customComponents}
     />,
   );
 }
@@ -118,6 +122,37 @@ describe("layout and branching components", () => {
     ]);
     expect(screen.getByText("Fallback")).toBeInTheDocument();
   });
+
+  it("Condition resolves when and match path bindings", () => {
+    const whenRender = renderSchema([
+      {
+        id: "root",
+        component: "condition",
+        when: { path: "/allowed" },
+        then: ["yes"],
+        default: ["no"],
+      } as Component,
+      { id: "yes", component: "text", content: "Allowed" } as Component,
+      { id: "no", component: "text", content: "Denied" } as Component,
+    ], { dataModel: { allowed: true } });
+
+    expect(screen.getByText("Allowed")).toBeInTheDocument();
+    whenRender.unmount();
+
+    renderSchema([
+      {
+        id: "root",
+        component: "condition",
+        match: { path: "/status" },
+        cases: { approved: ["approved"] },
+        default: ["fallback"],
+      } as Component,
+      { id: "approved", component: "text", content: "Approved" } as Component,
+      { id: "fallback", component: "text", content: "Fallback" } as Component,
+    ], { dataModel: { status: "approved" } });
+
+    expect(screen.getByText("Approved")).toBeInTheDocument();
+  });
 });
 
 describe("Repeater", () => {
@@ -142,6 +177,39 @@ describe("Repeater", () => {
     const container = screen.getByText("Ann").parentElement;
     expect(container).toHaveClass("faui-repeater-h", "people");
     expect(container).toHaveStyle({ gap: "6px", padding: "4px" });
+  });
+
+  it("subscribes scoped path bindings to the resolved item path", async () => {
+    const ScopedValueProbe: React.FC = () => {
+      const value = useDataSelector<string>("./name");
+      return <span data-testid="scoped-value">{value}</span>;
+    };
+    const UpdateProbe: React.FC = () => {
+      const { updateData } = useRendererContext();
+      React.useEffect(() => {
+        updateData("/items/0/name", "Updated");
+      }, [updateData]);
+      return null;
+    };
+
+    renderSchema([
+      {
+        id: "root",
+        component: "repeater",
+        data: { path: "/items" },
+        children: ["value", "update"],
+      } as Component,
+      { id: "value", component: "scoped-value" } as Component,
+      { id: "update", component: "update-probe" } as Component,
+    ], {
+      dataModel: { items: [{ name: "Initial" }] },
+      customComponents: {
+        "scoped-value": ScopedValueProbe,
+        "update-probe": UpdateProbe,
+      },
+    });
+
+    await waitFor(() => expect(screen.getByTestId("scoped-value")).toHaveTextContent("Updated"));
   });
 
   it("renders evaluated empty content and otherwise returns null", () => {

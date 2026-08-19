@@ -1,9 +1,9 @@
 import React from 'react';
 import { Skeleton as AntdSkeleton } from 'antd';
 import type { ComponentProps } from './index';
-import { useDataSelector } from '../hooks/useDataSelector';
 import { ComponentRenderer } from '../SchemaRenderer';
 import { useExpression } from '../hooks/useExpression';
+import { useDynamicValue } from '../hooks/useDynamicValue';
 
 export const Skeleton: React.FC<ComponentProps<'skeleton'>> = ({ config, componentMap }) => {
   const {
@@ -16,23 +16,19 @@ export const Skeleton: React.FC<ComponentProps<'skeleton'>> = ({ config, compone
     size,
     shape,
     block,
-    visible, // 使用 visible 属性控制骨架屏是否显示，也就是 loading 状态
+    visible, // 兼容属性：历史上表示 loading
+    loading,
     style,
     className,
     children = [],
   } = config;
 
-  // 使用 visible.path 绑定 loading 状态（通常为 dataModel 中的布尔值，比如 isLoading）
-  // true = 显示骨架屏 (loading)，false = 显示真实子节点内容
-  const boundLoading = useDataSelector<boolean>(
-    typeof visible === 'object' && visible !== null && 'path' in visible
-      ? (visible as any).path
-      : undefined
-  );
-
-  const isLoading = boundLoading !== undefined 
-    ? boundLoading 
-    : (typeof visible === 'boolean' ? visible : true); // 默认没有绑定的话，当作 true 显示骨架屏
+  // `loading` is the canonical property. `visible` remains a loading alias
+  // for compatibility and only applies when loading is omitted.
+  const resolvedLoading = useDynamicValue(loading ?? visible ?? true);
+  const isLoading = resolvedLoading === undefined || resolvedLoading === null
+    ? true
+    : Boolean(resolvedLoading);
 
   const evaluatedTitle = useExpression(title);
   const evaluatedActive = useExpression(active) as boolean | undefined;

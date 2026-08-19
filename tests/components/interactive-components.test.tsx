@@ -215,6 +215,14 @@ describe("overlay component interactions", () => {
     expect(stopPropagation).toHaveBeenCalledTimes(2);
     expect(lastProps("Popconfirm").title).toBe("确定要执行此操作吗？");
   });
+
+  it("Popconfirm resolves disabled path bindings", () => {
+    renderTarget(Popconfirm, { disabled: { path: "/disabled" }, children: ["child"] }, {
+      dataModel: { disabled: true },
+    });
+
+    expect(lastProps("Popconfirm").disabled).toBe(true);
+  });
 });
 
 describe("navigation and data component interactions", () => {

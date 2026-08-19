@@ -1,4 +1,4 @@
-import { BaseComponentConfig, ActionConfig } from '../schema';
+import { BaseComponentConfig, ActionConfig, ComponentControlValue } from '../schema';
 
 export interface PopconfirmComponentConfig extends BaseComponentConfig {
   component: 'popconfirm';
@@ -49,5 +49,5 @@ export interface PopconfirmComponentConfig extends BaseComponentConfig {
   /**
    * 阻止点击阻止冒泡
    */
-  disabled?: boolean;
+  disabled?: ComponentControlValue;
 }

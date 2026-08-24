@@ -9,11 +9,16 @@ import {
 describe('Form component contracts', () => {
   it('covers every Form Registry name without importing runtime metadata into the contract module', () => {
     expect(Object.keys(formComponentContracts).sort()).toEqual(Object.keys(FormComponentRegistry).sort());
-    expect(formComponentContractVersion).toBe(1);
+    expect(formComponentContractVersion).toBe(2);
     for (const [name, item] of Object.entries(formComponentContracts)) {
       expect(item.component).toBe(name);
       expect(item.allowedProps).toContain('id');
       expect(item.allowedProps).toContain('component');
+      expect(item.allowedProps).toContain('style');
+      expect(item.properties.style.schema).toEqual({
+        type: 'object',
+        additionalProperties: { type: ['string', 'number'] },
+      });
       expect(item.properties.id).toBeDefined();
       expect(item.properties.visible).toBeDefined();
     }

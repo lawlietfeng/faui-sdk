@@ -116,7 +116,10 @@ const baseProperties: Readonly<Record<string, PropertyContract>> = {
   component: { schema: stringSchema, description: 'Form Registry 注册名。' },
   name: { schema: stringSchema },
   domId: { schema: stringSchema },
-  style: { schema: schema('object', { additionalProperties: true }) },
+  // ComponentStyle is a flat object whose values are CSS-compatible strings or
+  // numbers. Keep the value schema strict so generated schemas cannot contain
+  // nested objects, arrays, or null values.
+  style: { schema: schema('object', { additionalProperties: schema(['string', 'number']) }) },
   className: { schema: stringSchema },
   animation: { schema: schema('object') },
   visible: {
@@ -186,7 +189,10 @@ const contract = (
       : ['header', 'sider', 'content', 'footer'].includes(component)
         ? 'layout'
         : component,
-    allowedProps: [...new Set(['id', 'component', ...props])],
+    // `style` is a common Form component property. It is always part of the
+    // machine-readable contract, even when a component supplies an explicit
+    // `props` list (which otherwise replaces the base-property keys).
+    allowedProps: [...new Set(['id', 'component', 'style', ...props])],
     childrenMode: options.childrenMode ?? 'none',
     properties: completeProperties,
     eventNames: Object.keys(events),
@@ -281,7 +287,7 @@ const contracts: FormComponentContract[] = [
   container('repeater', ['data', 'direction', 'gap', 'emptyContent', 'keyField'], { childrenMode: 'template-component-ids', properties: { data: rootDataProperty, emptyContent: contentProperty }, dataModelBinding: { prop: 'data', valueTypes: ['array'] }, notes: ['data.path 使用根路径；模板子组件的可回写绑定可使用 ./field。'] }),
 ];
 
-export const formComponentContractVersion = 1 as const;
+export const formComponentContractVersion = 2 as const;
 
 /** Contracts indexed by every Form Registry name. */
 export const formComponentContracts: Readonly<Record<string, FormComponentContract>> = Object.fromEntries(

@@ -1,0 +1,457 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "components": [
+        {
+          "id": "root",
+          "component": "box",
+          "layout": "vertical",
+          "padding": 24,
+          "style": { "backgroundColor": "#f5f7fa", "minHeight": "100vh" },
+          "children": ["review-form"]
+        },
+        {
+          "id": "review-form",
+          "component": "form",
+          "layout": "vertical",
+          "submitButtonId": "submit-btn",
+          "validateTrigger": "onBlur",
+          "children": [
+            "form-header",
+            "basic-section",
+            "emergency-section",
+            "work-section",
+            "materials-section",
+            "review-section"
+          ]
+        },
+        {
+          "id": "form-header",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 4,
+          "style": { "maxWidth": 1200, "width": "100%", "margin": "0 auto 16px" },
+          "children": ["form-title", "form-subtitle"]
+        },
+        {
+          "id": "form-title",
+          "component": "typography",
+          "variant": "title",
+          "level": 3,
+          "content": "入职审核表单",
+          "style": { "margin": 0 }
+        },
+        {
+          "id": "form-subtitle",
+          "component": "typography",
+          "variant": "text",
+          "textType": "secondary",
+          "content": "请核对候选人信息、工作经历及附件材料后完成审核。"
+        },
+        {
+          "id": "basic-section",
+          "component": "card",
+          "title": "基本信息",
+          "style": { "maxWidth": 1200, "width": "100%", "margin": "0 auto" },
+          "children": ["basic-info"]
+        },
+        {
+          "id": "basic-info",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 20,
+          "children": [
+            "personal-info",
+            "health-info",
+            "identity-info",
+            "address-info",
+            "employment-info",
+            "payroll-info"
+          ]
+        },
+        {
+          "id": "personal-info",
+          "component": "descriptions",
+          "column": 3,
+          "bordered": true,
+          "options": [
+            { "label": "姓名", "value": "${$root.form.name}" },
+            { "label": "英文名", "value": "${$root.form.englishName}" },
+            { "label": "手机号码", "value": "${$root.form.mobile}" },
+            { "label": "邮箱地址", "value": "${$root.form.email}" }
+          ]
+        },
+        {
+          "id": "health-info",
+          "component": "descriptions",
+          "column": 1,
+          "bordered": true,
+          "options": [
+            {
+              "label": "是否存在传染病、慢性病、重大既往症、正在怀孕、患病住院全休或半休的情况",
+              "value": "${$root.form.healthCondition}"
+            }
+          ]
+        },
+        {
+          "id": "identity-info",
+          "component": "descriptions",
+          "column": 3,
+          "bordered": true,
+          "options": [
+            { "label": "证件类型", "value": "${$root.form.idType}" },
+            { "label": "证件号码", "value": "${$root.form.idNumber}" },
+            { "label": "出生日期", "value": "${$root.form.birthDate}" },
+            { "label": "性别", "value": "${$root.form.gender}" },
+            { "label": "国籍", "value": "${$root.form.nationality}" },
+            { "label": "民族", "value": "${$root.form.ethnicity}" },
+            { "label": "婚姻状况", "value": "${$root.form.maritalStatus}" }
+          ]
+        },
+        {
+          "id": "address-info",
+          "component": "descriptions",
+          "column": 2,
+          "bordered": true,
+          "options": [
+            { "label": "户籍城市", "value": "${$root.form.hukouCity}" },
+            { "label": "户籍地址", "value": "${$root.form.hukouAddress}" },
+            { "label": "户口类型", "value": "${$root.form.hukouType}" },
+            { "label": "居住城市", "value": "${$root.form.residenceCity}" },
+            { "label": "现居住地址", "value": "${$root.form.residenceAddress}" },
+            { "label": "劳动合同寄送城市", "value": "${$root.form.contractCity}" },
+            { "label": "劳动合同寄送地址", "value": "${$root.form.contractAddress}" }
+          ]
+        },
+        {
+          "id": "employment-info",
+          "component": "descriptions",
+          "column": 3,
+          "bordered": true,
+          "options": [
+            { "label": "是否有工作经验", "value": "${$root.form.hasWorkExperience ? '是' : '否'}" },
+            { "label": "首次参加工作日期", "value": "${$root.form.firstWorkDate}" },
+            {
+              "label": "社保最后缴纳月份距本次入职是否超过6个月",
+              "value": "${$root.form.socialSecurityGapOver6Months ? '是' : '否'}"
+            },
+            { "label": "学位", "value": "${$root.form.degree}" },
+            { "label": "毕业时间/预计毕业时间", "value": "${$root.form.graduationDate}" },
+            { "label": "毕业院校", "value": "${$root.form.school}" },
+            { "label": "最高学历", "value": "${$root.form.highestEducation}" },
+            { "label": "上家单位名称", "value": "${$root.form.previousCompany}" },
+            { "label": "上家单位合同开始时间", "value": "${$root.form.previousContractStart}" },
+            { "label": "上家公司离职时间", "value": "${$root.form.previousCompanyLeaveDate}" }
+          ]
+        },
+        {
+          "id": "payroll-info",
+          "component": "descriptions",
+          "column": 3,
+          "bordered": true,
+          "options": [
+            { "label": "银行卡号", "value": "${$root.form.bankCardNumber}" },
+            { "label": "开户行", "value": "${$root.form.bankName}" },
+            { "label": "开户人姓名", "value": "${$root.form.accountHolder}" },
+            { "label": "开户银行所在地", "value": "${$root.form.bankLocation}" },
+            { "label": "银行简称", "value": "${$root.form.bankShortName}" },
+            { "label": "个人公积金账号", "value": "${$root.form.housingFundAccount}" },
+            { "label": "个人公积金补充账号", "value": "${$root.form.housingFundSupplementAccount}" }
+          ]
+        },
+        {
+          "id": "emergency-section",
+          "component": "card",
+          "title": "紧急联系人",
+          "style": { "maxWidth": 1200, "width": "100%", "margin": "16px auto 0" },
+          "children": ["emergency-list"]
+        },
+        {
+          "id": "emergency-list",
+          "component": "repeater",
+          "data": { "path": "/form/emergencyContacts" },
+          "gap": 12,
+          "emptyContent": "暂无紧急联系人",
+          "children": ["emergency-item"]
+        },
+        {
+          "id": "emergency-item",
+          "component": "descriptions",
+          "column": 3,
+          "bordered": true,
+          "options": [
+            { "label": "姓名", "value": "${$current.name}" },
+            { "label": "关系", "value": "${$current.relationship}" },
+            { "label": "手机", "value": "${$current.mobile}" }
+          ]
+        },
+        {
+          "id": "work-section",
+          "component": "card",
+          "title": "工作经历",
+          "style": { "maxWidth": 1200, "width": "100%", "margin": "16px auto 0" },
+          "children": ["work-list"]
+        },
+        {
+          "id": "work-list",
+          "component": "repeater",
+          "data": { "path": "/form/workExperiences" },
+          "gap": 12,
+          "emptyContent": "暂无工作经历",
+          "children": ["work-item"]
+        },
+        {
+          "id": "work-item",
+          "component": "card",
+          "size": "small",
+          "children": ["work-details"]
+        },
+        {
+          "id": "work-details",
+          "component": "descriptions",
+          "column": 2,
+          "bordered": true,
+          "options": [
+            { "label": "公司名称", "value": "${$current.companyName}" },
+            { "label": "最终职位", "value": "${$current.lastPosition}" },
+            { "label": "主要工作职责", "value": "${$current.duties}" },
+            { "label": "开始时间", "value": "${$current.startDate}" },
+            { "label": "结束时间", "value": "${$current.endDate}" }
+          ]
+        },
+        {
+          "id": "materials-section",
+          "component": "card",
+          "title": "档案与材料",
+          "style": { "maxWidth": 1200, "width": "100%", "margin": "16px auto 0" },
+          "children": ["materials-grid"]
+        },
+        {
+          "id": "materials-grid",
+          "component": "flex",
+          "wrap": true,
+          "gap": 16,
+          "children": [
+            "id-front-material",
+            "id-back-material",
+            "degree-material",
+            "graduation-material",
+            "resume-material"
+          ]
+        },
+        {
+          "id": "id-front-material",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "width": 180 },
+          "children": ["id-front-label", "id-front-image"]
+        },
+        { "id": "id-front-label", "component": "text", "content": "身份证正面" },
+        {
+          "id": "id-front-image",
+          "component": "image",
+          "data": { "path": "/form/materials/idFront" },
+          "alt": "身份证正面",
+          "preview": true,
+          "style": { "width": 180, "height": 120, "objectFit": "contain", "border": "1px solid #f0f0f0" }
+        },
+        {
+          "id": "id-back-material",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "width": 180 },
+          "children": ["id-back-label", "id-back-image"]
+        },
+        { "id": "id-back-label", "component": "text", "content": "身份证反面" },
+        {
+          "id": "id-back-image",
+          "component": "image",
+          "data": { "path": "/form/materials/idBack" },
+          "alt": "身份证反面",
+          "preview": true,
+          "style": { "width": 180, "height": 120, "objectFit": "contain", "border": "1px solid #f0f0f0" }
+        },
+        {
+          "id": "degree-material",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "width": 180 },
+          "children": ["degree-label", "degree-image"]
+        },
+        { "id": "degree-label", "component": "text", "content": "学位证书" },
+        {
+          "id": "degree-image",
+          "component": "image",
+          "data": { "path": "/form/materials/degreeCertificate" },
+          "alt": "学位证书",
+          "preview": true,
+          "style": { "width": 180, "height": 120, "objectFit": "contain", "border": "1px solid #f0f0f0" }
+        },
+        {
+          "id": "graduation-material",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "width": 180 },
+          "children": ["graduation-label", "graduation-image"]
+        },
+        { "id": "graduation-label", "component": "text", "content": "毕业证书/学籍证明" },
+        {
+          "id": "graduation-image",
+          "component": "image",
+          "data": { "path": "/form/materials/graduationCertificate" },
+          "alt": "毕业证书/学籍证明",
+          "preview": true,
+          "style": { "width": 180, "height": 120, "objectFit": "contain", "border": "1px solid #f0f0f0" }
+        },
+        {
+          "id": "resume-material",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "width": 180 },
+          "children": ["resume-label", "resume-link"]
+        },
+        { "id": "resume-label", "component": "text", "content": "个人简历" },
+        {
+          "id": "resume-link",
+          "component": "typography",
+          "variant": "link",
+          "content": "打开简历（PDF）",
+          "href": "${$root.form.materials.resume}",
+          "target": "_blank"
+        },
+        {
+          "id": "review-section",
+          "component": "card",
+          "title": "审核",
+          "style": { "maxWidth": 1200, "width": "100%", "margin": "16px auto 0" },
+          "children": ["review-fields", "submit-btn"]
+        },
+        {
+          "id": "review-fields",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "marginBottom": 16 },
+          "children": ["review-result-label", "review-result", "review-comment-label", "review-comment"]
+        },
+        { "id": "review-result-label", "component": "text", "content": "审核结果" },
+        {
+          "id": "review-result",
+          "component": "select",
+          "placeholder": "请选择审核结果",
+          "options": [
+            { "label": "通过", "value": "通过" },
+            { "label": "不通过", "value": "不通过" }
+          ],
+          "value": { "path": "/form/reviewResult" },
+          "field": "reviewResult",
+          "rules": [{ "required": true, "message": "请选择审核结果" }]
+        },
+        { "id": "review-comment-label", "component": "text", "content": "批注" },
+        {
+          "id": "review-comment",
+          "component": "textarea",
+          "placeholder": "请输入批注",
+          "rows": 4,
+          "value": { "path": "/form/reviewComment" },
+          "field": "reviewComment"
+        },
+        {
+          "id": "submit-btn",
+          "component": "button",
+          "label": "提交审核",
+          "type": "primary",
+          "on_tap": [
+            {
+              "action": "http_proxy",
+              "payload": {
+                "http_config": {
+                  "method": "POST",
+                  "path": "/api/mock/onboarding-review",
+                  "headers": { "Content-Type": "application/json" }
+                },
+                "http_body": { "form": { "path": "/form" } }
+              }
+            }
+          ]
+        }
+      ],
+      "dataModel": {
+        "form": {
+          "name": "张晓雯",
+          "englishName": "Wendy Zhang",
+          "mobile": "13800138000",
+          "email": "xiaowen.zhang@example.com",
+          "healthCondition": "否",
+          "idType": "居民身份证",
+          "idNumber": "110101199203158765",
+          "birthDate": "1992-03-15",
+          "gender": "女",
+          "nationality": "中国",
+          "ethnicity": "汉族",
+          "maritalStatus": "未婚",
+          "hukouCity": "北京市",
+          "hukouAddress": "北京市海淀区中关村大街1号",
+          "hukouType": "城镇居民户口",
+          "residenceCity": "上海市",
+          "residenceAddress": "上海市浦东新区世纪大道100号",
+          "contractCity": "上海市",
+          "contractAddress": "上海市浦东新区世纪大道100号",
+          "hasWorkExperience": true,
+          "firstWorkDate": "2015-07-01",
+          "socialSecurityGapOver6Months": false,
+          "degree": "硕士",
+          "graduationDate": "2017-06-30",
+          "school": "北京大学",
+          "highestEducation": "硕士研究生",
+          "previousCompany": "上海示例科技有限公司",
+          "previousContractStart": "2017-07-01",
+          "previousCompanyLeaveDate": "2024-02-29",
+          "bankCardNumber": "6222021234567890123",
+          "bankName": "中国工商银行",
+          "accountHolder": "张晓雯",
+          "bankLocation": "上海市浦东新区",
+          "bankShortName": "工行",
+          "housingFundAccount": "110100123456",
+          "housingFundSupplementAccount": "SH2024001234",
+          "emergencyContacts": [
+            { "name": "张伟", "relationship": "父亲", "mobile": "13900139000" }
+          ],
+          "workExperiences": [
+            {
+              "id": "work-1",
+              "companyName": "上海示例科技有限公司",
+              "lastPosition": "高级产品经理",
+              "duties": "负责企业应用产品规划、需求分析及项目落地，协同研发和运营团队持续优化产品体验。",
+              "startDate": "2017-07-01",
+              "endDate": "2024-02-29"
+            },
+            {
+              "id": "work-2",
+              "companyName": "北京未来信息技术有限公司",
+              "lastPosition": "产品经理",
+              "duties": "负责业务需求调研、产品原型设计和版本迭代，推动跨部门项目按期交付。",
+              "startDate": "2015-07-01",
+              "endDate": "2017-06-30"
+            }
+          ],
+          "materials": {
+            "idFront": "https://mock.example.com/materials/id-front.jpg",
+            "idBack": "https://mock.example.com/materials/id-back.jpg",
+            "degreeCertificate": "https://mock.example.com/materials/degree-certificate.jpg",
+            "graduationCertificate": "https://mock.example.com/materials/graduation-certificate.jpg",
+            "resume": "https://mock.example.com/materials/resume.pdf"
+          },
+          "reviewResult": "通过",
+          "reviewComment": "基本信息、工作经历及相关材料已核验，符合入职条件。"
+        }
+      }
+    }
+  }
+]

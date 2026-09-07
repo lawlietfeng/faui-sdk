@@ -69,6 +69,28 @@ const httpRequest = async (config: HttpRequestConfig) => {
         },
       };
     }
+    if (route === 'onboarding-review') {
+      await new Promise(r => setTimeout(r, 600));
+      return {
+        success: true,
+        message: '入职审核已提交',
+        data: {
+          reviewId: 'ONB-20260828-001',
+          submittedAt: '2026-08-28 10:00:00',
+        },
+      };
+    }
+    if (route === 'invoice-review') {
+      await new Promise(r => setTimeout(r, 600));
+      return {
+        success: true,
+        message: '发票审核已提交',
+        data: {
+          reviewId: 'INV-20260828-001',
+          submittedAt: '2026-08-28 10:30:00',
+        },
+      };
+    }
   }
 
   const response = await fetch(config.url, {

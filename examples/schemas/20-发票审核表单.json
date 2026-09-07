@@ -1,0 +1,569 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "components": [
+        {
+          "id": "root",
+          "component": "box",
+          "layout": "vertical",
+          "padding": 24,
+          "style": { "backgroundColor": "#f5f7fa", "minHeight": "100vh" },
+          "children": ["invoice-review-form"]
+        },
+        {
+          "id": "invoice-review-form",
+          "component": "form",
+          "layout": "vertical",
+          "validateTrigger": "onBlur",
+          "style": { "width": "100%", "paddingBottom": 32 },
+          "children": [
+            "form-header",
+            "request-section",
+            "detail-section",
+            "adjustment-section",
+            "communication-section",
+            "approval-section"
+          ]
+        },
+        {
+          "id": "form-header",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 6,
+          "style": { "marginBottom": 16, "padding": "4px 0" },
+          "children": ["form-title", "form-subtitle"]
+        },
+        {
+          "id": "form-title",
+          "component": "typography",
+          "variant": "title",
+          "level": 3,
+          "content": "发票审核表单",
+          "style": { "margin": 0, "color": "#1f2937" }
+        },
+        {
+          "id": "form-subtitle",
+          "component": "typography",
+          "variant": "text",
+          "textType": "secondary",
+          "content": "请核验报销需求、发票明细和审批证明后，填写备注与档案袋编号并完成审批。"
+        },
+        {
+          "id": "request-section",
+          "component": "card",
+          "title": "一、报销需求详情",
+          "style": { "marginBottom": 16 },
+          "children": [
+            "applicant-info",
+            "amount-info",
+            "approval-delivery-info",
+            "approval-proof"
+          ]
+        },
+        {
+          "id": "applicant-info",
+          "component": "descriptions",
+          "title": "申请与员工信息",
+          "column": 2,
+          "bordered": true,
+          "style": { "marginBottom": 20 },
+          "options": [
+            { "label": "员工姓名", "value": "${$root.form.employeeName}" },
+            { "label": "电子邮箱", "value": "${$root.form.email}" },
+            { "label": "联系电话", "value": "${$root.form.phone}" },
+            { "label": "申请时间", "value": "${$root.form.applicationTime}" },
+            { "label": "客户编号", "value": "${$root.form.customerId}" },
+            { "label": "客户名称", "value": "${$root.form.customerName}" },
+            { "label": "流水号", "value": "${$root.form.serialNumber}" },
+            { "label": "报销类型", "value": "${$root.form.reimbursementType}" },
+            { "label": "合同签约主体", "value": "${$root.form.contractEntity}" }
+          ]
+        },
+        {
+          "id": "amount-info",
+          "component": "descriptions",
+          "title": "报销金额",
+          "column": 2,
+          "bordered": true,
+          "style": { "marginBottom": 20 },
+          "options": [
+            { "label": "发票金额", "value": "${$root.form.invoiceAmount}" },
+            { "label": "报销总金额", "value": "${$root.form.totalReimbursementAmount}" },
+            { "label": "最终发放金额（税前）", "value": "${$root.form.finalPayoutBeforeTax}" },
+            { "label": "最终发放金额（税后）", "value": "${$root.form.finalPayoutAfterTax}" }
+          ]
+        },
+        {
+          "id": "approval-delivery-info",
+          "component": "descriptions",
+          "column": 2,
+          "bordered": true,
+          "options": [
+            { "label": "审批形式", "value": "${$root.form.approvalMethod}" },
+            { "label": "报销单审批人邮箱", "value": "${$root.form.approverEmail}" },
+            { "label": "报销单接收邮箱", "value": "${$root.form.receiptEmail}" },
+            { "label": "快递单号", "value": "${$root.form.courierTrackingNumber}" }
+          ]
+        },
+        {
+          "id": "approval-proof",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "marginTop": 20 },
+          "children": ["approval-proof-label", "approval-proof-link"]
+        },
+        {
+          "id": "approval-proof-label",
+          "component": "typography",
+          "variant": "text",
+          "strong": true,
+          "content": "审批证明"
+        },
+        {
+          "id": "approval-proof-link",
+          "component": "typography",
+          "variant": "link",
+          "content": "查看审批证明",
+          "href": "${$root.form.approvalProof}",
+          "target": "_blank"
+        },
+        {
+          "id": "detail-section",
+          "component": "card",
+          "title": "二、报销明细",
+          "style": { "marginBottom": 16 },
+          "children": ["detail-list"]
+        },
+        {
+          "id": "detail-list",
+          "component": "repeater",
+          "data": { "path": "/form/reimbursementDetails" },
+          "keyField": "id",
+          "gap": 16,
+          "emptyContent": "暂无报销明细",
+          "children": ["detail-item"]
+        },
+        {
+          "id": "detail-item",
+          "component": "card",
+          "size": "small",
+          "style": { "backgroundColor": "#fafcff" },
+          "children": ["detail-info", "invoice-attachment"]
+        },
+        {
+          "id": "detail-info",
+          "component": "descriptions",
+          "column": 2,
+          "bordered": true,
+          "options": [
+            { "label": "科目", "value": "${$current.subject}" },
+            { "label": "发票金额", "value": "${$current.invoiceAmount}" },
+            { "label": "申请金额", "value": "${$current.applicationAmount}" },
+            { "label": "最终发放金额（税前）", "value": "${$current.finalPayoutBeforeTax}" },
+            { "label": "最终发放金额（税后）", "value": "${$current.finalPayoutAfterTax}" },
+            { "label": "外币汇率", "value": "${$current.foreignExchangeRate}" },
+            { "label": "测试发生日期", "value": "${$current.testOccurrenceDate}" },
+            { "label": "发生日期", "value": "${$current.occurrenceDate}" },
+            { "label": "其他备注", "value": "${$current.remark}" }
+          ]
+        },
+        {
+          "id": "invoice-attachment",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "marginTop": 16 },
+          "children": ["invoice-attachment-label", "invoice-attachment-link"]
+        },
+        {
+          "id": "invoice-attachment-label",
+          "component": "typography",
+          "variant": "text",
+          "strong": true,
+          "content": "发票附件"
+        },
+        {
+          "id": "invoice-attachment-link",
+          "component": "typography",
+          "variant": "link",
+          "content": "查看发票附件",
+          "href": "${$current.invoiceAttachment}",
+          "target": "_blank"
+        },
+        {
+          "id": "adjustment-section",
+          "component": "card",
+          "title": "调整补充记录",
+          "style": { "marginBottom": 16 },
+          "children": ["adjustment-list"]
+        },
+        {
+          "id": "adjustment-list",
+          "component": "repeater",
+          "data": { "path": "/form/adjustmentRecords" },
+          "keyField": "id",
+          "gap": 16,
+          "emptyContent": "暂无调整补充记录",
+          "children": ["adjustment-item"]
+        },
+        {
+          "id": "adjustment-item",
+          "component": "card",
+          "size": "small",
+          "style": { "backgroundColor": "#fffdf5" },
+          "children": ["adjustment-info", "adjustment-attachment"]
+        },
+        {
+          "id": "adjustment-info",
+          "component": "descriptions",
+          "column": 2,
+          "bordered": true,
+          "options": [
+            { "label": "备注", "value": "${$current.remark}" },
+            { "label": "日期", "value": "${$current.date}" }
+          ]
+        },
+        {
+          "id": "adjustment-attachment",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "marginTop": 16 },
+          "children": ["adjustment-attachment-label", "adjustment-attachment-link"]
+        },
+        {
+          "id": "adjustment-attachment-label",
+          "component": "typography",
+          "variant": "text",
+          "strong": true,
+          "content": "附件"
+        },
+        {
+          "id": "adjustment-attachment-link",
+          "component": "typography",
+          "variant": "link",
+          "content": "查看附件",
+          "href": "${$current.attachment}",
+          "target": "_blank"
+        },
+        {
+          "id": "communication-section",
+          "component": "card",
+          "title": "沟通记录",
+          "style": { "marginBottom": 16 },
+          "children": ["communication-list"]
+        },
+        {
+          "id": "communication-list",
+          "component": "repeater",
+          "data": { "path": "/form/communicationRecords" },
+          "keyField": "id",
+          "gap": 16,
+          "emptyContent": "暂无沟通记录",
+          "children": ["communication-item"]
+        },
+        {
+          "id": "communication-item",
+          "component": "card",
+          "size": "small",
+          "style": { "backgroundColor": "#f8fbff" },
+          "children": ["communication-info", "communication-attachment"]
+        },
+        {
+          "id": "communication-info",
+          "component": "descriptions",
+          "column": 2,
+          "bordered": true,
+          "options": [
+            { "label": "审批结果", "value": "${$current.approvalResult}" },
+            { "label": "审批时间", "value": "${$current.approvalTime}" },
+            { "label": "审批备注", "value": "${$current.approvalRemark}" }
+          ]
+        },
+        {
+          "id": "communication-attachment",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "style": { "marginTop": 16 },
+          "children": ["communication-attachment-label", "communication-attachment-link"]
+        },
+        {
+          "id": "communication-attachment-label",
+          "component": "typography",
+          "variant": "text",
+          "strong": true,
+          "content": "附件"
+        },
+        {
+          "id": "communication-attachment-link",
+          "component": "typography",
+          "variant": "link",
+          "content": "查看附件",
+          "href": "${$current.attachment}",
+          "target": "_blank"
+        },
+        {
+          "id": "approval-section",
+          "component": "card",
+          "title": "三、审批区域",
+          "children": ["approval-status", "approval-fields", "approval-actions"]
+        },
+        {
+          "id": "approval-status",
+          "component": "descriptions",
+          "column": 1,
+          "bordered": true,
+          "style": { "marginBottom": 20 },
+          "options": [
+            { "label": "审批结果", "value": "${$root.form.approvalResult || '待审批'}" }
+          ]
+        },
+        {
+          "id": "approval-fields",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 20,
+          "style": { "marginBottom": 24 },
+          "children": ["archive-number-field", "approval-remark-field"]
+        },
+        {
+          "id": "archive-number-field",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "children": ["archive-number-label", "archive-number"]
+        },
+        {
+          "id": "archive-number-label",
+          "component": "text",
+          "content": "档案袋编号",
+          "style": { "fontWeight": "600", "color": "#374151" }
+        },
+        {
+          "id": "archive-number",
+          "component": "input",
+          "placeholder": "请输入档案袋编号",
+          "value": { "path": "/form/archiveBagNumber" },
+          "field": "archiveBagNumber"
+        },
+        {
+          "id": "approval-remark-field",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "children": ["approval-remark-label", "approval-remark"]
+        },
+        {
+          "id": "approval-remark-label",
+          "component": "text",
+          "content": "备注",
+          "style": { "fontWeight": "600", "color": "#374151" }
+        },
+        {
+          "id": "approval-remark",
+          "component": "textarea",
+          "placeholder": "请输入审批备注（选填）",
+          "rows": 4,
+          "maxLength": 500,
+          "value": { "path": "/form/approvalRemark" },
+          "field": "approvalRemark"
+        },
+        {
+          "id": "approval-actions",
+          "component": "flex",
+          "wrap": true,
+          "gap": 12,
+          "children": ["approve-btn", "adjust-btn", "corrected-approve-btn"]
+        },
+        {
+          "id": "approve-btn",
+          "component": "button",
+          "label": "通过",
+          "type": "primary",
+          "size": "large",
+          "style": { "minWidth": 120 },
+          "on_tap": [
+            { "action": "update_data", "path": "/form/approvalResult", "value": "通过" },
+            {
+              "action": "http_proxy",
+              "payload": {
+                "http_config": {
+                  "method": "POST",
+                  "path": "/api/mock/invoice-review",
+                  "headers": { "Content-Type": "application/json" }
+                },
+                "http_body": { "form": { "path": "/form" } }
+              },
+              "on_success": {
+                "action": "message",
+                "payload": { "type": "success", "content": "发票审核已通过" }
+              },
+              "on_error": {
+                "action": "message",
+                "payload": { "type": "error", "content": "提交失败，请稍后重试" }
+              }
+            }
+          ]
+        },
+        {
+          "id": "adjust-btn",
+          "component": "button",
+          "label": "待调整",
+          "size": "large",
+          "style": { "minWidth": 120 },
+          "on_tap": [
+            { "action": "update_data", "path": "/form/approvalResult", "value": "待调整" },
+            {
+              "action": "http_proxy",
+              "payload": {
+                "http_config": {
+                  "method": "POST",
+                  "path": "/api/mock/invoice-review",
+                  "headers": { "Content-Type": "application/json" }
+                },
+                "http_body": { "form": { "path": "/form" } }
+              },
+              "on_success": {
+                "action": "message",
+                "payload": { "type": "success", "content": "已标记为待调整" }
+              },
+              "on_error": {
+                "action": "message",
+                "payload": { "type": "error", "content": "提交失败，请稍后重试" }
+              }
+            }
+          ]
+        },
+        {
+          "id": "corrected-approve-btn",
+          "component": "button",
+          "label": "修正后通过",
+          "type": "primary",
+          "size": "large",
+          "style": { "minWidth": 120 },
+          "on_tap": [
+            { "action": "update_data", "path": "/form/approvalResult", "value": "修正后通过" },
+            {
+              "action": "http_proxy",
+              "payload": {
+                "http_config": {
+                  "method": "POST",
+                  "path": "/api/mock/invoice-review",
+                  "headers": { "Content-Type": "application/json" }
+                },
+                "http_body": { "form": { "path": "/form" } }
+              },
+              "on_success": {
+                "action": "message",
+                "payload": { "type": "success", "content": "已标记为修正后通过" }
+              },
+              "on_error": {
+                "action": "message",
+                "payload": { "type": "error", "content": "提交失败，请稍后重试" }
+              }
+            }
+          ]
+        }
+      ],
+      "dataModel": {
+        "form": {
+          "employeeName": "李佳宁",
+          "email": "jianing.li@example.com",
+          "customerId": "CUST-2026-00861",
+          "applicationTime": "2026-08-26 14:35:18",
+          "invoiceAmount": "¥12,680.00",
+          "finalPayoutAfterTax": "¥11,984.40",
+          "receiptEmail": "reimbursement-archive@example.com",
+          "reimbursementType": "纸质发票",
+          "contractEntity": "上海示例科技有限公司",
+          "phone": "13800138000",
+          "customerName": "北京远见咨询有限公司",
+          "serialNumber": "BX202608260001",
+          "totalReimbursementAmount": "¥12,680.00",
+          "finalPayoutBeforeTax": "¥12,680.00",
+          "approvalMethod": "线上审批",
+          "approverEmail": "manager.zhang@example.com",
+          "courierTrackingNumber": "SF1234567890123",
+          "approvalProof": "https://placehold.co/1200x760/dbeafe/1d4ed8.png?text=Approval+Proof",
+          "reimbursementDetails": [
+            {
+              "id": "detail-1",
+              "subject": "交通费",
+              "invoiceAmount": "¥2,180.00",
+              "finalPayoutAfterTax": "¥2,061.40",
+              "foreignExchangeRate": "不适用",
+              "invoiceAttachment": "https://placehold.co/1200x760/e2e8f0/334155.png?text=Traffic+Invoice",
+              "applicationAmount": "¥2,180.00",
+              "finalPayoutBeforeTax": "¥2,180.00",
+              "testOccurrenceDate": "2026-08-18",
+              "occurrenceDate": "2026-08-18",
+              "remark": "客户现场往返交通费用"
+            },
+            {
+              "id": "detail-2",
+              "subject": "住宿费",
+              "invoiceAmount": "¥4,500.00",
+              "finalPayoutAfterTax": "¥4,252.50",
+              "foreignExchangeRate": "不适用",
+              "invoiceAttachment": "https://placehold.co/1200x760/fef3c7/92400e.png?text=Hotel+Invoice",
+              "applicationAmount": "¥4,500.00",
+              "finalPayoutBeforeTax": "¥4,500.00",
+              "testOccurrenceDate": "2026-08-18",
+              "occurrenceDate": "2026-08-18 至 2026-08-20",
+              "remark": "客户项目驻场住宿费用"
+            },
+            {
+              "id": "detail-3",
+              "subject": "客户招待费",
+              "invoiceAmount": "¥6,000.00",
+              "finalPayoutAfterTax": "¥5,670.00",
+              "foreignExchangeRate": "不适用",
+              "invoiceAttachment": "https://placehold.co/1200x760/fce7f3/9d174d.png?text=Entertainment+Invoice",
+              "applicationAmount": "¥6,000.00",
+              "finalPayoutBeforeTax": "¥6,000.00",
+              "testOccurrenceDate": "2026-08-19",
+              "occurrenceDate": "2026-08-19",
+              "remark": "与客户项目负责人商务餐叙"
+            }
+          ],
+          "adjustmentRecords": [
+            {
+              "id": "adjustment-1",
+              "remark": "补充客户招待费发票抬头说明",
+              "date": "2026-08-27",
+              "attachment": "https://placehold.co/1200x760/fef3c7/92400e.png?text=Adjustment+Attachment"
+            },
+            {
+              "id": "adjustment-2",
+              "remark": "补充项目出差审批截图",
+              "date": "2026-08-28",
+              "attachment": "https://placehold.co/1200x760/e0f2fe/075985.png?text=Supplement+Proof"
+            }
+          ],
+          "communicationRecords": [
+            {
+              "id": "communication-1",
+              "approvalResult": "待调整",
+              "approvalTime": "2026-08-27 09:20:00",
+              "attachment": "https://placehold.co/1200x760/fce7f3/9d174d.png?text=Communication+Attachment",
+              "approvalRemark": "请补充客户招待费的审批证明。"
+            },
+            {
+              "id": "communication-2",
+              "approvalResult": "修正后通过",
+              "approvalTime": "2026-08-28 10:05:00",
+              "attachment": "https://placehold.co/1200x760/dbeafe/1d4ed8.png?text=Approval+Record",
+              "approvalRemark": "材料已补充，金额与发票信息核对无误。"
+            }
+          ],
+          "approvalResult": "",
+          "approvalRemark": "",
+          "archiveBagNumber": ""
+        }
+      }
+    }
+  }
+]

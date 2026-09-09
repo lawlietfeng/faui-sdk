@@ -677,4 +677,50 @@ describe("form component integration", () => {
     ]);
     expect(screen.getByRole("button", { name: "Nested label" })).toBeInTheDocument();
   });
+
+  it.each([
+    { debounce: undefined, interval: 300, submit: false },
+    { debounce: 500, interval: 500, submit: false },
+    { debounce: undefined, interval: 300, submit: true },
+  ])("Button resets debounce on repeated clicks ($debounce, submit=$submit)", async ({ debounce, interval, submit }) => {
+    vi.useFakeTimers();
+    const onAction = vi.fn();
+    let view: ReturnType<typeof render> | undefined;
+    try {
+      view = renderSchema([
+        ...(submit ? [{ id: "root", component: "form", submitButtonId: "submit", children: ["submit"] } as Component] : []),
+        { id: submit ? "submit" : "root", component: "button", label: "Submit", debounce, on_tap: { action: "message" } } as Component,
+      ], { onAction });
+      const button = screen.getByRole("button", { name: "Submit" });
+      await act(async () => { fireEvent.click(button); });
+      expect(onAction).toHaveBeenCalledTimes(1);
+      // Repeated clicks extend the window beyond the first click's deadline.
+      for (let index = 0; index < 3; index++) {
+        act(() => vi.advanceTimersByTime(interval - 1));
+        await act(async () => { fireEvent.click(button); });
+        expect(onAction).toHaveBeenCalledTimes(1);
+      }
+      act(() => vi.advanceTimersByTime(interval));
+      expect(onAction).toHaveBeenCalledTimes(1);
+      await act(async () => { fireEvent.click(button); });
+      expect(onAction).toHaveBeenCalledTimes(2);
+    } finally {
+      view?.unmount();
+      vi.useRealTimers();
+    }
+  });
+
+  it("Button with debounce 0 executes every click", async () => {
+    const onAction = vi.fn();
+    renderSchema([
+      { id: "root", component: "button", label: "Submit", debounce: 0, on_tap: { action: "message" } } as Component,
+    ], { onAction });
+    const button = screen.getByRole("button", { name: "Submit" });
+    await act(async () => {
+      fireEvent.click(button);
+      fireEvent.click(button);
+      fireEvent.click(button);
+    });
+    expect(onAction).toHaveBeenCalledTimes(3);
+  });
 });

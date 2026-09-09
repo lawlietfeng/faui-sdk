@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { Button as AntButton } from 'antd';
 import { useRendererContext } from '../context/RendererContext';
 import { useFormContextOptional } from '../context/FormContext';
@@ -12,6 +12,7 @@ import type { ComponentProps } from './index';
 export const Button: React.FC<ComponentProps<'button'>> = ({ config, componentMap }) => {
   const { handleAction } = useRendererContext();
   const formContext = useFormContextOptional();
+  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const executeActions = useCallback(async () => {
     if (config.on_tap) {
@@ -22,21 +23,42 @@ export const Button: React.FC<ComponentProps<'button'>> = ({ config, componentMa
     }
   }, [config.on_tap, handleAction]);
 
+  const executeWithDebounce = useCallback(async (action: () => Promise<void>) => {
+    const debounce = config.debounce === undefined ? 300 : Math.max(0, config.debounce);
+    const pending = debounceTimerRef.current !== null;
+    if (debounceTimerRef.current !== null) {
+      clearTimeout(debounceTimerRef.current);
+      debounceTimerRef.current = null;
+    }
+    if (debounce > 0) {
+      debounceTimerRef.current = setTimeout(() => {
+        debounceTimerRef.current = null;
+      }, debounce);
+      if (pending) return;
+    }
+    await action();
+  }, [config.debounce]);
+
   useEffect(() => {
     if (!formContext?.isSubmitButton(config.id)) {
       return;
     }
-    formContext.registerSubmitHandler(config.id, executeActions);
+    formContext.registerSubmitHandler(config.id, () => executeWithDebounce(executeActions));
     return () => formContext.unregisterSubmitHandler(config.id);
-  }, [config.id, executeActions, formContext]);
+  }, [config.id, executeActions, executeWithDebounce, formContext]);
 
   const handleClick = useCallback(async () => {
     if (formContext?.isSubmitButton(config.id)) {
       await formContext.submit(config.id);
       return;
     }
-    await executeActions();
-  }, [config.id, executeActions, formContext]);
+    await executeWithDebounce(executeActions);
+  }, [config.id, executeActions, executeWithDebounce, formContext]);
+
+  useEffect(() => () => {
+    if (debounceTimerRef.current !== null) clearTimeout(debounceTimerRef.current);
+    debounceTimerRef.current = null;
+  }, []);
 
   const style = useExpression(config.style || {});
   const evaluatedContent = useExpression(config.content);

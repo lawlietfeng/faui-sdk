@@ -1,11 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { createRendererBootstrap, fauiSdkInfo } from "../src";
+import packageJson from "../package.json";
 
 describe("fauiSdkInfo", () => {
   it("exposes package name and version", () => {
     expect(fauiSdkInfo).toEqual({
       name: "@faui/react",
-      version: "0.0.7"
+      version: packageJson.version
     });
   });
 });

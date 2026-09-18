@@ -7,6 +7,7 @@
 - [npm 包使用指南](./npm-usage.md)
 - [form 表单指南](./form-guide.md)
 - [外部校验与提交](./external-submit.md)
+- [SJH、BXS 用工信息工单模板设计](./22-SJH、BXS-用工信息工单模板设计.md)
 
 ## 规划
 

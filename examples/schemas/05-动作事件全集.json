@@ -31,6 +31,7 @@
             "btn_http_proxy",
             "btn_message",
             "btn_notification",
+            "btn_post_message",
             "section_extended_title",
             "extended_desc",
             "btn_copy",
@@ -162,6 +163,29 @@
               "action": "update_data",
               "path": "/lastAction",
               "value": "notification"
+            }
+          ]
+        },
+        {
+          "id": "btn_post_message",
+          "component": "button",
+          "content": "post_message：通知父页面",
+          "on_tap": [
+            {
+              "action": "post_message",
+              "payload": {
+                "type": "faui:action_demo",
+                "data": {
+                  "userId": "${$root.user.id}",
+                  "counter": "${$root.counter}"
+                },
+                "targetOrigin": "http://localhost:5173"
+              }
+            },
+            {
+              "action": "update_data",
+              "path": "/lastAction",
+              "value": "post_message"
             }
           ]
         },

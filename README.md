@@ -163,12 +163,13 @@ Form Edition 动态绑定、Condition、Skeleton 兼容规则和 Agent 严格校
 
 ### 4. Action 执行机制
 
-内置支持四类 action：
+内置支持五类 action：
 
 - `update_data`：更新数据模型字段。
 - `http_proxy`：调用外部 `httpRequest` 发起请求。
 - `message`：全局轻提示。
 - `notification`：全局通知提示。
+- `post_message`：向嵌入 FAUI 的父窗口发送结构化消息。
 
 此外，`ActionType` 中还声明了以下扩展动作（默认无内置执行器）：
 

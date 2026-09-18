@@ -51,7 +51,7 @@ export { evaluateExpression, evaluateObject } from './utils/expression';
 
 // Actions
 export { ActionRegistry, executeAction } from './actions';
-export { updateDataAction, httpProxyAction, messageAction, notificationAction } from './actions';
+export { updateDataAction, httpProxyAction, messageAction, notificationAction, postMessageAction } from './actions';
 
 // Types
 export type * from './types/schema';

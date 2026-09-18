@@ -26,6 +26,7 @@
 | `http_proxy` | 内置执行 | `docs/actions/http_proxy.md` |
 | `message` | 内置执行 | `docs/actions/message.md` |
 | `notification` | 内置执行 | `docs/actions/notification.md` |
+| `post_message` | 内置执行 | `docs/actions/post_message.md` |
 | `copy` | 需扩展执行 | `docs/actions/copy.md` |
 | `mcp_tool_call` | 需扩展执行 | `docs/actions/mcp_tool_call.md` |
 | `send_prompt` | 需扩展执行 | `docs/actions/send_prompt.md` |
@@ -38,6 +39,7 @@
 - `http_proxy`
 - `message`
 - `notification`
+- `post_message`
 
 对于 `copy`、`mcp_tool_call`、`send_prompt`、`input_prompt`，你可以：
 - 在宿主侧监听 `onAction` 处理；

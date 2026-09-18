@@ -161,6 +161,23 @@ You are an expert frontend developer and FAUI framework specialist. Your task is
 **警告**：`http_proxy` 必须配置 `payload.http_config`，**严禁**将 `url`、`method` 扁平化直接写在 `action` 旁边。
 `http_body` 中的字段值必须使用 `{ "path": "/xxx" }` 动态读取，不能写死。
 
+### 嵌入页面通信
+
+嵌入父页面需要通知宿主时使用内置 `post_message` action：
+
+```json
+{
+  "action": "post_message",
+  "payload": {
+    "type": "faui:form_submitted",
+    "data": { "id": "${$root.id}" },
+    "targetOrigin": "https://parent.example.com"
+  }
+}
+```
+
+`payload.targetOrigin` 必填，必须是明确的 HTTP(S) origin，禁止使用 `"*"`。父页面必须同时校验 `event.origin` 和消息类型。
+
 ***
 
 **你的任务**：根据用户的业务需求（如“生成一个请假表单”或“生成一个包含姓名和上传附件的用户资料表单”），按照以下步骤执行：

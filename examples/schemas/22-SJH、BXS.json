@@ -1,0 +1,1066 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "dataModel": {
+        "form": {
+          "employee": {
+            "name": "王某某",
+            "idCardNo": "120101199001018914",
+            "phone": "18100000169",
+            "email": "wang.moumou@example.com",
+            "tags": [
+              {
+                "content": "合同签回高风险",
+                "color": "red"
+              }
+            ]
+          },
+          "employment": {
+            "tags": [
+              {
+                "content": "分包",
+                "color": "blue"
+              },
+              {
+                "content": "领取补偿金二次入职",
+                "color": "blue"
+              },
+              {
+                "content": "待岗",
+                "color": "blue"
+              },
+              {
+                "content": "ER",
+                "color": "blue"
+              }
+            ],
+            "customerCode": "118815",
+            "customerName": "通用电气（中国）有限公司",
+            "contractStartDate": "2026-07-07",
+            "contractEndDate": "2028-08-01",
+            "workCity": "上海市",
+            "contractSubject": "北京外企德科人力资源服务上海有限公司",
+            "contractType": "劳动合同",
+            "allEmploymentInfoUrl": "https://example.com/employment?employeeId=mock-001"
+          }
+        },
+        "ui": {
+          "fieldVisible": {
+            "employeeName": true,
+            "employeeTags": true,
+            "employmentTags": true,
+            "idCardNo": true,
+            "phone": true,
+            "email": true,
+            "customerCode": true,
+            "customerName": true,
+            "contractSubject": true,
+            "contractStartDate": true,
+            "contractEndDate": true,
+            "workCity": true,
+            "contractType": true
+          }
+        }
+      },
+      "components": [
+        {
+          "id": "root",
+          "component": "box",
+          "padding": 24,
+          "style": {
+            "minHeight": "100vh",
+            "backgroundColor": "#f5f7fa"
+          },
+          "children": [
+            "employment-info-card"
+          ]
+        },
+        {
+          "id": "employment-info-card",
+          "component": "box",
+          "style": {
+            "overflow": "hidden",
+            "backgroundColor": "#ffffff",
+            "border": "1px solid #dfe6ee",
+            "borderRadius": "12px",
+            "boxShadow": "0 1px 2px rgba(15, 23, 42, 0.04)"
+          },
+          "children": [
+            "card-header",
+            "employment-summary",
+            "employment-fields"
+          ]
+        },
+        {
+          "id": "card-header",
+          "component": "flex",
+          "align": "center",
+          "justify": "space-between",
+          "style": {
+            "padding": "26px 30px",
+            "borderBottom": "1px solid #e8edf3"
+          },
+          "children": [
+            "card-title",
+            "all-employment-link"
+          ]
+        },
+        {
+          "id": "card-title",
+          "component": "typography",
+          "content": "用工信息",
+          "strong": true,
+          "style": {
+            "fontSize": "28px",
+            "color": "#1f2f46"
+          }
+        },
+        {
+          "id": "all-employment-link",
+          "component": "typography",
+          "variant": "link",
+          "content": "查看全部用工信息 ›",
+          "href": "${$root.form.employment.allEmploymentInfoUrl}",
+          "target": "_blank",
+          "style": {
+            "fontSize": "18px",
+            "fontWeight": 600,
+            "color": "#12a77b"
+          }
+        },
+        {
+          "id": "employment-summary",
+          "component": "flex",
+          "align": "center",
+          "wrap": true,
+          "gap": 22,
+          "style": {
+            "padding": "30px 30px 22px"
+          },
+          "children": [
+            "employee-name-group",
+            "employee-tags",
+            "employment-tags"
+          ]
+        },
+        {
+          "id": "employee-name-group",
+          "component": "flex",
+          "align": "center",
+          "gap": 6,
+          "visible": "${$root.ui.fieldVisible.employeeName}",
+          "children": [
+            "employee-name",
+            "employee-name-copy"
+          ]
+        },
+        {
+          "id": "employee-name",
+          "component": "typography",
+          "content": "${$root.form.employee.name ?? '—'}",
+          "ellipsis": {
+            "tooltip": "${$root.form.employee.name ?? '—'}"
+          },
+          "strong": true,
+          "style": {
+            "fontSize": "26px",
+            "color": "#1f2f46"
+          }
+        },
+        {
+          "id": "employee-name-copy",
+          "component": "button",
+          "type": "text",
+          "shape": "circle",
+          "size": "small",
+          "style": {
+            "minWidth": 24,
+            "padding": 0,
+            "color": "#94a3b8"
+          },
+          "on_tap": [
+            {
+              "action": "copy",
+              "payload": {
+                "text": "${$root.form.employee.name}"
+              }
+            },
+            {
+              "action": "message",
+              "payload": {
+                "type": "success",
+                "content": "复制成功",
+                "duration": 2
+              }
+            }
+          ],
+          "children": [
+            "employee-name-copy-icon"
+          ]
+        },
+        {
+          "id": "employee-name-copy-icon",
+          "component": "icon",
+          "icon": "CopyOutlined",
+          "style": {
+            "fontSize": "17px"
+          }
+        },
+        {
+          "id": "employee-tags",
+          "component": "repeater",
+          "data": {
+            "path": "/form/employee/tags"
+          },
+          "direction": "horizontal",
+          "gap": 10,
+          "visible": "${$root.ui.fieldVisible.employeeTags}",
+          "children": [
+            "employee-tag-item"
+          ]
+        },
+        {
+          "id": "employee-tag-item",
+          "component": "tag",
+          "content": "${$current.content}",
+          "color": "${$current.color}",
+          "bordered": false,
+          "style": {
+            "marginInlineEnd": 0,
+            "fontSize": "17px",
+            "lineHeight": "32px",
+            "paddingInline": "12px",
+            "borderRadius": "18px"
+          }
+        },
+        {
+          "id": "employment-tags",
+          "component": "repeater",
+          "data": {
+            "path": "/form/employment/tags"
+          },
+          "direction": "horizontal",
+          "gap": 10,
+          "visible": "${$root.ui.fieldVisible.employmentTags}",
+          "children": [
+            "employment-tag-item"
+          ]
+        },
+        {
+          "id": "employment-tag-item",
+          "component": "tag",
+          "content": "${$current.content}",
+          "color": "${$current.color}",
+          "bordered": false,
+          "style": {
+            "marginInlineEnd": 0,
+            "fontSize": "17px",
+            "lineHeight": "32px",
+            "paddingInline": "12px",
+            "borderRadius": "18px"
+          }
+        },
+        {
+          "id": "employment-fields",
+          "component": "row",
+          "gutter": [
+            0,
+            0
+          ],
+          "style": {
+            "padding": "0 30px 22px"
+          },
+          "children": [
+            "id-card-col",
+            "phone-col",
+            "email-col",
+            "customer-code-col",
+            "customer-name-col",
+            "contract-start-date-col",
+            "contract-end-date-col",
+            "work-city-col",
+            "contract-subject-col",
+            "contract-type-col"
+          ]
+        },
+        {
+          "id": "id-card-col",
+          "component": "col",
+          "span": 8,
+          "xs": 24,
+          "md": 12,
+          "xl": 8,
+          "visible": "${$root.ui.fieldVisible.idCardNo}",
+          "style": {
+            "padding": "20px 16px",
+            "borderBottom": "1px solid #edf1f5"
+          },
+          "children": [
+            "id-card-field"
+          ]
+        },
+        {
+          "id": "id-card-field",
+          "component": "flex",
+          "align": "center",
+          "gap": 10,
+          "children": [
+            "id-card-label",
+            "id-card-value-actions"
+          ]
+        },
+        {
+          "id": "id-card-label",
+          "component": "typography",
+          "content": "证件号码",
+          "style": {
+            "flex": "0 0 130px",
+            "fontSize": "18px",
+            "fontWeight": 600,
+            "color": "#9aa7b8"
+          }
+        },
+        {
+          "id": "id-card-value-actions",
+          "component": "flex",
+          "align": "center",
+          "gap": 4,
+          "style": {
+            "flex": "1",
+            "minWidth": 0
+          },
+          "children": [
+            "id-card-value",
+            "id-card-copy-button"
+          ]
+        },
+        {
+          "id": "id-card-value",
+          "component": "typography",
+          "content": "${$root.form.employee.idCardNo ?? '—'}",
+          "ellipsis": {
+            "tooltip": "${$root.form.employee.idCardNo ?? '—'}"
+          },
+          "style": {
+            "flex": "1",
+            "minWidth": 0,
+            "fontSize": "18px",
+            "color": "#253246"
+          }
+        },
+        {
+          "id": "id-card-copy-button",
+          "component": "button",
+          "type": "text",
+          "shape": "circle",
+          "size": "small",
+          "style": {
+            "minWidth": 24,
+            "padding": 0,
+            "color": "#94a3b8"
+          },
+          "on_tap": [
+            {
+              "action": "copy",
+              "payload": {
+                "text": "${$root.form.employee.idCardNo}"
+              }
+            },
+            {
+              "action": "message",
+              "payload": {
+                "type": "success",
+                "content": "复制成功",
+                "duration": 2
+              }
+            }
+          ],
+          "children": [
+            "id-card-copy-icon"
+          ]
+        },
+        {
+          "id": "id-card-copy-icon",
+          "component": "icon",
+          "icon": "CopyOutlined",
+          "style": {
+            "fontSize": "17px"
+          }
+        },
+        {
+          "id": "phone-col",
+          "component": "col",
+          "span": 8,
+          "xs": 24,
+          "md": 12,
+          "xl": 8,
+          "visible": "${$root.ui.fieldVisible.phone}",
+          "style": {
+            "padding": "20px 16px",
+            "borderBottom": "1px solid #edf1f5"
+          },
+          "children": [
+            "phone-field"
+          ]
+        },
+        {
+          "id": "phone-field",
+          "component": "flex",
+          "align": "center",
+          "gap": 10,
+          "children": [
+            "phone-label",
+            "phone-value-actions"
+          ]
+        },
+        {
+          "id": "phone-label",
+          "component": "typography",
+          "content": "联系电话",
+          "style": {
+            "flex": "0 0 130px",
+            "fontSize": "18px",
+            "fontWeight": 600,
+            "color": "#9aa7b8"
+          }
+        },
+        {
+          "id": "phone-value-actions",
+          "component": "flex",
+          "align": "center",
+          "gap": 4,
+          "style": {
+            "flex": "1",
+            "minWidth": 0
+          },
+          "children": [
+            "phone-value",
+            "phone-copy-button"
+          ]
+        },
+        {
+          "id": "phone-value",
+          "component": "typography",
+          "content": "${$root.form.employee.phone ?? '—'}",
+          "ellipsis": {
+            "tooltip": "${$root.form.employee.phone ?? '—'}"
+          },
+          "style": {
+            "flex": "1",
+            "minWidth": 0,
+            "fontSize": "18px",
+            "color": "#253246"
+          }
+        },
+        {
+          "id": "phone-copy-button",
+          "component": "button",
+          "type": "text",
+          "shape": "circle",
+          "size": "small",
+          "style": {
+            "minWidth": 24,
+            "padding": 0,
+            "color": "#94a3b8"
+          },
+          "on_tap": [
+            {
+              "action": "copy",
+              "payload": {
+                "text": "${$root.form.employee.phone}"
+              }
+            },
+            {
+              "action": "message",
+              "payload": {
+                "type": "success",
+                "content": "复制成功",
+                "duration": 2
+              }
+            }
+          ],
+          "children": [
+            "phone-copy-icon"
+          ]
+        },
+        {
+          "id": "phone-copy-icon",
+          "component": "icon",
+          "icon": "CopyOutlined",
+          "style": {
+            "fontSize": "17px"
+          }
+        },
+        {
+          "id": "email-col",
+          "component": "col",
+          "span": 8,
+          "xs": 24,
+          "md": 12,
+          "xl": 8,
+          "visible": "${$root.ui.fieldVisible.email}",
+          "style": {
+            "padding": "20px 16px",
+            "borderBottom": "1px solid #edf1f5"
+          },
+          "children": [
+            "email-field"
+          ]
+        },
+        {
+          "id": "email-field",
+          "component": "flex",
+          "align": "center",
+          "gap": 10,
+          "children": [
+            "email-label",
+            "email-value",
+            "email-copy-button"
+          ]
+        },
+        {
+          "id": "email-label",
+          "component": "typography",
+          "content": "电子邮箱",
+          "style": {
+            "flex": "0 0 130px",
+            "fontSize": "18px",
+            "fontWeight": 600,
+            "color": "#9aa7b8"
+          }
+        },
+        {
+          "id": "email-value",
+          "component": "typography",
+          "content": "${$root.form.employee.email ?? '—'}",
+          "ellipsis": {
+            "tooltip": "${$root.form.employee.email ?? '—'}"
+          },
+          "style": {
+            "flex": "1",
+            "minWidth": 0,
+            "fontSize": "18px",
+            "color": "#253246"
+          }
+        },
+        {
+          "id": "email-copy-button",
+          "component": "button",
+          "type": "text",
+          "shape": "circle",
+          "size": "small",
+          "style": {
+            "minWidth": 24,
+            "padding": 0,
+            "color": "#94a3b8"
+          },
+          "on_tap": [
+            {
+              "action": "copy",
+              "payload": {
+                "text": "${$root.form.employee.email}"
+              }
+            },
+            {
+              "action": "message",
+              "payload": {
+                "type": "success",
+                "content": "复制成功",
+                "duration": 2
+              }
+            }
+          ],
+          "children": [
+            "email-copy-icon"
+          ]
+        },
+        {
+          "id": "email-copy-icon",
+          "component": "icon",
+          "icon": "CopyOutlined",
+          "style": {
+            "fontSize": "17px"
+          }
+        },
+        {
+          "id": "customer-code-col",
+          "component": "col",
+          "span": 8,
+          "xs": 24,
+          "md": 12,
+          "xl": 8,
+          "visible": "${$root.ui.fieldVisible.customerCode}",
+          "style": {
+            "padding": "20px 16px",
+            "borderBottom": "1px solid #edf1f5"
+          },
+          "children": [
+            "customer-code-field"
+          ]
+        },
+        {
+          "id": "customer-code-field",
+          "component": "flex",
+          "align": "center",
+          "gap": 10,
+          "children": [
+            "customer-code-label",
+            "customer-code-value",
+            "customer-code-copy-button"
+          ]
+        },
+        {
+          "id": "customer-code-label",
+          "component": "typography",
+          "content": "客户编号",
+          "style": {
+            "flex": "0 0 130px",
+            "fontSize": "18px",
+            "fontWeight": 600,
+            "color": "#9aa7b8"
+          }
+        },
+        {
+          "id": "customer-code-value",
+          "component": "typography",
+          "content": "${$root.form.employment.customerCode ?? '—'}",
+          "ellipsis": {
+            "tooltip": "${$root.form.employment.customerCode ?? '—'}"
+          },
+          "style": {
+            "flex": "1",
+            "minWidth": 0,
+            "fontSize": "18px",
+            "color": "#253246"
+          }
+        },
+        {
+          "id": "customer-code-copy-button",
+          "component": "button",
+          "type": "text",
+          "shape": "circle",
+          "size": "small",
+          "style": {
+            "minWidth": 24,
+            "padding": 0,
+            "color": "#94a3b8"
+          },
+          "on_tap": [
+            {
+              "action": "copy",
+              "payload": {
+                "text": "${$root.form.employment.customerCode}"
+              }
+            },
+            {
+              "action": "message",
+              "payload": {
+                "type": "success",
+                "content": "复制成功",
+                "duration": 2
+              }
+            }
+          ],
+          "children": [
+            "customer-code-copy-icon"
+          ]
+        },
+        {
+          "id": "customer-code-copy-icon",
+          "component": "icon",
+          "icon": "CopyOutlined",
+          "style": {
+            "fontSize": "17px"
+          }
+        },
+        {
+          "id": "customer-name-col",
+          "component": "col",
+          "span": 8,
+          "xs": 24,
+          "md": 12,
+          "xl": 8,
+          "visible": "${$root.ui.fieldVisible.customerName}",
+          "style": {
+            "padding": "20px 16px",
+            "borderBottom": "1px solid #edf1f5"
+          },
+          "children": [
+            "customer-name-field"
+          ]
+        },
+        {
+          "id": "customer-name-field",
+          "component": "flex",
+          "align": "center",
+          "gap": 10,
+          "children": [
+            "customer-name-label",
+            "customer-name-value",
+            "customer-name-copy-button"
+          ]
+        },
+        {
+          "id": "customer-name-label",
+          "component": "typography",
+          "content": "客户名称",
+          "style": {
+            "flex": "0 0 130px",
+            "fontSize": "18px",
+            "fontWeight": 600,
+            "color": "#9aa7b8"
+          }
+        },
+        {
+          "id": "customer-name-value",
+          "component": "typography",
+          "content": "${$root.form.employment.customerName ?? '—'}",
+          "ellipsis": {
+            "tooltip": "${$root.form.employment.customerName ?? '—'}"
+          },
+          "style": {
+            "flex": "1",
+            "minWidth": 0,
+            "fontSize": "18px",
+            "color": "#253246"
+          }
+        },
+        {
+          "id": "customer-name-copy-button",
+          "component": "button",
+          "type": "text",
+          "shape": "circle",
+          "size": "small",
+          "style": {
+            "minWidth": 24,
+            "padding": 0,
+            "color": "#94a3b8"
+          },
+          "on_tap": [
+            {
+              "action": "copy",
+              "payload": {
+                "text": "${$root.form.employment.customerName}"
+              }
+            },
+            {
+              "action": "message",
+              "payload": {
+                "type": "success",
+                "content": "复制成功",
+                "duration": 2
+              }
+            }
+          ],
+          "children": [
+            "customer-name-copy-icon"
+          ]
+        },
+        {
+          "id": "customer-name-copy-icon",
+          "component": "icon",
+          "icon": "CopyOutlined",
+          "style": {
+            "fontSize": "17px"
+          }
+        },
+        {
+          "id": "contract-start-date-col",
+          "component": "col",
+          "span": 8,
+          "xs": 24,
+          "md": 12,
+          "xl": 8,
+          "visible": "${$root.ui.fieldVisible.contractStartDate}",
+          "style": {
+            "padding": "20px 16px",
+            "borderBottom": "1px solid #edf1f5"
+          },
+          "children": [
+            "contract-start-date-field"
+          ]
+        },
+        {
+          "id": "contract-start-date-field",
+          "component": "flex",
+          "align": "center",
+          "gap": 10,
+          "children": [
+            "contract-start-date-label",
+            "contract-start-date-value"
+          ]
+        },
+        {
+          "id": "contract-start-date-label",
+          "component": "typography",
+          "content": "合同开始日期",
+          "style": {
+            "flex": "0 0 130px",
+            "fontSize": "18px",
+            "fontWeight": 600,
+            "color": "#9aa7b8"
+          }
+        },
+        {
+          "id": "contract-start-date-value",
+          "component": "typography",
+          "content": "${$root.form.employment.contractStartDate ?? '—'}",
+          "ellipsis": {
+            "tooltip": "${$root.form.employment.contractStartDate ?? '—'}"
+          },
+          "style": {
+            "flex": "1",
+            "minWidth": 0,
+            "fontSize": "18px",
+            "color": "#253246"
+          }
+        },
+        {
+          "id": "contract-end-date-col",
+          "component": "col",
+          "span": 8,
+          "xs": 24,
+          "md": 12,
+          "xl": 8,
+          "visible": "${$root.ui.fieldVisible.contractEndDate}",
+          "style": {
+            "padding": "20px 16px",
+            "borderBottom": "1px solid #edf1f5"
+          },
+          "children": [
+            "contract-end-date-field"
+          ]
+        },
+        {
+          "id": "contract-end-date-field",
+          "component": "flex",
+          "align": "center",
+          "gap": 10,
+          "children": [
+            "contract-end-date-label",
+            "contract-end-date-value"
+          ]
+        },
+        {
+          "id": "contract-end-date-label",
+          "component": "typography",
+          "content": "合同结束日期",
+          "style": {
+            "flex": "0 0 130px",
+            "fontSize": "18px",
+            "fontWeight": 600,
+            "color": "#9aa7b8"
+          }
+        },
+        {
+          "id": "contract-end-date-value",
+          "component": "typography",
+          "content": "${$root.form.employment.contractEndDate ?? '—'}",
+          "ellipsis": {
+            "tooltip": "${$root.form.employment.contractEndDate ?? '—'}"
+          },
+          "style": {
+            "flex": "1",
+            "minWidth": 0,
+            "fontSize": "18px",
+            "color": "#253246"
+          }
+        },
+        {
+          "id": "work-city-col",
+          "component": "col",
+          "span": 8,
+          "xs": 24,
+          "md": 12,
+          "xl": 8,
+          "visible": "${$root.ui.fieldVisible.workCity}",
+          "style": {
+            "padding": "20px 16px",
+            "borderBottom": "1px solid #edf1f5"
+          },
+          "children": [
+            "work-city-field"
+          ]
+        },
+        {
+          "id": "work-city-field",
+          "component": "flex",
+          "align": "center",
+          "gap": 10,
+          "children": [
+            "work-city-label",
+            "work-city-value"
+          ]
+        },
+        {
+          "id": "work-city-label",
+          "component": "typography",
+          "content": "工作城市",
+          "style": {
+            "flex": "0 0 130px",
+            "fontSize": "18px",
+            "fontWeight": 600,
+            "color": "#9aa7b8"
+          }
+        },
+        {
+          "id": "work-city-value",
+          "component": "typography",
+          "content": "${$root.form.employment.workCity ?? '—'}",
+          "ellipsis": {
+            "tooltip": "${$root.form.employment.workCity ?? '—'}"
+          },
+          "style": {
+            "flex": "1",
+            "minWidth": 0,
+            "fontSize": "18px",
+            "color": "#253246"
+          }
+        },
+        {
+          "id": "contract-subject-col",
+          "component": "col",
+          "span": 8,
+          "xs": 24,
+          "md": 12,
+          "xl": 8,
+          "visible": "${$root.ui.fieldVisible.contractSubject}",
+          "style": {
+            "padding": "20px 16px",
+            "borderBottom": "1px solid #edf1f5"
+          },
+          "children": [
+            "contract-subject-field"
+          ]
+        },
+        {
+          "id": "contract-subject-field",
+          "component": "flex",
+          "align": "center",
+          "gap": 10,
+          "children": [
+            "contract-subject-label",
+            "contract-subject-value",
+            "contract-subject-copy-button"
+          ]
+        },
+        {
+          "id": "contract-subject-label",
+          "component": "typography",
+          "content": "合同主体",
+          "style": {
+            "flex": "0 0 130px",
+            "fontSize": "18px",
+            "fontWeight": 600,
+            "color": "#9aa7b8"
+          }
+        },
+        {
+          "id": "contract-subject-value",
+          "component": "typography",
+          "content": "${$root.form.employment.contractSubject ?? '—'}",
+          "ellipsis": {
+            "tooltip": "${$root.form.employment.contractSubject ?? '—'}"
+          },
+          "style": {
+            "flex": "1",
+            "minWidth": 0,
+            "fontSize": "18px",
+            "color": "#253246"
+          }
+        },
+        {
+          "id": "contract-subject-copy-button",
+          "component": "button",
+          "type": "text",
+          "shape": "circle",
+          "size": "small",
+          "style": {
+            "minWidth": 24,
+            "padding": 0,
+            "color": "#94a3b8"
+          },
+          "on_tap": [
+            {
+              "action": "copy",
+              "payload": {
+                "text": "${$root.form.employment.contractSubject}"
+              }
+            },
+            {
+              "action": "message",
+              "payload": {
+                "type": "success",
+                "content": "复制成功",
+                "duration": 2
+              }
+            }
+          ],
+          "children": [
+            "contract-subject-copy-icon"
+          ]
+        },
+        {
+          "id": "contract-subject-copy-icon",
+          "component": "icon",
+          "icon": "CopyOutlined",
+          "style": {
+            "fontSize": "17px"
+          }
+        },
+        {
+          "id": "contract-type-col",
+          "component": "col",
+          "span": 8,
+          "xs": 24,
+          "md": 12,
+          "xl": 8,
+          "visible": "${$root.ui.fieldVisible.contractType}",
+          "style": {
+            "padding": "20px 16px",
+            "borderBottom": "1px solid #edf1f5"
+          },
+          "children": [
+            "contract-type-field"
+          ]
+        },
+        {
+          "id": "contract-type-field",
+          "component": "flex",
+          "align": "center",
+          "gap": 10,
+          "children": [
+            "contract-type-label",
+            "contract-type-value"
+          ]
+        },
+        {
+          "id": "contract-type-label",
+          "component": "typography",
+          "content": "合同类型",
+          "style": {
+            "flex": "0 0 130px",
+            "fontSize": "18px",
+            "fontWeight": 600,
+            "color": "#9aa7b8"
+          }
+        },
+        {
+          "id": "contract-type-value",
+          "component": "typography",
+          "content": "${$root.form.employment.contractType ?? '—'}",
+          "ellipsis": {
+            "tooltip": "${$root.form.employment.contractType ?? '—'}"
+          },
+          "style": {
+            "flex": "1",
+            "minWidth": 0,
+            "fontSize": "18px",
+            "color": "#253246"
+          }
+        }
+      ]
+    }
+  }
+]

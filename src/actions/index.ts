@@ -7,11 +7,13 @@ import { updateDataAction } from './updateData';
 import { httpProxyAction } from './httpProxy';
 import { messageAction } from './message';
 import { notificationAction } from './notification';
+import { postMessageAction } from './postMessage';
 
 export { updateDataAction } from './updateData';
 export { httpProxyAction } from './httpProxy';
 export { messageAction } from './message';
 export { notificationAction } from './notification';
+export { postMessageAction } from './postMessage';
 
 export type ActionRegistry = ActionRegistryType;
 
@@ -20,6 +22,7 @@ export const ActionRegistry: ActionRegistryType = {
   http_proxy: httpProxyAction,
   message: messageAction,
   notification: notificationAction,
+  post_message: postMessageAction,
 };
 
 export async function executeAction(

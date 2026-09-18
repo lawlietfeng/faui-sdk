@@ -112,6 +112,7 @@ export type ActionType =
   | 'http_proxy'
   | 'message'
   | 'notification'
+  | 'post_message'
   | 'copy'
   | 'mcp_tool_call'
   | 'send_prompt'

@@ -1,0 +1,210 @@
+[
+  {
+    "type": "ACTIVITY_SNAPSHOT",
+    "content": {
+      "dataModel": {
+        "form": {
+          "name": "",
+          "englishName": "",
+          "mobile": "",
+          "email": "",
+          "healthCondition": "",
+          "idType": "",
+          "idNumber": "",
+          "birthDate": "",
+          "gender": "",
+          "nationality": "",
+          "ethnicity": "",
+          "maritalStatus": "",
+          "hukouCity": "",
+          "hukouAddress": "",
+          "hukouType": "",
+          "residenceCity": "",
+          "residenceAddress": "",
+          "contractCity": "",
+          "contractAddress": "",
+          "hasWorkExperience": false,
+          "firstWorkDate": "",
+          "socialSecurityGapOver6Months": false,
+          "degree": "",
+          "graduationDate": "",
+          "school": "",
+          "highestEducation": "",
+          "previousCompany": "",
+          "previousContractStart": "",
+          "previousCompanyLeaveDate": "",
+          "bankCardNumber": "",
+          "bankName": "",
+          "accountHolder": "",
+          "bankLocation": "",
+          "bankShortName": "",
+          "housingFundAccount": "",
+          "housingFundSupplementAccount": "",
+          "emergencyContacts": [],
+          "workExperiences": [],
+          "materials": {
+            "idFront": "",
+            "idBack": "",
+            "degreeCertificate": "",
+            "graduationCertificate": "",
+            "resume": ""
+          },
+          "reviewResult": "",
+          "reviewComment": ""
+        },
+        "ui": {
+          "isSubmitting": false,
+          "submitDisabled": false,
+          "validationErrors": {},
+          "globalDisabled": false
+        }
+      },
+      "components": [
+        {
+          "id": "root",
+          "component": "box",
+          "layout": "vertical",
+          "padding": 24,
+          "style": {
+            "backgroundColor": "#f5f7fa",
+            "minHeight": "100vh"
+          },
+          "children": [
+            "review-form"
+          ]
+        },
+        {
+          "id": "review-form",
+          "component": "form",
+          "layout": "vertical",
+          "validateTrigger": "onBlur",
+          "style": {
+            "width": "100%",
+            "paddingBottom": 32
+          },
+          "children": [
+            "review-section"
+          ]
+        },
+        {
+          "id": "review-section",
+          "component": "card",
+          "title": "审核",
+          "children": [
+            "review-fields",
+            "review-actions"
+          ]
+        },
+        {
+          "id": "review-fields",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 20,
+          "style": {
+            "marginBottom": 24
+          },
+          "children": [
+            "review-comment-field"
+          ]
+        },
+        {
+          "id": "review-comment-field",
+          "component": "box",
+          "layout": "vertical",
+          "spacing": 8,
+          "children": [
+            "review-comment-label",
+            "review-comment"
+          ]
+        },
+        {
+          "id": "review-comment-label",
+          "component": "text",
+          "content": "批注",
+          "style": {
+            "fontWeight": "600",
+            "color": "#374151"
+          }
+        },
+        {
+          "id": "review-comment",
+          "component": "textarea",
+          "placeholder": "请输入批注（选填）",
+          "rows": 4,
+          "maxLength": 500,
+          "value": {
+            "path": "/form/reviewComment"
+          },
+          "field": "reviewComment"
+        },
+        {
+          "id": "review-actions",
+          "component": "flex",
+          "gap": 12,
+          "children": [
+            "approve-btn",
+            "reject-btn"
+          ]
+        },
+        {
+          "id": "approve-btn",
+          "component": "button",
+          "label": "通过",
+          "type": "primary",
+          "disabled": {
+            "path": "/ui/globalDisabled"
+          },
+          "size": "large",
+          "style": {
+            "minWidth": 120
+          },
+          "on_tap": [
+            {
+              "action": "update_data",
+              "path": "/ui/globalDisabled",
+              "value": true
+            },
+            {
+              "action": "update_data",
+              "path": "/form/reviewResult",
+              "value": "通过"
+            },
+            {
+              "action": "invoke_action",
+              "actionKey": "review.approve"
+            }
+          ]
+        },
+        {
+          "id": "reject-btn",
+          "component": "button",
+          "label": "不通过",
+          "disabled": {
+            "path": "/ui/globalDisabled"
+          },
+          "danger": true,
+          "size": "large",
+          "style": {
+            "minWidth": 120
+          },
+          "on_tap": [
+            {
+              "action": "update_data",
+              "path": "/ui/globalDisabled",
+              "value": true
+            },
+            {
+              "action": "update_data",
+              "path": "/form/reviewResult",
+              "value": "不通过"
+            },
+            {
+              "action": "invoke_action",
+              "actionKey": "review.reject"
+            }
+          ]
+        }
+      ]
+    }
+  }
+]
